@@ -1,0 +1,7 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = { title: 'Помощь через партнёров — NordicWork Check' };
+
+export default function ServicesPage() {
+  return <main><header className="site-header"><div className="container nav"><a className="brand" href="/"><span className="brand-mark">NW</span><span>NordicWork <em>Check</em></span></a><a className="text-link" href="/">← На главную</a></div></header><section className="section container"><div className="eyebrow">Для работников</div><h1>Поможем разобраться с документами</h1><p className="hero-text">Объясним, какие вопросы задать работодателю, и при необходимости сведём вас с профильным специалистом.</p><div className="job-grid"><article className="job-card"><h3>Перед поездкой</h3><p>Чек-лист договора, жилья, дороги, зарплаты и командирования.</p></article><article className="job-card"><h3>A1 и ID06</h3><p>Поможем понять, какие документы нужны, и направим к партнёру, который оказывает услугу.</p></article><article className="job-card"><h3>Налоги и декларация</h3><p>Объясним общую последовательность и сведём с бухгалтером для персональной консультации.</p></article></div><div className="empty-state"><h3>Важная граница ответственности</h3><p>NordicWork Check не оформляет A1, не подаёт налоговые декларации и не выдаёт юридические заключения. Мы помогаем разобраться и направляем к специалисту, который отвечает за конкретную услугу.</p></div></section></main>;
+}
