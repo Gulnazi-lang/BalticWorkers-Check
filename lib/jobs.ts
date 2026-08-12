@@ -1,0 +1,7 @@
+export type Job = { id: string; title: string; company: string; country: string; city: string; salary: string; salaryNote: string; housing: string; transport: string; schedule: string; verification: 'confirmed' | 'source' | 'unknown'; verificationLabel: string; updated: string; sourceUrl: string };
+
+export const jobs: Job[] = [
+  { id: 'boden-cable-installer', title: 'Монтажник кабельных систем', company: 'Пример: эстонский подрядчик', country: 'Швеция', city: 'Boden', salary: '17 €', salaryNote: 'нетто / час', housing: 'Жильё оплачивается', transport: 'Дорога оплачивается', schedule: '40 ч / нед.', verification: 'confirmed', verificationLabel: 'Условия подтверждены', updated: 'сегодня', sourceUrl: '#' },
+  { id: 'boden-welder', title: 'Сварщик и монтажник', company: 'TUSA Energi AB', country: 'Швеция', city: 'Boden', salary: 'Не указана', salaryNote: '', housing: 'Не указано', transport: 'Не указано', schedule: 'Полный день', verification: 'source', verificationLabel: 'Источник найден', updated: 'сегодня', sourceUrl: 'https://arbetsformedlingen.se/platsbanken/' },
+  { id: 'norway-construction', title: 'Строительный рабочий', company: 'Работодатель уточняется', country: 'Норвегия', city: 'Oslo region', salary: 'По договору', salaryNote: '', housing: 'Требует уточнения', transport: 'Требует уточнения', schedule: 'Полный день', verification: 'unknown', verificationLabel: 'Проверка нужна', updated: 'сегодня', sourceUrl: '#' },
+];

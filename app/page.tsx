@@ -1,0 +1,15 @@
+import { jobs } from '../lib/jobs';
+import { JobCard } from '../components/jobs/JobCard';
+
+export default function HomePage() {
+  return (
+    <main>
+      <header className="site-header"><div className="container nav"><div className="brand"><span className="brand-mark">NW</span><span>NordicWork <em>Check</em></span></div><nav><a href="#jobs">Вакансии</a><a href="#how">Как проверяем</a><a href="#employer">Работодателям</a></nav><button className="language">RU ▾</button></div></header>
+      <section className="hero"><div className="container hero-grid"><div><div className="eyebrow">Швеция · Норвегия · Балтия</div><h1>Работа в Скандинавии с понятными условиями</h1><p className="hero-text">Зарплата, жильё, дорога и работодатель — всё в одной карточке вакансии.</p><div className="search-box"><input placeholder="Профессия, например: сварщик"/><select defaultValue=""><option value="">Страна</option><option>Швеция</option><option>Норвегия</option></select><button>Найти работу</button></div><div className="hero-note">Бесплатно для соискателей · Отклик через официальный источник</div></div><div className="hero-card"><div className="hero-card-label">Проверено сегодня</div><div className="hero-stat">17 €<small>нетто / час</small></div><div className="hero-card-title">Монтажник кабельных систем</div><div className="hero-card-meta">Boden, Швеция · жильё включено</div><div className="status-pill">Работодатель подтверждён</div></div></div></section>
+      <section id="jobs" className="section container"><div className="section-heading"><div><div className="eyebrow">Подборка вакансий</div><h2>Последние предложения</h2></div><a className="text-link" href="#jobs">Смотреть все →</a></div><div className="job-grid">{jobs.map((job) => <JobCard key={job.id} job={job} />)}</div></section>
+      <section id="how" className="trust-section"><div className="container trust-grid"><div><div className="eyebrow">Почему нам доверяют</div><h2>Проверяем важное до поездки</h2></div><div className="trust-items"><div><strong>01</strong><span>Показываем реального работодателя и оригинальный источник.</span></div><div><strong>02</strong><span>Отдельно указываем зарплату, жильё, дорогу и неизвестные условия.</span></div><div><strong>03</strong><span>Не берём оплату с кандидата за доступ к вакансиям.</span></div></div></div></section>
+      <section id="employer" className="employer-section"><div className="container employer-inner"><div><div className="eyebrow">Для работодателей</div><h2>Нужны работники из Балтии?</h2><p>Переведём вакансию, проверим условия и покажем её целевым кандидатам.</p></div><a className="button button-light" href="mailto:hello@nordicwork-check.example">Разместить вакансию</a></div></section>
+      <footer><div className="container footer-inner"><span>© 2026 NordicWork Check</span><span>Информационная платформа, не кадровое агентство</span></div></footer>
+    </main>
+  );
+}
