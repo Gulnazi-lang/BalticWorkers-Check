@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f7f8fa;
+  --ink: #17202a;
+  --muted: #53616b;
+  --accent: #1b936f;
+  --accent-soft: #e9f4f1;
+  --deep: #183b46;
+  --card: #ffffff;
+  --line: #e4e9ec;
+
+  /* Тоны плашек проверки — единственный источник цвета для статусов. */
+  --tone-green-bg: #e5f7ef;
+  --tone-green-ink: #15704f;
+  --tone-blue-bg: #edf3f5;
+  --tone-blue-ink: #526a73;
+  --tone-amber-bg: #fff4df;
+  --tone-amber-ink: #9a671b;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-deep: var(--deep);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-tone-green-bg: var(--tone-green-bg);
+  --color-tone-green-ink: var(--tone-green-ink);
+  --color-tone-blue-bg: var(--tone-blue-bg);
+  --color-tone-blue-ink: var(--tone-blue-ink);
+  --color-tone-amber-bg: var(--tone-amber-bg);
+  --color-tone-amber-ink: var(--tone-amber-ink);
+  --font-sans: var(--font-golos);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-golos), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,119 @@
+import type { ConditionStatus, Vacancy, VacancyRow } from "@/types/vacancy";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
+
+/**
+ * Демо-карточки до подключения Supabase. Каждая помечена isDemo — в UI это
+ * видно подписью «Демонстрация», чтобы витрина не выдавала пример за проверенную
+ * вакансию. Исключение — вакансия с реальным источником: она не демо.
+ */
+export const DEMO_VACANCIES: Vacancy[] = [
+  {
+    id: "boden-cable-installer",
+    title: "Монтажник кабельных систем",
+    employerName: null,
+    country: "SE",
+    location: "Boden",
+    wageAmount: 17,
+    wageCurrency: "€",
+    wageType: "net_hour",
+    housingStatus: "included",
+    travelStatus: "included",
+    hoursPerWeek: 40,
+    collectiveAgreement: null,
+    verificationLevel: "EMPLOYER_CONFIRMED",
+    publicationType: "ORGANIC",
+    sourceUrl: null,
+    sourceName: null,
+    isDemo: true,
+    updatedAt: "сегодня",
+  },
+  {
+    id: "boden-welder",
+    title: "Сварщик и монтажник",
+    employerName: "TUSA Energi AB",
+    country: "SE",
+    location: "Boden",
+    wageAmount: null,
+    wageCurrency: null,
+    wageType: null,
+    housingStatus: "unknown",
+    travelStatus: "unknown",
+    hoursPerWeek: null,
+    collectiveAgreement: null,
+    verificationLevel: "SOURCE_CONFIRMED",
+    publicationType: "ORGANIC",
+    sourceUrl: "https://arbetsformedlingen.se/platsbanken/",
+    sourceName: "Arbetsförmedlingen",
+    isDemo: false,
+    updatedAt: "сегодня",
+  },
+  {
+    id: "norway-construction",
+    title: "Строительный рабочий",
+    employerName: null,
+    country: "NO",
+    location: "Oslo region",
+    wageAmount: null,
+    wageCurrency: null,
+    wageType: null,
+    housingStatus: "unknown",
+    travelStatus: "unknown",
+    hoursPerWeek: null,
+    collectiveAgreement: null,
+    verificationLevel: "NEEDS_REVIEW",
+    publicationType: "ORGANIC",
+    sourceUrl: null,
+    sourceName: null,
+    isDemo: true,
+    updatedAt: "сегодня",
+  },
+];
+
+const CONDITIONS: ConditionStatus[] = ["included", "deducted", "unknown"];
+
+function toCondition(value: string | null): ConditionStatus {
+  return CONDITIONS.find((c) => c === value) ?? "unknown";
+}
+
+function fromRow(row: VacancyRow): Vacancy {
+  return {
+    id: row.id,
+    title: row.title,
+    employerName: row.employer_name,
+    country: row.country === "NO" ? "NO" : "SE",
+    location: row.location,
+    wageAmount: row.wage_amount,
+    wageCurrency: row.wage_currency,
+    wageType: row.wage_type as Vacancy["wageType"],
+    housingStatus: toCondition(row.housing_status),
+    travelStatus: toCondition(row.travel_status),
+    hoursPerWeek: row.hours_per_week,
+    collectiveAgreement: row.collective_agreement,
+    verificationLevel: row.verification_level,
+    publicationType: row.publication_type,
+    sourceUrl: row.source_url,
+    sourceName: row.source_name,
+    isDemo: row.is_demo,
+    updatedAt: new Date(row.updated_at).toLocaleDateString("ru-RU"),
+  };
+}
+
+/**
+ * Опубликованные вакансии. Порядок выдачи НЕ зависит от publication_type:
+ * платное продвижение влияет на охват вне витрины, но не подменяет проверку
+ * и не переставляет карточки вперёд.
+ */
+export async function getVacancies(limit = 12): Promise<Vacancy[]> {
+  if (!isSupabaseConfigured()) return DEMO_VACANCIES;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("vacancies")
+    .select("*")
+    .eq("published", true)
+    .order("updated_at", { ascending: false })
+    .limit(limit);
+
+  if (error || !data?.length) return DEMO_VACANCIES;
+  return (data as VacancyRow[]).map(fromRow);
+}
