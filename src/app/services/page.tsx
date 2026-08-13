@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "Объясним, какие вопросы задать работодателю, и сведём с профильным специалистом: договор, A1 и ID06, налоги.",
 };
 
-const HELP = [
+const HELP: { title: string; text: string; partnerSlug?: string }[] = [
   {
     title: "Перед поездкой",
     text: "Чек-лист договора, жилья, дороги, зарплаты и командирования: что спросить до того, как соглашаться.",
@@ -17,10 +17,12 @@ const HELP = [
   {
     title: "A1 и ID06",
     text: "Поможем понять, какие документы нужны, и направим к партнёру, который оказывает услугу.",
+    partnerSlug: "id06-specialist",
   },
   {
     title: "Налоги и декларация",
     text: "Объясним общую последовательность и сведём с бухгалтером для персональной консультации.",
+    partnerSlug: "accountant",
   },
 ];
 
@@ -51,6 +53,20 @@ export default function ServicesPage() {
               <div key={item.title} className="rounded-2xl border border-line bg-card p-5">
                 <h2 className="text-lg font-semibold">{item.title}</h2>
                 <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
+                {item.partnerSlug && (
+                  <>
+                    <a
+                      href={`/go/${item.partnerSlug}?from=services`}
+                      className="mt-4 inline-block text-sm font-medium text-accent"
+                    >
+                      Написать партнёру →
+                    </a>
+                    <p className="mt-2 text-xs text-muted">
+                      Партнёрская рекомендация. NordicWork Check может получить комиссию за
+                      обращение. Услугу оказывает партнёр.
+                    </p>
+                  </>
+                )}
               </div>
             ))}
           </div>

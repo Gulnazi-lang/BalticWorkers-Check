@@ -3,7 +3,7 @@
 # NordicWork Check
 
 Платформа проверенных вакансий в Швеции и Норвегии для работников из Балтии.
-Статус: MVP-витрина, домен и Supabase-проект ещё не заведены.
+Статус: MVP-витрина на Supabase, домен и Vercel ещё не заведены.
 
 ## Стек
 TypeScript, Next.js 16 (App Router), React 19, Tailwind v4, Supabase (SDK `@supabase/ssr`), деплой Vercel.
@@ -14,10 +14,16 @@ TypeScript, Next.js 16 (App Router), React 19, Tailwind v4, Supabase (SDK `@supa
 - `src/app/how-we-check/page.tsx` — методика проверки, полная легенда.
 - `src/app/services/page.tsx` — помощь работникам через партнёров + граница ответственности.
 - `src/app/for-employers/page.tsx` — услуги + заявка на размещение (пока mailto).
+- `src/app/go/[slug]/route.ts` — реферальные ссылки на партнёров: находит партнёра по slug,
+  пишет клик в `partner_clicks`, редиректит на `contact_url`. Неизвестный/неактивный slug → `/services`.
 - `src/lib/status.ts` — **единственный** источник подписей и тонов статусов.
 - `src/lib/vacancies.ts` — выдача вакансий: Supabase, если заданы env; иначе демо-данные.
 - `src/types/vacancy.ts` — `Vacancy` (camelCase, UI) и `VacancyRow` (snake_case, БД).
-- `supabase/schema.sql` — схема, применяется вручную в SQL Editor.
+- `supabase/schema.sql` — полная схема, применяется целиком только на чистом проекте.
+- `supabase/002_partners.sql` — инкрементальная миграция поверх уже применённого schema.sql
+  (нумерация по образцу DAGI: `Apps/DUD-DAGI/dagi-app/supabase/`). Новые изменения схемы —
+  следующим номером `003_...sql`, а не правкой `schema.sql` задним числом (его правим тоже,
+  чтобы он оставался полным референсом, но применять руками нужно только новый файл).
 
 ## Ядро бренда — не ломать
 `verification_level` и `publication_type` — **две независимые колонки**.
@@ -28,9 +34,20 @@ TypeScript, Next.js 16 (App Router), React 19, Tailwind v4, Supabase (SDK `@supa
 - Условия показываем всегда, включая `deducted` («жильё вычитается из зарплаты») — это красный флаг для работника.
 - Демо-карточки помечаются `is_demo` и подписью «Демонстрация»: пример нельзя выдавать за проверенную вакансию.
 
+## Supabase (проект заведён 13.08.2026)
+Организация `Gulnazi - Org`, проект `NordicWork Check`, ref `dmhrtuoycdeebvvfvzvo`,
+регион eu-central-1 (Франкфурт), тариф Free. Ключ в `.env.local` — новый формат
+`sb_publishable_...`, лежит в переменной `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
+Проект создан с выключенным «Automatically expose new tables», поэтому **каждой новой
+таблице нужен явный `grant`** в схеме, иначе Data API её не увидит. У `worker_reports`
+grant колоночный: `contact_hint` анону не выдан, поэтому запросы к отзывам делать
+только с явным списком колонок — `select("*")` вернёт `permission denied`.
+
 ## Конвенции
 - Server Components по умолчанию, `"use client"` только для интерактива.
-- Мутации — Server Actions; route handlers только для вебхуков и импортёра.
+- Мутации — Server Actions; route handlers — для вебхуков, импортёра и переходов с побочным
+  эффектом по внешней GET-ссылке (`/go/[slug]`), где Server Action не применим.
 - Цвета только через токены из `globals.css` (`accent`, `deep`, `tone-*`), не хардкодить hex в компонентах.
 - Тексты русские; латышская/эстонская локали — следующий этап (брать next-intl из MajasBalss).
 
@@ -46,8 +63,12 @@ Tailwind + Supabase по скиллу gelvua-apps; содержимое стра
 удалены — если что-то понадобится, смотреть в git по этому коммиту.
 
 ## Не сделано (следующие шаги)
-1. Supabase-проект + применить `supabase/schema.sql`, заполнить `.env.local`.
+1. Применить `supabase/002_partners.sql` в SQL Editor (партнёры сейчас — заглушки на общий email,
+   `contact_url` заменить в Table Editor, когда появится реальный партнёр и договор о комиссии).
 2. Импортёр вакансий: JobTech (SE) и NAV (NO) → дедупликация по `(source_name, external_id)`.
 3. Поиск в hero сейчас нерабочий (ведёт якорем к списку) — нужен каталог `/vacancies` с фильтрами.
 4. Форма работодателя вместо mailto + админка модерации.
 5. Домен и Vercel.
+6. Платный AI-разбор внешней вакансии — не строить, пока бесплатный прототип не наберёт
+   реальных обращений (см. память проекта: порог 50–100). Название на сайте — без слова
+   «AI»/«ИИ» в заголовке, ориентир — «Проверить моё предложение».

@@ -114,6 +114,11 @@ export async function getVacancies(limit = 12): Promise<Vacancy[]> {
     .order("updated_at", { ascending: false })
     .limit(limit);
 
-  if (error || !data?.length) return DEMO_VACANCIES;
+  // База подключена — она и есть источник правды. Пусто значит пусто: главная
+  // покажет блок «Первые вакансии готовятся», а не демо-карточки.
+  if (error) {
+    console.error("Не удалось прочитать вакансии:", error.message);
+    return [];
+  }
   return (data as VacancyRow[]).map(fromRow);
 }
