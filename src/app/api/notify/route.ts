@@ -16,7 +16,7 @@ function isAuthorized(request: NextRequest): boolean {
 }
 
 function siteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL ?? "https://nordic-work-check.vercel.app";
+  return process.env.NEXT_PUBLIC_SITE_URL ?? "https://baltic-workers-check.vercel.app";
 }
 
 interface MatchedVacancy {
