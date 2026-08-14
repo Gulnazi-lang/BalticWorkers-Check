@@ -54,10 +54,12 @@ create table public.vacancies (
   published          boolean not null default false
 );
 
--- дедупликация вакансий из источников
+-- дедупликация вакансий из источников. Обычный (не частичный) индекс — так он
+-- годится как arbiter для "on conflict (source_name, external_id)" из
+-- Supabase JS клиента; NULL и так не конфликтует с NULL в уникальных
+-- индексах Postgres по умолчанию, поведение не меняется.
 create unique index vacancies_source_uq
-  on public.vacancies (source_name, external_id)
-  where external_id is not null;
+  on public.vacancies (source_name, external_id);
 
 -- быстрый публичный листинг
 create index vacancies_public_idx
@@ -87,6 +89,11 @@ grant select on public.vacancies to anon, authenticated;
 -- Отдельную политику для anon НЕ создаём: покупка продвижения идёт через
 -- серверный роут, который меняет ТОЛЬКО publication_type. verification_level
 -- в этом роуте не трогается вообще — гарантия на уровне кода бэкенда.
+--
+-- service_role обходит RLS, но не обычный GRANT — при выключенном "Automatically
+-- expose new tables" это, похоже, касается и его. Без этой строки импортёр падал
+-- с "permission denied for table vacancies", даже используя service_role key.
+grant select, insert, update, delete on public.vacancies to service_role;
 
 -- Отзывы работников — отдельная таблица.
 -- WORKER_CONFIRMED выставляется только когда есть проверенный отзыв.
