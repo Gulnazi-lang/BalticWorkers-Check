@@ -11,8 +11,30 @@ const TRUST_POINTS = [
   "Не берём плату с работника за доступ к вакансиям. Никогда.",
 ];
 
-export default async function HomePage() {
+const COUNTRY_NAMES: Record<string, string> = { SE: "Швеция", NO: "Норвегия" };
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; country?: string }>;
+}) {
   const vacancies = await getVacancies();
+  const { q: rawQuery, country: rawCountry } = await searchParams;
+  const query = (rawQuery ?? "").trim();
+  const country = rawCountry === "SE" || rawCountry === "NO" ? rawCountry : "";
+  const isFiltered = query !== "" || country !== "";
+
+  const filteredVacancies = isFiltered
+    ? vacancies.filter(
+        (v) =>
+          (query === "" || v.title.toLowerCase().includes(query.toLowerCase())) &&
+          (country === "" || v.country === country)
+      )
+    : vacancies;
+
+  const filterLabel = [query && `«${query}»`, country && COUNTRY_NAMES[country]]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <>
@@ -33,23 +55,32 @@ export default async function HomePage() {
                 до того, как вы поедете.
               </p>
 
-              <div className="mt-7 flex flex-col gap-1 rounded-xl border border-line bg-card p-1.5 shadow-lg shadow-deep/5 sm:flex-row">
+              <form
+                action="/"
+                className="mt-7 flex flex-col gap-1 rounded-xl border border-line bg-card p-1.5 shadow-lg shadow-deep/5 sm:flex-row"
+              >
                 <input
+                  name="q"
+                  defaultValue={query}
                   className="min-w-0 flex-1 bg-transparent p-3.5 text-sm outline-none"
                   placeholder="Профессия, например: сварщик"
                 />
-                <select className="min-w-0 flex-1 bg-transparent p-3.5 text-sm outline-none" defaultValue="">
+                <select
+                  name="country"
+                  defaultValue={country}
+                  className="min-w-0 flex-1 bg-transparent p-3.5 text-sm outline-none"
+                >
                   <option value="">Страна</option>
-                  <option>Швеция</option>
-                  <option>Норвегия</option>
+                  <option value="SE">Швеция</option>
+                  <option value="NO">Норвегия</option>
                 </select>
-                <a
-                  href="#jobs"
+                <button
+                  type="submit"
                   className="rounded-lg bg-accent px-5 py-3.5 text-center text-sm font-bold text-white"
                 >
                   Найти работу
-                </a>
-              </div>
+                </button>
+              </form>
 
               <p className="mt-3.5 text-xs text-muted">
                 Бесплатно для соискателей · Отклик через официальный источник · Мы не берём плату за
@@ -89,13 +120,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {vacancies.length ? (
-            <div className="grid gap-4 md:grid-cols-3">
-              {vacancies.map((v) => (
-                <VacancyCard key={v.id} v={v} />
-              ))}
-            </div>
-          ) : (
+          {vacancies.length === 0 ? (
             <div className="max-w-3xl rounded-2xl border border-dashed border-[#cbd8d8] bg-card p-8 text-center">
               <h3 className="text-xl font-semibold">Первые вакансии готовятся</h3>
               <p className="mx-auto mt-2.5 max-w-xl leading-relaxed text-muted">
@@ -109,6 +134,25 @@ export default async function HomePage() {
                 Пока посмотреть, что спросить у работодателя
               </Link>
             </div>
+          ) : (
+            <>
+              {isFiltered && filteredVacancies.length > 0 && (
+                <p className="mb-4 text-sm text-muted">
+                  Совпадения по {filterLabel} · <Link href="/" className="text-accent">Сбросить</Link>
+                </p>
+              )}
+              {isFiltered && filteredVacancies.length === 0 && (
+                <p className="mb-4 text-sm text-muted">
+                  По запросу {filterLabel} пока ничего нет — честно говорим, а не подсовываем похожее.
+                  Вот все открытые вакансии: · <Link href="/" className="text-accent">Сбросить</Link>
+                </p>
+              )}
+              <div className="grid gap-4 md:grid-cols-3">
+                {(filteredVacancies.length > 0 ? filteredVacancies : vacancies).map((v) => (
+                  <VacancyCard key={v.id} v={v} />
+                ))}
+              </div>
+            </>
           )}
         </section>
 

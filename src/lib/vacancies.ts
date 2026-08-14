@@ -2,9 +2,10 @@ import type { ConditionStatus, Vacancy, VacancyRow } from "@/types/vacancy";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
 /**
- * Демо-карточки до подключения Supabase. Каждая помечена isDemo — в UI это
+ * Демо-карточки до подключения Supabase. Все помечены isDemo — в UI это
  * видно подписью «Демонстрация», чтобы витрина не выдавала пример за проверенную
- * вакансию. Исключение — вакансия с реальным источником: она не демо.
+ * вакансию. Ни у одной нет sourceUrl на конкретное объявление: ссылка на общую
+ * страницу поиска биржи труда — тупик для пользователя, честнее не давать её.
  */
 export const DEMO_VACANCIES: Vacancy[] = [
   {
@@ -42,9 +43,12 @@ export const DEMO_VACANCIES: Vacancy[] = [
     collectiveAgreement: null,
     verificationLevel: "SOURCE_CONFIRMED",
     publicationType: "ORGANIC",
-    sourceUrl: "https://arbetsformedlingen.se/platsbanken/",
+    // Реальной ссылки на конкретное объявление нет — до импортёра JobTech её
+    // взять неоткуда. Ссылка на общую страницу поиска биржи труда — тупик для
+    // пользователя, поэтому лучше честно не давать её вовсе.
+    sourceUrl: null,
     sourceName: "Arbetsförmedlingen",
-    isDemo: false,
+    isDemo: true,
     updatedAt: "сегодня",
   },
   {

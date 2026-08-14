@@ -3,6 +3,10 @@ import { TONE_CLASS, VERIFICATION_LABELS } from "@/lib/status";
 
 const COUNTRY_NAMES: Record<Vacancy["country"], string> = { SE: "Швеция", NO: "Норвегия" };
 
+// Оригинал почти всегда на местном языке — предупреждаем заранее, а не
+// оставляем человека один на один с непонятной страницей после перехода.
+const SOURCE_LANGUAGE: Record<Vacancy["country"], string> = { SE: "шведском", NO: "норвежском" };
+
 const WAGE_UNITS: Record<NonNullable<Vacancy["wageType"]>, string> = {
   net_hour: "нетто / час",
   gross_hour: "брутто / час",
@@ -56,17 +60,25 @@ export function VacancyCard({ v }: { v: Vacancy }) {
         {v.collectiveAgreement && <span>§ {v.collectiveAgreement}</span>}
       </div>
 
-      <div className="mt-auto flex items-center justify-between gap-2 border-t border-line pt-3 text-[11px] text-muted">
-        <span>{v.isDemo ? "Демонстрация" : `Обновлено ${v.updatedAt}`}</span>
+      <div className="mt-auto border-t border-line pt-3">
+        <div className="flex items-center justify-between gap-2 text-[11px] text-muted">
+          <span>{v.isDemo ? "Демонстрация" : `Обновлено ${v.updatedAt}`}</span>
+          {v.sourceUrl && (
+            <a
+              href={v.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-accent"
+            >
+              Оригинал ↗
+            </a>
+          )}
+        </div>
         {v.sourceUrl && (
-          <a
-            href={v.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-accent"
-          >
-            Оригинал ↗
-          </a>
+          <p className="mt-1.5 text-[11px] text-muted">
+            Страница на {SOURCE_LANGUAGE[v.country]} языке — включите перевод страницы в браузере
+            (обычно предлагается сам).
+          </p>
         )}
       </div>
     </article>
