@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ScrollToJobs } from "@/components/ScrollToJobs";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { VacancyCard } from "@/components/VacancyCard";
@@ -38,6 +39,7 @@ export default async function HomePage({
 
   return (
     <>
+      <ScrollToJobs />
       <SiteHeader />
 
       <main>
@@ -56,7 +58,7 @@ export default async function HomePage({
               </p>
 
               <form
-                action="/"
+                action="/#jobs"
                 className="mt-7 flex flex-col gap-1 rounded-xl border border-line bg-card p-1.5 shadow-lg shadow-deep/5 sm:flex-row"
               >
                 <input
@@ -144,7 +146,7 @@ export default async function HomePage({
                 Мы пока не нашли проверенное предложение по запросу {filterLabel}.
               </p>
               <Link
-                href="/"
+                href="/#jobs"
                 className="mt-5 inline-block rounded-lg bg-accent px-5 py-3 font-bold text-white"
               >
                 Посмотреть все открытые вакансии
@@ -154,7 +156,7 @@ export default async function HomePage({
             <>
               {isFiltered && (
                 <p className="mb-4 text-sm text-muted">
-                  Совпадения по {filterLabel} · <Link href="/" className="text-accent">Сбросить</Link>
+                  Совпадения по {filterLabel} · <Link href="/#jobs" className="text-accent">Сбросить</Link>
                 </p>
               )}
               <div className="grid gap-4 md:grid-cols-3">
