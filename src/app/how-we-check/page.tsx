@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { VerificationLegend } from "@/components/VerificationLegend";
 
 export const metadata: Metadata = {
-  title: "Как проверяем — NordicWork Check",
+  title: "Как проверяем — BalticWorkers Check",
   description:
     "Четыре уровня проверки вакансии: от «проверка нужна» до подтверждения работником. Что именно мы проверяем на каждом уровне.",
 };

@@ -4,12 +4,12 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "Работодателям — NordicWork Check",
+  title: "Работодателям — BalticWorkers Check",
   description:
     "Перевод вакансии, проверка условий по единой процедуре и показ целевым кандидатам в Балтии. Оплата влияет на охват, а не на статус проверки.",
 };
 
-const CONTACT_EMAIL = "hello@nordicwork-check.example";
+const CONTACT_EMAIL = "hello@balticworkers-check.example";
 
 const SERVICES = [
   {
@@ -103,7 +103,7 @@ export default function ForEmployersPage() {
                   Письмо на адрес ниже. Отвечаем в рабочие дни.
                 </p>
                 <a
-                  href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Вакансия для NordicWork Check")}`}
+                  href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Вакансия для BalticWorkers Check")}`}
                   className="mt-4 inline-block rounded-lg bg-accent px-5 py-3.5 font-bold text-white"
                 >
                   Написать нам

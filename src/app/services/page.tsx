@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { getPartnerStatuses } from "@/lib/partners";
 
 export const metadata: Metadata = {
-  title: "Помощь через партнёров — NordicWork Check",
+  title: "Помощь через партнёров — BalticWorkers Check",
   description:
     "Объясним, какие вопросы задать работодателю, и сведём с профильным специалистом: договор, A1 и ID06, налоги.",
 };
@@ -82,7 +82,7 @@ export default async function ServicesPage() {
                         Написать партнёру →
                       </a>
                       <p className="mt-2 text-xs text-muted">
-                        Партнёрская рекомендация. NordicWork Check может получить комиссию за
+                        Партнёрская рекомендация. BalticWorkers Check может получить комиссию за
                         обращение. Услугу оказывает партнёр.
                       </p>
                     </>
@@ -95,7 +95,7 @@ export default async function ServicesPage() {
           <div className="mt-6 max-w-3xl rounded-2xl border border-dashed border-[#cbd8d8] bg-card p-7">
             <h2 className="text-xl font-extrabold">Важная граница ответственности</h2>
             <p className="mt-3 leading-relaxed text-muted">
-              NordicWork Check не оформляет A1, не подаёт налоговые декларации и не выдаёт
+              BalticWorkers Check не оформляет A1, не подаёт налоговые декларации и не выдаёт
               юридические заключения. Мы помогаем разобраться и направляем к специалисту, который
               отвечает за конкретную услугу.
             </p>

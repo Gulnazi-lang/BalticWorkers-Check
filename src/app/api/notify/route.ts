@@ -84,7 +84,7 @@ export async function GET(request: NextRequest) {
       try {
         await sendEmail(
           alert.email,
-          `Новые вакансии на NordicWork Check (${list.length})`,
+          `Новые вакансии на BalticWorkers Check (${list.length})`,
           `<p>Новые вакансии по вашему запросу:</p><ul>${itemsHtml}</ul>` +
             `<p style="color:#888;font-size:12px"><a href="${unsubscribeUrl}">Отписаться</a></p>`,
           `Новые вакансии:\n${itemsText}\n\nОтписаться: ${unsubscribeUrl}`

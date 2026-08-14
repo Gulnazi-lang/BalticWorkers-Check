@@ -1,4 +1,4 @@
--- NordicWork Check — схема БД
+-- BalticWorkers Check — схема БД
 --
 -- Ключевая идея: verification_level и publication_type — две независимые
 -- колонки. Оплата меняет только publication_type. Статус проверки меняется
@@ -180,10 +180,10 @@ grant insert on public.partner_clicks to anon, authenticated;
 insert into public.partners (slug, name, description, contact_url, is_placeholder) values
   ('accountant', 'Бухгалтер-партнёр',
    'Разбор вопросов по налогам и декларации перед поездкой или во время работы.',
-   'mailto:hello@nordicwork-check.example', true),
+   'mailto:hello@balticworkers-check.example', true),
   ('id06-specialist', 'Специалист по A1 и ID06',
    'Поможет понять, какие документы нужны для легальной работы на объекте.',
-   'mailto:hello@nordicwork-check.example', true);
+   'mailto:hello@balticworkers-check.example', true);
 
 -- Email-уведомления о новых вакансиях. Без аккаунтов и паролей — email +
 -- фильтр (как в поиске), двойное подтверждение по GDPR, отписка в один клик

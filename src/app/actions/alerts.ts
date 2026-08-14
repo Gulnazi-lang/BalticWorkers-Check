@@ -55,7 +55,7 @@ export async function subscribeToAlerts(
   try {
     await sendEmail(
       email,
-      "Подтвердите подписку — NordicWork Check",
+      "Подтвердите подписку — BalticWorkers Check",
       `<p>Подтвердите подписку на новые вакансии по вашему запросу.</p>` +
         `<p><a href="${confirmUrl}">Подтвердить подписку</a></p>` +
         `<p style="color:#888;font-size:12px">Если вы не оставляли заявку — просто игнорируйте это письмо.</p>`,

@@ -13,10 +13,10 @@ export function SiteHeader() {
       <div className="mx-auto flex h-18 w-[min(1120px,calc(100%-40px))] items-center gap-8">
         <Link href="/" className="flex items-center gap-2.5 text-lg font-extrabold">
           <span className="grid h-8.5 w-8.5 place-items-center rounded-[10px] bg-deep text-[11px] text-white">
-            NW
+            BW
           </span>
           <span>
-            NordicWork <span className="text-accent">Check</span>
+            BalticWorkers <span className="text-accent">Check</span>
           </span>
         </Link>
 
