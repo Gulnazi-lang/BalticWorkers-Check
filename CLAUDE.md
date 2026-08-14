@@ -6,6 +6,17 @@
 Статус: MVP-витрина на Supabase, задеплоена на Vercel (nordic-work-check.vercel.app),
 кастомный домен ещё не заведён.
 
+**Git identity в этом репозитории — не глобальный.** Локальный git на компьютере Шакро по
+умолчанию подписывает коммиты как `shakro@gmail.com`, а GitHub-репозиторий и Vercel-проект
+привязаны к `toliashvili@gmail.com` (аккаунт `Gulnazi-lang`, тот же, что у dud.lv). При
+несовпадении Vercel блокирует автодеплой по пушу: «commit author does not have contributing
+access... Hobby teams do not support collaboration» — even если репозиторий публичный, дело
+не в приватности. Первый деплой прошёл только потому, что был через ручной Import в интерфейсе
+Vercel, а не через вебхук от пуша — тот проверку автора не делает. 14.08.2026 в этом репозитории
+(командой `git config user.email` без `--global`) выставлен `toliashvili@gmail.com` — если снова
+появится Blocked с этой формулировкой на новой машине или после переустановки git, проверить
+`git config user.email` первым делом.
+
 ## Стек
 TypeScript, Next.js 16 (App Router), React 19, Tailwind v4, Supabase (SDK `@supabase/ssr`), деплой Vercel.
 Структура скопирована с `Apps/DUD-DAGI/dagi-app` — там же смотреть образцы (auth, middleware, push).
