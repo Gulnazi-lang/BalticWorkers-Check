@@ -32,6 +32,12 @@ export function conditionLine(label: string, status: ConditionStatus): string {
   return `${label}: требует уточнения`;
 }
 
+function sourceLabel(v: Vacancy): string {
+  if (v.isDemo) return "Демонстрация — не реальное предложение";
+  if (v.sourceName) return `Источник: ${v.sourceName}`;
+  return "Источник указан в карточке";
+}
+
 export function VacancyCard({ v }: { v: Vacancy }) {
   const badge = VERIFICATION_LABELS[v.verificationLevel];
   const wage = wageLabel(v);
@@ -61,6 +67,12 @@ export function VacancyCard({ v }: { v: Vacancy }) {
         {v.collectiveAgreement && <span>§ {v.collectiveAgreement}</span>}
       </div>
 
+      {(v.housingStatus === "unknown" || v.travelStatus === "unknown" || !v.hoursPerWeek) && (
+        <p className="mt-3 rounded-lg bg-tone-amber-bg px-3 py-2 text-[11px] leading-relaxed text-tone-amber-ink">
+          Не все условия подтверждены. Уточните их у работодателя до отклика.
+        </p>
+      )}
+
       <div className="mt-auto border-t border-line pt-3">
         <div className="flex items-center justify-between gap-2 text-[11px] text-muted">
           <span>{v.isDemo ? "Демонстрация" : `Обновлено ${v.updatedAt}`}</span>
@@ -75,6 +87,7 @@ export function VacancyCard({ v }: { v: Vacancy }) {
             </a>
           )}
         </div>
+        <p className="mt-1 text-[11px] text-muted">{sourceLabel(v)}</p>
         {v.sourceUrl && (
           <>
             <p className="mt-1.5 text-[11px] text-muted">

@@ -9,6 +9,13 @@ const STEPS = [
   "Перед откликом уточните условия у работодателя — можно скопировать сообщение ниже.",
 ];
 
+const BEFORE_YOU_AGREE = [
+  "Какая сумма указана: до налогов или после, за час или за месяц?",
+  "Сколько стоит жильё, кто его предоставляет и будет ли сумма удержана из зарплаты?",
+  "Сколько гарантированных часов в неделю и какой тип договора предлагают?",
+  "Кто оплачивает дорогу и какие документы понадобятся до начала работы?",
+];
+
 function buildMessage(sourceUrl: string): string {
   return `Hello,
 
@@ -69,6 +76,15 @@ export function ApplyHelp({ sourceUrl }: { sourceUrl: string }) {
               <li key={step}>{step}</li>
             ))}
           </ol>
+
+          <div className="mt-3 rounded-md border border-line bg-card p-2.5">
+            <p className="text-[11px] font-medium text-ink">Проверьте до согласия:</p>
+            <ul className="mt-1.5 grid list-disc gap-1 pl-4 text-[11px] text-muted">
+              {BEFORE_YOU_AGREE.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
 
           <p className="mt-2.5 text-[11px] font-medium text-ink">
             Сообщение работодателю (на английском):
