@@ -6,11 +6,19 @@ import { createServiceClient } from "@/lib/supabase/service";
 // GET, а не POST: чтобы без лишней настройки триггерился Vercel Cron
 // (он умеет вызывать только GET). Защита не в методе, а в секрете.
 export async function GET(request: NextRequest) {
-  const secret = process.env.IMPORT_SECRET;
-  if (!secret) {
-    return NextResponse.json({ error: "IMPORT_SECRET не настроен" }, { status: 500 });
+  // IMPORT_SECRET оставляет безопасный ручной запуск. Vercel Cron сам присылает
+  // CRON_SECRET в Authorization, поэтому оба секрета принимаются только здесь.
+  const secrets = [process.env.IMPORT_SECRET, process.env.CRON_SECRET].filter(
+    (secret): secret is string => Boolean(secret)
+  );
+  if (secrets.length === 0) {
+    return NextResponse.json(
+      { error: "IMPORT_SECRET или CRON_SECRET не настроен" },
+      { status: 500 }
+    );
   }
-  if (request.headers.get("authorization") !== `Bearer ${secret}`) {
+  const authorization = request.headers.get("authorization");
+  if (!secrets.some((secret) => authorization === `Bearer ${secret}`)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
