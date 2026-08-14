@@ -16,6 +16,8 @@ TypeScript, Next.js 16 (App Router), React 19, Tailwind v4, Supabase (SDK `@supa
 - `src/app/for-employers/page.tsx` — услуги + заявка на размещение (пока mailto).
 - `src/app/go/[slug]/route.ts` — реферальные ссылки на партнёров: находит партнёра по slug,
   пишет клик в `partner_clicks`, редиректит на `contact_url`. Неизвестный/неактивный slug → `/services`.
+- `src/lib/partners.ts` — `getPartnerStatuses()`: читает `is_placeholder` по slug'ам, безопасный
+  дефолт при ошибке/не настроенном Supabase — считать партнёра заглушкой.
 - `src/lib/status.ts` — **единственный** источник подписей и тонов статусов.
 - `src/lib/vacancies.ts` — выдача вакансий: Supabase, если заданы env; иначе демо-данные.
 - `src/types/vacancy.ts` — `Vacancy` (camelCase, UI) и `VacancyRow` (snake_case, БД).
@@ -55,6 +57,10 @@ grant колоночный: `contact_hint` анону не выдан, поэт�
 - Не хардкодить статус проверки в компонентах в обход `VERIFICATION_LABELS`.
 - Не давать anon-роли права на запись в `vacancies`.
 - Не заявлять «проверено», если проверки не было: неизвестное поле = `unknown`.
+- Не показывать партнёра (`/services`) как реального, пока `is_placeholder = true` в базе —
+  UI обязан ветвиться через `getPartnerStatuses()`, а не показывать кнопку «Написать партнёру»
+  и дисклеймер про комиссию для несуществующего партнёрства. Это уже один раз случайно
+  сломали при первой версии `/go/[slug]` — исправлено 13.08.2026.
 
 ## История структуры
 До 13.08.2026 проект жил в корневом `app/` на обычном CSS (Next 15). Перенесён в `src/` на
@@ -64,7 +70,9 @@ Tailwind + Supabase по скиллу gelvua-apps; содержимое стра
 
 ## Не сделано (следующие шаги)
 1. Применить `supabase/002_partners.sql` в SQL Editor (партнёры сейчас — заглушки на общий email,
-   `contact_url` заменить в Table Editor, когда появится реальный партнёр и договор о комиссии).
+   `is_placeholder = true`). Когда появится реальный партнёр и договор о комиссии — заменить
+   `contact_url` и выставить `is_placeholder = false` в Table Editor, тогда `/services` сам
+   переключится на «Написать партнёру» и дисклеймер про комиссию.
 2. Импортёр вакансий: JobTech (SE) и NAV (NO) → дедупликация по `(source_name, external_id)`.
 3. Поиск в hero сейчас нерабочий (ведёт якорем к списку) — нужен каталог `/vacancies` с фильтрами.
 4. Форма работодателя вместо mailto + админка модерации.

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { getPartnerStatuses } from "@/lib/partners";
 
 export const metadata: Metadata = {
   title: "Помощь через партнёров — NordicWork Check",
@@ -26,7 +27,10 @@ const HELP: { title: string; text: string; partnerSlug?: string }[] = [
   },
 ];
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const partnerSlugs = HELP.map((item) => item.partnerSlug).filter((slug) => slug != null);
+  const partnerStatuses = await getPartnerStatuses(partnerSlugs);
+
   return (
     <>
       <SiteHeader />
@@ -49,26 +53,43 @@ export default function ServicesPage() {
 
         <section className="mx-auto w-[min(1120px,calc(100%-40px))] py-14">
           <div className="grid gap-4 md:grid-cols-3">
-            {HELP.map((item) => (
-              <div key={item.title} className="rounded-2xl border border-line bg-card p-5">
-                <h2 className="text-lg font-semibold">{item.title}</h2>
-                <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
-                {item.partnerSlug && (
-                  <>
-                    <a
-                      href={`/go/${item.partnerSlug}?from=services`}
-                      className="mt-4 inline-block text-sm font-medium text-accent"
-                    >
-                      Написать партнёру →
-                    </a>
-                    <p className="mt-2 text-xs text-muted">
-                      Партнёрская рекомендация. NordicWork Check может получить комиссию за
-                      обращение. Услугу оказывает партнёр.
-                    </p>
-                  </>
-                )}
-              </div>
-            ))}
+            {HELP.map((item) => {
+              const status = item.partnerSlug ? partnerStatuses[item.partnerSlug] : null;
+              return (
+                <div key={item.title} className="rounded-2xl border border-line bg-card p-5">
+                  <h2 className="text-lg font-semibold">{item.title}</h2>
+                  <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
+                  {item.partnerSlug && status?.isPlaceholder && (
+                    <>
+                      <p className="mt-4 text-sm text-muted">
+                        Партнёра пока подключаем. Оставьте заявку — сообщим, когда появится
+                        специалист.
+                      </p>
+                      <a
+                        href={`/go/${item.partnerSlug}?from=services`}
+                        className="mt-2 inline-block text-sm font-medium text-accent"
+                      >
+                        Оставить заявку →
+                      </a>
+                    </>
+                  )}
+                  {item.partnerSlug && status && !status.isPlaceholder && (
+                    <>
+                      <a
+                        href={`/go/${item.partnerSlug}?from=services`}
+                        className="mt-4 inline-block text-sm font-medium text-accent"
+                      >
+                        Написать партнёру →
+                      </a>
+                      <p className="mt-2 text-xs text-muted">
+                        Партнёрская рекомендация. NordicWork Check может получить комиссию за
+                        обращение. Услугу оказывает партнёр.
+                      </p>
+                    </>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <div className="mt-6 max-w-3xl rounded-2xl border border-dashed border-[#cbd8d8] bg-card p-7">

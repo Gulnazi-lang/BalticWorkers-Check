@@ -20,7 +20,7 @@ export async function GET(
     .from("partners")
     .select("id, contact_url")
     .eq("slug", slug)
-    .eq("active", true)
+    .eq("is_active", true)
     .maybeSingle();
 
   if (!partner) {
