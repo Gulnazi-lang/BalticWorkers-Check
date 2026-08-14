@@ -134,21 +134,31 @@ export default async function HomePage({
                 Пока посмотреть, что спросить у работодателя
               </Link>
             </div>
+          ) : isFiltered && filteredVacancies.length === 0 ? (
+            // Нет совпадений — честно показываем «0», а не похожую карточку.
+            // Соседский тест 14.08.2026 показал: подмена запроса на «похожее»
+            // выглядит для пользователя как обман, даже с пояснением рядом.
+            <div className="max-w-3xl rounded-2xl border border-dashed border-[#cbd8d8] bg-card p-8 text-center">
+              <h3 className="text-xl font-semibold">Найдено вакансий: 0</h3>
+              <p className="mx-auto mt-2.5 max-w-xl leading-relaxed text-muted">
+                Мы пока не нашли проверенное предложение по запросу {filterLabel}.
+              </p>
+              <Link
+                href="/"
+                className="mt-5 inline-block rounded-lg bg-accent px-5 py-3 font-bold text-white"
+              >
+                Посмотреть все открытые вакансии
+              </Link>
+            </div>
           ) : (
             <>
-              {isFiltered && filteredVacancies.length > 0 && (
+              {isFiltered && (
                 <p className="mb-4 text-sm text-muted">
                   Совпадения по {filterLabel} · <Link href="/" className="text-accent">Сбросить</Link>
                 </p>
               )}
-              {isFiltered && filteredVacancies.length === 0 && (
-                <p className="mb-4 text-sm text-muted">
-                  По запросу {filterLabel} пока ничего нет — честно говорим, а не подсовываем похожее.
-                  Вот все открытые вакансии: · <Link href="/" className="text-accent">Сбросить</Link>
-                </p>
-              )}
               <div className="grid gap-4 md:grid-cols-3">
-                {(filteredVacancies.length > 0 ? filteredVacancies : vacancies).map((v) => (
+                {filteredVacancies.map((v) => (
                   <VacancyCard key={v.id} v={v} />
                 ))}
               </div>

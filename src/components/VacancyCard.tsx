@@ -1,4 +1,5 @@
 import type { ConditionStatus, Vacancy } from "@/types/vacancy";
+import { ApplyHelp } from "@/components/ApplyHelp";
 import { TONE_CLASS, VERIFICATION_LABELS } from "@/lib/status";
 
 const COUNTRY_NAMES: Record<Vacancy["country"], string> = { SE: "Швеция", NO: "Норвегия" };
@@ -75,10 +76,13 @@ export function VacancyCard({ v }: { v: Vacancy }) {
           )}
         </div>
         {v.sourceUrl && (
-          <p className="mt-1.5 text-[11px] text-muted">
-            Страница на {SOURCE_LANGUAGE[v.country]} языке — включите перевод страницы в браузере
-            (обычно предлагается сам).
-          </p>
+          <>
+            <p className="mt-1.5 text-[11px] text-muted">
+              Страница на {SOURCE_LANGUAGE[v.country]} языке — включите перевод страницы в браузере
+              (обычно предлагается сам).
+            </p>
+            <ApplyHelp sourceUrl={v.sourceUrl} />
+          </>
         )}
       </div>
     </article>
