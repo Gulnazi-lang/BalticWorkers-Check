@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AlertSubscribeForm } from "@/components/AlertSubscribeForm";
 import { ScrollToJobs } from "@/components/ScrollToJobs";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -166,6 +167,10 @@ export default async function HomePage({
               </div>
             </>
           )}
+
+          <div className="max-w-xl">
+            <AlertSubscribeForm query={query} country={country} />
+          </div>
         </section>
 
         <section className="bg-card py-16">
