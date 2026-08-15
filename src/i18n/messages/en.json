@@ -91,6 +91,10 @@
   "alerts": {
     "title": "Get jobs like these by email",
     "note": "Free. We will send a confirmation email; you can unsubscribe in one click.",
+    "matchingNote": "The optional fields below help us match jobs more precisely: profession, country and wage range (in euros). You can leave them blank and just give your email.",
+    "professionPlaceholder": "Profession (optional)",
+    "wageMinPlaceholder": "From, €",
+    "wageMaxPlaceholder": "To, €",
     "emailPlaceholder": "your email",
     "submit": "Subscribe",
     "submitting": "Sending…",
@@ -150,7 +154,8 @@
     "tariffNO": "Universally binding minimum rate ({code}): at least {amount} {currency} {unit}",
     "tariffBelowMinimumNO": "The stated rate is below the universally binding minimum.",
     "tariffSourceLink": "Agreement source ↗",
-    "tariffAmbiguousSE": "In this industry in Sweden several collective agreements apply with different rates, and an employer with no agreement at all has no statutory minimum to follow. Which agreement applies depends on the specific employer — please check before applying."
+    "tariffAmbiguousSE": "In this industry in Sweden several collective agreements apply with different rates, and an employer with no agreement at all has no statutory minimum to follow. Which agreement applies depends on the specific employer — please check before applying.",
+    "eurApprox": "≈ €{amount} (ECB rate as of {date})"
   },
   "applyHelp": {
     "open": "How to apply →",

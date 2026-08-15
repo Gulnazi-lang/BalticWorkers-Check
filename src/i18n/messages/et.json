@@ -91,6 +91,10 @@
   "alerts": {
     "title": "Saa selliseid tööpakkumisi e-postile",
     "note": "Tasuta. Saadame kinnituskirja, loobuda saab ühe klikiga.",
+    "matchingNote": "Allolevad valikulised väljad aitavad täpsemalt sobitada töökuulutusi: amet, riik ja palgavahemik (eurodes). Võite jätta tühjaks ja märkida ainult e-posti.",
+    "professionPlaceholder": "Amet (valikuline)",
+    "wageMinPlaceholder": "Alates, €",
+    "wageMaxPlaceholder": "Kuni, €",
     "emailPlaceholder": "teie e-post",
     "submit": "Telli",
     "submitting": "Saadame…",
@@ -150,7 +154,8 @@
     "tariffNO": "Üldiselt siduv tariif ({code}): vähemalt {amount} {currency} {unit}",
     "tariffBelowMinimumNO": "Märgitud tasu on väiksem üldiselt siduvast miinimumist.",
     "tariffSourceLink": "Kokkuleppe allikas ↗",
-    "tariffAmbiguousSE": "Selles valdkonnas Rootsis kehtib mitu kollektiivlepingut erinevate määradega ning tööandjal, kellel lepingut pole, ei ole seadusest tulenevat miinimumi üldse. Milline leping kehtib, sõltub konkreetsest tööandjast — täpsustage enne kandideerimist."
+    "tariffAmbiguousSE": "Selles valdkonnas Rootsis kehtib mitu kollektiivlepingut erinevate määradega ning tööandjal, kellel lepingut pole, ei ole seadusest tulenevat miinimumi üldse. Milline leping kehtib, sõltub konkreetsest tööandjast — täpsustage enne kandideerimist.",
+    "eurApprox": "≈ {amount} € (EKP kurss seisuga {date})"
   },
   "applyHelp": {
     "open": "Kuidas kandideerida →",

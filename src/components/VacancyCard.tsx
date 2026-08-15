@@ -1,9 +1,11 @@
 import type { ConditionStatus, Vacancy } from "@/types/vacancy";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { interpolate } from "@/i18n/format";
+import { DATE_LOCALE_TAG, interpolate } from "@/i18n/format";
 import { ApplyHelp } from "@/components/ApplyHelp";
 import { countryLabel } from "@/lib/countries";
+import type { EcbRates } from "@/lib/ecbRates";
+import { toEur } from "@/lib/ecbRates";
 import {
   hasAmbiguousSeAgreement,
   occupationLabel,
@@ -11,6 +13,24 @@ import {
   occupationTermFromTitle,
 } from "@/lib/occupations";
 import { TONE_CLASS, verificationLabels } from "@/lib/status";
+
+/**
+ * Справочный эквивалент в евро по курсу ЕЦБ — не для расчётов, только
+ * чтобы не пересчитывать в голове. Дата курса всегда видна рядом.
+ */
+function eurApproxNote(
+  amount: number,
+  currency: string,
+  rates: EcbRates | null,
+  dict: Dictionary,
+  locale: Locale
+): string | null {
+  if (!rates) return null;
+  const eur = toEur(amount, currency, rates);
+  if (eur == null) return null;
+  const date = new Date(rates.date).toLocaleDateString(DATE_LOCALE_TAG[locale]);
+  return interpolate(dict.vacancy.eurApprox, { amount: Math.round(eur), date });
+}
 
 const TARIFF_WAGE_UNIT_KEY: Record<"gross_hour" | "gross_month", "wageGrossHour" | "wageGrossMonth"> = {
   gross_hour: "wageGrossHour",
@@ -78,14 +98,29 @@ export function VacancyCard({
   v,
   locale,
   dict,
+  eurRates,
 }: {
   v: Vacancy;
   locale: Locale;
   dict: Dictionary;
+  eurRates: EcbRates | null;
 }) {
   const labels = verificationLabels(dict);
   const badge = labels[v.verificationLevel];
   const wage = wageLabel(v, dict);
+  const wageEurNote =
+    v.wageAmount != null && v.wageCurrency
+      ? eurApproxNote(v.wageAmount, v.wageCurrency, eurRates, dict, locale)
+      : null;
+  const tariffEurNote = v.collectiveAgreementRate
+    ? eurApproxNote(
+        v.collectiveAgreementRate.minAmount,
+        v.collectiveAgreementRate.currency,
+        eurRates,
+        dict,
+        locale
+      )
+    : null;
   // Headline из JobTech — свободный текст на языке источника (не только
   // должность, может включать город/работодателя). Переводим саму профессию
   // по фиксированному списку категорий импортёра, оригинал оставляем под ней.
@@ -133,11 +168,13 @@ export function VacancyCard({
       <div className="mt-5 mb-3">
         <div className="text-2xl font-extrabold tracking-tight">{wage.value}</div>
         {wage.note && <div className="mt-1 text-[11px] text-muted">{wage.note}</div>}
+        {wageEurNote && <div className="mt-0.5 text-[11px] text-muted">{wageEurNote}</div>}
       </div>
 
       {tariff && (
         <div className="mb-3 rounded-lg bg-bg px-3 py-2 text-[11px] leading-relaxed text-ink">
           <p>{tariff}</p>
+          {tariffEurNote && <p className="mt-0.5 text-muted">{tariffEurNote}</p>}
           {belowTariffWarning && (
             <p className="mt-1 font-medium text-tone-amber-ink">{belowTariffWarning}</p>
           )}

@@ -91,6 +91,10 @@
   "alerts": {
     "title": "Gauti tokius skelbimus el. paštu",
     "note": "Nemokamai. Atsiųsime patvirtinimo laišką, atsisakyti galima vienu paspaudimu.",
+    "matchingNote": "Žemiau esantys neprivalomi laukai padeda tiksliau parinkti skelbimus: profesija, šalis ir atlyginimo intervalas (eurais). Galima palikti tuščius ir nurodyti tik el. paštą.",
+    "professionPlaceholder": "Profesija (neprivaloma)",
+    "wageMinPlaceholder": "Nuo, €",
+    "wageMaxPlaceholder": "Iki, €",
     "emailPlaceholder": "jūsų el. paštas",
     "submit": "Prenumeruoti",
     "submitting": "Siunčiame…",
@@ -150,7 +154,8 @@
     "tariffNO": "Visuotinai privalomas tarifas ({code}): ne mažiau kaip {amount} {currency} {unit}",
     "tariffBelowMinimumNO": "Nurodytas atlygis mažesnis už visuotinai privalomą minimumą.",
     "tariffSourceLink": "Susitarimo šaltinis ↗",
-    "tariffAmbiguousSE": "Šioje srityje Švedijoje galioja keli kolektyviniai susitarimai su skirtingais įkainiais, o darbdaviui be susitarimo įstatyminio minimumo apskritai nėra. Koks susitarimas taikomas, priklauso nuo konkretaus darbdavio — patikslinkite prieš teikdami paraišką."
+    "tariffAmbiguousSE": "Šioje srityje Švedijoje galioja keli kolektyviniai susitarimai su skirtingais įkainiais, o darbdaviui be susitarimo įstatyminio minimumo apskritai nėra. Koks susitarimas taikomas, priklauso nuo konkretaus darbdavio — patikslinkite prieš teikdami paraišką.",
+    "eurApprox": "≈ {amount} € (ECB kursas {date})"
   },
   "applyHelp": {
     "open": "Kaip kandidatuoti →",

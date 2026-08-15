@@ -18,6 +18,12 @@ function siteUrl(): string {
   return process.env.NEXT_PUBLIC_SITE_URL ?? "https://baltic-workers-check.vercel.app";
 }
 
+/** Пусто/некорректно -> null, честное "не указано", а не 0 или NaN. */
+function parseWage(raw: FormDataEntryValue | null): number | null {
+  const value = Number(String(raw ?? "").trim());
+  return Number.isFinite(value) && value > 0 ? value : null;
+}
+
 export async function subscribeToAlerts(
   _prevState: SubscribeState,
   formData: FormData
@@ -33,6 +39,14 @@ export async function subscribeToAlerts(
   const rawCountry = String(formData.get("country") ?? "");
   const country = rawCountry === "SE" || rawCountry === "NO" ? rawCountry : "";
 
+  // Диапазон — вспомогательное поле для подбора, не для строгой валидации:
+  // если перепутали местами, молча меняем, а не отклоняем всю подписку.
+  let wageMin = parseWage(formData.get("wageMin"));
+  let wageMax = parseWage(formData.get("wageMax"));
+  if (wageMin != null && wageMax != null && wageMin > wageMax) {
+    [wageMin, wageMax] = [wageMax, wageMin];
+  }
+
   if (!EMAIL_PATTERN.test(email)) {
     return { status: "error", message: dict.alerts.errorInvalidEmail };
   }
@@ -45,6 +59,8 @@ export async function subscribeToAlerts(
     email,
     query,
     country,
+    wage_min_eur: wageMin,
+    wage_max_eur: wageMax,
     confirm_token: confirmToken,
     unsubscribe_token: unsubscribeToken,
   });

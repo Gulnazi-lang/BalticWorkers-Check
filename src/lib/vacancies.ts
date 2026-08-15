@@ -7,16 +7,9 @@ import type {
   VacancyRow,
 } from "@/types/vacancy";
 import type { Locale } from "@/i18n/config";
+import { DATE_LOCALE_TAG } from "@/i18n/format";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import { agreementCodeForTerm, occupationTermFromTitle } from "@/lib/occupations";
-
-const DATE_LOCALE: Record<Locale, string> = {
-  lv: "lv-LV",
-  ru: "ru-RU",
-  en: "en-GB",
-  lt: "lt-LT",
-  et: "et-EE",
-};
 
 const EMPLOYER_AGREEMENT_STATUSES: EmployerAgreementStatus[] = ["bound", "not_bound", "unknown"];
 const LEGAL_FORCES: AgreementLegalForce[] = ["universally_binding", "members_only"];
@@ -229,7 +222,7 @@ function fromRow(
     sourceUrl: row.source_url,
     sourceName: row.source_name,
     isDemo: row.is_demo,
-    updatedAt: new Date(row.updated_at).toLocaleDateString(DATE_LOCALE[locale]),
+    updatedAt: new Date(row.updated_at).toLocaleDateString(DATE_LOCALE_TAG[locale]),
   };
 }
 

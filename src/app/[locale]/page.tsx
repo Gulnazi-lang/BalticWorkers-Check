@@ -12,6 +12,7 @@ import { buildAlternates, localeHref } from "@/i18n/href";
 import { interpolate } from "@/i18n/format";
 import { getVacancies } from "@/lib/vacancies";
 import { countryLabel, isKnownCountryCode } from "@/lib/countries";
+import { fetchEcbRates } from "@/lib/ecbRates";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -41,7 +42,7 @@ export default async function HomePage({
   const locale: Locale = rawLocale;
   const dict = await getDictionary(locale);
 
-  const vacancies = await getVacancies(locale);
+  const [vacancies, eurRates] = await Promise.all([getVacancies(locale), fetchEcbRates()]);
   const { q: rawQuery, country: rawCountry } = await searchParams;
   const query = (rawQuery ?? "").trim();
   const country = rawCountry && isKnownCountryCode(rawCountry) ? rawCountry : "";
@@ -186,7 +187,7 @@ export default async function HomePage({
               )}
               <div className="grid gap-4 md:grid-cols-3">
                 {filteredVacancies.map((v) => (
-                  <VacancyCard key={v.id} v={v} locale={locale} dict={dict} />
+                  <VacancyCard key={v.id} v={v} locale={locale} dict={dict} eurRates={eurRates} />
                 ))}
               </div>
             </>

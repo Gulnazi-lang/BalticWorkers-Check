@@ -24,25 +24,64 @@ export function AlertSubscribeForm({
     <div className="mt-6 rounded-2xl border border-line bg-card p-5">
       <h3 className="text-sm font-semibold">{dict.alerts.title}</h3>
       <p className="mt-1 text-[13px] text-muted">{dict.alerts.note}</p>
-      <form action={formAction} className="mt-3 flex flex-col gap-2 sm:flex-row">
-        <input type="hidden" name="q" value={query} />
-        <input type="hidden" name="country" value={country} />
+      <form action={formAction} className="mt-3 flex flex-col gap-2">
         <input type="hidden" name="locale" value={locale} />
-        <input
-          type="email"
-          name="email"
-          required
-          placeholder={dict.alerts.emailPlaceholder}
-          className="min-w-0 flex-1 rounded-lg border border-line px-3 py-2.5 text-sm outline-none"
-        />
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-lg bg-accent px-4 py-2.5 text-sm font-bold text-white disabled:opacity-60"
-        >
-          {pending ? dict.alerts.submitting : dict.alerts.submit}
-        </button>
+
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <input
+            name="q"
+            defaultValue={query}
+            placeholder={dict.alerts.professionPlaceholder}
+            className="min-w-0 flex-1 rounded-lg border border-line px-3 py-2.5 text-sm outline-none"
+          />
+          <select
+            name="country"
+            defaultValue={country}
+            className="min-w-0 rounded-lg border border-line bg-transparent px-3 py-2.5 text-sm outline-none sm:w-40"
+          >
+            <option value="">{dict.home.hero.countryAny}</option>
+            <option value="SE">{dict.common.country.SE}</option>
+            <option value="NO">{dict.common.country.NO}</option>
+          </select>
+        </div>
+
+        <div className="flex gap-2">
+          <input
+            type="number"
+            name="wageMin"
+            min={0}
+            inputMode="numeric"
+            placeholder={dict.alerts.wageMinPlaceholder}
+            className="min-w-0 flex-1 rounded-lg border border-line px-3 py-2.5 text-sm outline-none"
+          />
+          <input
+            type="number"
+            name="wageMax"
+            min={0}
+            inputMode="numeric"
+            placeholder={dict.alerts.wageMaxPlaceholder}
+            className="min-w-0 flex-1 rounded-lg border border-line px-3 py-2.5 text-sm outline-none"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder={dict.alerts.emailPlaceholder}
+            className="min-w-0 flex-1 rounded-lg border border-line px-3 py-2.5 text-sm outline-none"
+          />
+          <button
+            type="submit"
+            disabled={pending}
+            className="rounded-lg bg-accent px-4 py-2.5 text-sm font-bold text-white disabled:opacity-60"
+          >
+            {pending ? dict.alerts.submitting : dict.alerts.submit}
+          </button>
+        </div>
       </form>
+      <p className="mt-2 text-[11px] text-muted">{dict.alerts.matchingNote}</p>
       {state.message && (
         <p
           className={`mt-2 text-[13px] ${
