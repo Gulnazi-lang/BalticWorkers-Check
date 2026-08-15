@@ -1,4 +1,11 @@
-import type { ConditionStatus, Vacancy, VacancyRow } from "@/types/vacancy";
+import type {
+  AgreementLegalForce,
+  CollectiveAgreementRate,
+  ConditionStatus,
+  EmployerAgreementStatus,
+  Vacancy,
+  VacancyRow,
+} from "@/types/vacancy";
 import type { Locale } from "@/i18n/config";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
@@ -9,6 +16,9 @@ const DATE_LOCALE: Record<Locale, string> = {
   lt: "lt-LT",
   et: "et-EE",
 };
+
+const EMPLOYER_AGREEMENT_STATUSES: EmployerAgreementStatus[] = ["bound", "not_bound", "unknown"];
+const LEGAL_FORCES: AgreementLegalForce[] = ["universally_binding", "members_only"];
 
 /**
  * Демо-карточки до подключения Supabase. Все помечены isDemo — в UI это
@@ -31,6 +41,8 @@ export const DEMO_VACANCIES: Vacancy[] = [
     travelStatus: "included",
     hoursPerWeek: 40,
     collectiveAgreement: null,
+    collectiveAgreementRate: null,
+    employerAgreementStatus: null,
     verificationLevel: "EMPLOYER_CONFIRMED",
     publicationType: "ORGANIC",
     sourceUrl: null,
@@ -52,6 +64,8 @@ export const DEMO_VACANCIES: Vacancy[] = [
     travelStatus: "unknown",
     hoursPerWeek: null,
     collectiveAgreement: null,
+    collectiveAgreementRate: null,
+    employerAgreementStatus: null,
     verificationLevel: "SOURCE_CONFIRMED",
     publicationType: "ORGANIC",
     // Реальной ссылки на конкретное объявление нет — до импортёра JobTech её
@@ -76,6 +90,8 @@ export const DEMO_VACANCIES: Vacancy[] = [
     travelStatus: "unknown",
     hoursPerWeek: null,
     collectiveAgreement: null,
+    collectiveAgreementRate: null,
+    employerAgreementStatus: null,
     verificationLevel: "NEEDS_REVIEW",
     publicationType: "ORGANIC",
     sourceUrl: null,
@@ -91,13 +107,51 @@ function toCondition(value: string | null): ConditionStatus {
   return CONDITIONS.find((c) => c === value) ?? "unknown";
 }
 
-function fromRow(row: VacancyRow, locale: Locale): Vacancy {
+function toEmployerAgreementStatus(value: string | null): EmployerAgreementStatus | null {
+  return EMPLOYER_AGREEMENT_STATUSES.find((s) => s === value) ?? null;
+}
+
+function toLegalForce(value: string): AgreementLegalForce | null {
+  return LEGAL_FORCES.find((f) => f === value) ?? null;
+}
+
+/** Форма строки из запроса с join на collective_agreements/rates. */
+interface VacancyRowWithAgreement extends VacancyRow {
+  collective_agreements: {
+    code: string;
+    legal_force: string;
+    source_url: string;
+    collective_agreement_rates: {
+      min_amount: number;
+      currency: string;
+      wage_type: string;
+    }[];
+  } | null;
+}
+
+function toAgreementRate(row: VacancyRowWithAgreement): CollectiveAgreementRate | null {
+  const agreement = row.collective_agreements;
+  const rate = agreement?.collective_agreement_rates?.[0];
+  const legalForce = agreement ? toLegalForce(agreement.legal_force) : null;
+  if (!agreement || !rate || !legalForce) return null;
+  if (rate.wage_type !== "gross_hour" && rate.wage_type !== "gross_month") return null;
+  return {
+    agreementCode: agreement.code,
+    legalForce,
+    sourceUrl: agreement.source_url,
+    minAmount: rate.min_amount,
+    currency: rate.currency,
+    wageType: rate.wage_type,
+  };
+}
+
+function fromRow(row: VacancyRowWithAgreement, locale: Locale): Vacancy {
   return {
     id: row.id,
     title: row.title,
     occupationTerm: row.occupation_term,
     employerName: row.employer_name,
-    country: row.country === "NO" ? "NO" : "SE",
+    country: row.country,
     location: row.location,
     wageAmount: row.wage_amount,
     wageCurrency: row.wage_currency,
@@ -106,6 +160,8 @@ function fromRow(row: VacancyRow, locale: Locale): Vacancy {
     travelStatus: toCondition(row.travel_status),
     hoursPerWeek: row.hours_per_week,
     collectiveAgreement: row.collective_agreement,
+    collectiveAgreementRate: toAgreementRate(row),
+    employerAgreementStatus: toEmployerAgreementStatus(row.employer_agreement_status),
     verificationLevel: row.verification_level,
     publicationType: row.publication_type,
     sourceUrl: row.source_url,
@@ -126,7 +182,9 @@ export async function getVacancies(locale: Locale, limit = 12): Promise<Vacancy[
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("vacancies")
-    .select("*")
+    .select(
+      `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) )`
+    )
     .eq("published", true)
     .order("updated_at", { ascending: false })
     .limit(limit);
@@ -137,5 +195,5 @@ export async function getVacancies(locale: Locale, limit = 12): Promise<Vacancy[
     console.error("Не удалось прочитать вакансии:", error.message);
     return [];
   }
-  return (data as VacancyRow[]).map((row) => fromRow(row, locale));
+  return (data as unknown as VacancyRowWithAgreement[]).map((row) => fromRow(row, locale));
 }

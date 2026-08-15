@@ -145,7 +145,11 @@
     "sourceNamed": "Šaltinis: {source}",
     "sourceUnnamed": "Šaltinis nurodytas kortelėje",
     "sourceLangNoteSE": "Puslapis švedų kalba — įjunkite puslapio vertimą naršyklėje (paprastai ji pati tai pasiūlo).",
-    "sourceLangNoteNO": "Puslapis norvegų kalba — įjunkite puslapio vertimą naršyklėje (paprastai ji pati tai pasiūlo)."
+    "sourceLangNoteNO": "Puslapis norvegų kalba — įjunkite puslapio vertimą naršyklėje (paprastai ji pati tai pasiūlo).",
+    "tariffSE": "Tarifas pagal susitarimą {code}: {amount} {currency} {unit}. Taikoma, jei darbdavys yra susitarimo šalis — patikslinkite.",
+    "tariffNO": "Visuotinai privalomas tarifas ({code}): ne mažiau kaip {amount} {currency} {unit}",
+    "tariffBelowMinimumNO": "Nurodytas atlygis mažesnis už visuotinai privalomą minimumą.",
+    "tariffSourceLink": "Susitarimo šaltinis ↗"
   },
   "applyHelp": {
     "open": "Kaip kandidatuoti →",

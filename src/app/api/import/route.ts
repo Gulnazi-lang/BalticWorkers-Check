@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { fetchJobTechVacancies } from "@/lib/importers/jobtech";
+import { agreementCodeForTerm } from "@/lib/occupations";
 import { createServiceClient } from "@/lib/supabase/service";
 
 // GET, а не POST: чтобы без лишней настройки триггерился Vercel Cron
@@ -29,9 +30,36 @@ export async function GET(request: NextRequest) {
     }
 
     const supabase = createServiceClient();
+
+    // Привязка вакансии к договору по occupation_term — детерминированная,
+    // не требует решения человека (в отличие от employer_agreement_status,
+    // которое остаётся редакционным полем и импортёром не трогается).
+    const agreementCodes = [
+      ...new Set(
+        vacancies
+          .map((v) => agreementCodeForTerm(v.occupation_term))
+          .filter((code): code is string => code != null)
+      ),
+    ];
+    const agreementIdByCode = new Map<string, string>();
+    if (agreementCodes.length > 0) {
+      const { data: agreements } = await supabase
+        .from("collective_agreements")
+        .select("id, code")
+        .eq("country", "SE")
+        .in("code", agreementCodes);
+      for (const a of agreements ?? []) agreementIdByCode.set(a.code, a.id);
+    }
+
+    const vacanciesWithAgreement = vacancies.map((v) => {
+      const code = agreementCodeForTerm(v.occupation_term);
+      const collective_agreement_id = code ? (agreementIdByCode.get(code) ?? null) : null;
+      return { ...v, collective_agreement_id };
+    });
+
     const { data, error } = await supabase
       .from("vacancies")
-      .upsert(vacancies, { onConflict: "source_name,external_id" })
+      .upsert(vacanciesWithAgreement, { onConflict: "source_name,external_id" })
       .select("id");
 
     if (error) {

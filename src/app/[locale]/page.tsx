@@ -11,6 +11,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { buildAlternates, localeHref } from "@/i18n/href";
 import { interpolate } from "@/i18n/format";
 import { getVacancies } from "@/lib/vacancies";
+import { countryLabel, isKnownCountryCode } from "@/lib/countries";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -43,7 +44,7 @@ export default async function HomePage({
   const vacancies = await getVacancies(locale);
   const { q: rawQuery, country: rawCountry } = await searchParams;
   const query = (rawQuery ?? "").trim();
-  const country = rawCountry === "SE" || rawCountry === "NO" ? rawCountry : "";
+  const country = rawCountry && isKnownCountryCode(rawCountry) ? rawCountry : "";
   const isFiltered = query !== "" || country !== "";
 
   const filteredVacancies = isFiltered
@@ -54,7 +55,7 @@ export default async function HomePage({
       )
     : vacancies;
 
-  const filterLabel = [query && `«${query}»`, country && dict.common.country[country]]
+  const filterLabel = [query && `«${query}»`, country && countryLabel(dict, country)]
     .filter(Boolean)
     .join(" · ");
 

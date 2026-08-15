@@ -3,8 +3,29 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { interpolate } from "@/i18n/format";
 import { ApplyHelp } from "@/components/ApplyHelp";
+import { countryLabel } from "@/lib/countries";
 import { occupationLabel, occupationLabelFromTitle } from "@/lib/occupations";
 import { TONE_CLASS, verificationLabels } from "@/lib/status";
+
+const TARIFF_WAGE_UNIT_KEY: Record<"gross_hour" | "gross_month", "wageGrossHour" | "wageGrossMonth"> = {
+  gross_hour: "wageGrossHour",
+  gross_month: "wageGrossMonth",
+};
+
+/**
+ * Тариф по коллективному договору — НЕ зарплата вакансии. Показываем
+ * отдельным блоком, никогда не подставляем в wage.value: подмена значила
+ * бы приписать работодателю обещание, которого он не давал.
+ */
+function tariffLine(v: Vacancy, dict: Dictionary): string | null {
+  const rate = v.collectiveAgreementRate;
+  if (!rate) return null;
+  const unit = dict.vacancy[TARIFF_WAGE_UNIT_KEY[rate.wageType]];
+  const vars = { code: rate.agreementCode, amount: rate.minAmount, currency: rate.currency, unit };
+  return rate.legalForce === "universally_binding"
+    ? interpolate(dict.vacancy.tariffNO, vars)
+    : interpolate(dict.vacancy.tariffSE, vars);
+}
 
 const WAGE_UNIT_KEY: Record<
   NonNullable<Vacancy["wageType"]>,
@@ -66,11 +87,26 @@ export function VacancyCard({
   const translatedTitle =
     occupationLabel(v.occupationTerm, locale) ?? occupationLabelFromTitle(v.title, locale);
   const sourceLangNote = v.country === "SE" ? dict.vacancy.sourceLangNoteSE : dict.vacancy.sourceLangNoteNO;
+  const tariff = tariffLine(v, dict);
+  // Предупреждение о нарушении минимума имеет смысл только в Норвегии —
+  // там тариф юридически обязателен для любого работодателя. В Швеции
+  // договор связывает только присоединившихся, так что цифра ниже тарифа
+  // не обязательно нарушение — просто показываем обе рядом, без алармизма.
+  // Сравнивать можно только цифры в одной валюте и с одним типом ставки —
+  // иначе "17 EUR/мес" против "230 NOK/час" дало бы бессмысленный вывод.
+  const belowTariffWarning =
+    v.collectiveAgreementRate?.legalForce === "universally_binding" &&
+    v.wageAmount != null &&
+    v.wageCurrency === v.collectiveAgreementRate.currency &&
+    v.wageType === v.collectiveAgreementRate.wageType &&
+    v.wageAmount < v.collectiveAgreementRate.minAmount
+      ? dict.vacancy.tariffBelowMinimumNO
+      : null;
 
   return (
     <article className="flex flex-col rounded-2xl border border-line bg-card p-5 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-deep/10">
       <div className="flex items-center justify-between gap-2">
-        <span className="text-xs text-muted">{dict.common.country[v.country]}</span>
+        <span className="text-xs text-muted">{countryLabel(dict, v.country)}</span>
         <span className={`rounded-full px-3 py-1 text-[11px] ${TONE_CLASS[badge.tone]}`}>
           {badge.text}
         </span>
@@ -85,6 +121,25 @@ export function VacancyCard({
         <div className="text-2xl font-extrabold tracking-tight">{wage.value}</div>
         {wage.note && <div className="mt-1 text-[11px] text-muted">{wage.note}</div>}
       </div>
+
+      {tariff && (
+        <div className="mb-3 rounded-lg bg-bg px-3 py-2 text-[11px] leading-relaxed text-ink">
+          <p>{tariff}</p>
+          {belowTariffWarning && (
+            <p className="mt-1 font-medium text-tone-amber-ink">{belowTariffWarning}</p>
+          )}
+          {v.collectiveAgreementRate && (
+            <a
+              href={v.collectiveAgreementRate.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-block font-medium text-accent"
+            >
+              {dict.vacancy.tariffSourceLink}
+            </a>
+          )}
+        </div>
+      )}
 
       <div className="grid gap-2 border-t border-line pt-3 text-xs text-muted">
         <span>⌂ {conditionLine(dict, "housing", v.housingStatus)}</span>

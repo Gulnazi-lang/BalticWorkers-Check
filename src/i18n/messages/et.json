@@ -145,7 +145,11 @@
     "sourceNamed": "Allikas: {source}",
     "sourceUnnamed": "Allikas on kaardil märgitud",
     "sourceLangNoteSE": "Leht on rootsi keeles — lülitage brauseris sisse lehe tõlkimine (tavaliselt pakub see ise).",
-    "sourceLangNoteNO": "Leht on norra keeles — lülitage brauseris sisse lehe tõlkimine (tavaliselt pakub see ise)."
+    "sourceLangNoteNO": "Leht on norra keeles — lülitage brauseris sisse lehe tõlkimine (tavaliselt pakub see ise).",
+    "tariffSE": "Tariif kokkuleppe {code} järgi: {amount} {currency} {unit}. Kehtib, kui tööandja on kollektiivlepinguga seotud — täpsustage.",
+    "tariffNO": "Üldiselt siduv tariif ({code}): vähemalt {amount} {currency} {unit}",
+    "tariffBelowMinimumNO": "Märgitud tasu on väiksem üldiselt siduvast miinimumist.",
+    "tariffSourceLink": "Kokkuleppe allikas ↗"
   },
   "applyHelp": {
     "open": "Kuidas kandideerida →",

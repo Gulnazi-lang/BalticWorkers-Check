@@ -145,7 +145,11 @@
     "sourceNamed": "Avots: {source}",
     "sourceUnnamed": "Avots norādīts kartītē",
     "sourceLangNoteSE": "Lapa ir zviedru valodā — ieslēdziet lapas tulkošanu pārlūkprogrammā (parasti tā piedāvā pati).",
-    "sourceLangNoteNO": "Lapa ir norvēģu valodā — ieslēdziet lapas tulkošanu pārlūkprogrammā (parasti tā piedāvā pati)."
+    "sourceLangNoteNO": "Lapa ir norvēģu valodā — ieslēdziet lapas tulkošanu pārlūkprogrammā (parasti tā piedāvā pati).",
+    "tariffSE": "Tarifs pēc līguma {code}: {amount} {currency} {unit}. Piemērojams, ja darba devējs ir pievienojies koplīgumam — precizējiet.",
+    "tariffNO": "Vispārsaistošais tarifs ({code}): ne mazāk kā {amount} {currency} {unit}",
+    "tariffBelowMinimumNO": "Norādītā likme ir zemāka par vispārsaistošo minimumu.",
+    "tariffSourceLink": "Līguma avots ↗"
   },
   "applyHelp": {
     "open": "Kā pieteikties →",

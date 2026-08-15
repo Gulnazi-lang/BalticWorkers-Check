@@ -145,7 +145,11 @@
     "sourceNamed": "Source: {source}",
     "sourceUnnamed": "Source stated on the card",
     "sourceLangNoteSE": "The page is in Swedish — turn on page translation in your browser (it usually offers this itself).",
-    "sourceLangNoteNO": "The page is in Norwegian — turn on page translation in your browser (it usually offers this itself)."
+    "sourceLangNoteNO": "The page is in Norwegian — turn on page translation in your browser (it usually offers this itself).",
+    "tariffSE": "Collective agreement rate {code}: {amount} {currency} {unit}. Applies if the employer is bound by a collective agreement — please check.",
+    "tariffNO": "Universally binding minimum rate ({code}): at least {amount} {currency} {unit}",
+    "tariffBelowMinimumNO": "The stated rate is below the universally binding minimum.",
+    "tariffSourceLink": "Agreement source ↗"
   },
   "applyHelp": {
     "open": "How to apply →",

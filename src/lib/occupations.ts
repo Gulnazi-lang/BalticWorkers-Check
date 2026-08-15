@@ -14,6 +14,11 @@ import type { Locale } from "@/i18n/config";
 export interface Occupation {
   term: string; // поисковый запрос к JobTech, на шведском
   labels: Record<Locale, string>;
+  // Код применимого коллективного договора (public.collective_agreements.code)
+  // для этой категории — детерминированная привязка, ставится при импорте
+  // автоматически. Не путать с employer_agreement_status: связан ли КОНКРЕТНЫЙ
+  // работодатель договором — решает редакция вручную, это не отсюда.
+  agreementCode?: string;
 }
 
 export const OCCUPATIONS: Occupation[] = [
@@ -26,6 +31,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Asmeninis asistentas / slaugas",
       et: "Isiklik abistaja / hooldaja",
     },
+    agreementCode: "PAN 25",
   },
   {
     term: "hemtjänst",
@@ -140,6 +146,14 @@ export const OCCUPATIONS: Occupation[] = [
 ];
 
 const BY_TERM = new Map(OCCUPATIONS.map((o) => [o.term, o.labels]));
+const AGREEMENT_CODE_BY_TERM = new Map(
+  OCCUPATIONS.filter((o) => o.agreementCode).map((o) => [o.term, o.agreementCode as string])
+);
+
+/** Код коллективного договора, применимого к этой категории, если есть. */
+export function agreementCodeForTerm(term: string): string | null {
+  return AGREEMENT_CODE_BY_TERM.get(term) ?? null;
+}
 
 /**
  * Headline из JobTech — свободный текст на шведском, целиком его не

@@ -19,6 +19,20 @@ interface JobTechHit {
   employer?: { name?: string | null } | null;
   workplace_address?: { municipality?: string | null } | null;
   occupation_group?: { legacy_ams_taxonomy_id?: string | null } | null;
+  scope_of_work?: { min?: number | null; max?: number | null } | null;
+}
+
+// Полная занятость в Швеции — 40 ч/нед. scope_of_work.max — доля этой
+// ставки в процентах, приходит почти всегда (проверено на реальных
+// вакансиях), в отличие от зарплаты (salary_description почти всегда
+// null, а salary_type — расплывчатая категория без единицы измерения,
+// её честно нельзя смаппить на wage_type — не трогаем).
+const FULL_TIME_HOURS_SE = 40;
+
+function hoursFromScopeOfWork(scope: JobTechHit["scope_of_work"]): number | null {
+  const max = scope?.max;
+  if (max == null || max <= 0 || max > 100) return null;
+  return Math.round((FULL_TIME_HOURS_SE * max) / 100);
 }
 
 export interface ImportedVacancy {
@@ -28,6 +42,7 @@ export interface ImportedVacancy {
   location: string | null;
   occupation_isco: string | null;
   occupation_term: string;
+  hours_per_week: number | null;
   verification_level: "SOURCE_CONFIRMED";
   publication_type: "ORGANIC";
   source_url: string;
@@ -63,6 +78,7 @@ export async function fetchJobTechVacancies(limitPerOccupation = 5): Promise<Imp
         location: hit.workplace_address?.municipality ?? null,
         occupation_isco: hit.occupation_group?.legacy_ams_taxonomy_id ?? null,
         occupation_term: term,
+        hours_per_week: hoursFromScopeOfWork(hit.scope_of_work),
         verification_level: "SOURCE_CONFIRMED",
         publication_type: "ORGANIC",
         source_url: hit.webpage_url,
