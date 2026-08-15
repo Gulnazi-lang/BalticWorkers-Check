@@ -41,7 +41,7 @@
       "eyebrow": "Švedija · Norvegija · Baltijos šalys",
       "title": "Darbas Skandinavijoje su aiškiomis sąlygomis",
       "subtitle": "Atlyginimas, būstas, kelionė ir darbdavys — viskas vienoje kortelėje. Sąžiningai rodome, kas jau patvirtinta, o ką reikia išsiaiškinti prieš išvykstant.",
-      "searchPlaceholder": "Profesija, pavyzdžiui: suvirintojas",
+      "occupationAny": "Bet kokia profesija",
       "countryAny": "Šalis",
       "submit": "Rasti darbą",
       "disclaimer": "Nemokama ieškantiems darbo · Kandidatuojama per oficialų šaltinį · Neimame mokesčio už prieigą prie skelbimų ir nekandidatuojame už jus"
@@ -92,7 +92,6 @@
     "title": "Gauti tokius skelbimus el. paštu",
     "note": "Nemokamai. Atsiųsime patvirtinimo laišką, atsisakyti galima vienu paspaudimu.",
     "matchingNote": "Žemiau esantys neprivalomi laukai padeda tiksliau parinkti skelbimus: profesija, šalis ir atlyginimo intervalas (eurais). Galima palikti tuščius ir nurodyti tik el. paštą.",
-    "professionPlaceholder": "Profesija (neprivaloma)",
     "wageMinPlaceholder": "Nuo, €",
     "wageMaxPlaceholder": "Iki, €",
     "emailPlaceholder": "jūsų el. paštas",

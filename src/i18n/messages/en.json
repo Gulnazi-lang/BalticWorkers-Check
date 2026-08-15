@@ -41,7 +41,7 @@
       "eyebrow": "Sweden · Norway · Baltics",
       "title": "Work in Scandinavia with clear terms",
       "subtitle": "Pay, housing, travel and employer — all on one card. We show honestly what has been confirmed and what you need to clarify before you travel.",
-      "searchPlaceholder": "Occupation, for example: welder",
+      "occupationAny": "Any profession",
       "countryAny": "Country",
       "submit": "Find work",
       "disclaimer": "Free for job seekers · Apply through the official source · We charge nothing for access to jobs and do not apply on your behalf"
@@ -92,7 +92,6 @@
     "title": "Get jobs like these by email",
     "note": "Free. We will send a confirmation email; you can unsubscribe in one click.",
     "matchingNote": "The optional fields below help us match jobs more precisely: profession, country and wage range (in euros). You can leave them blank and just give your email.",
-    "professionPlaceholder": "Profession (optional)",
     "wageMinPlaceholder": "From, €",
     "wageMaxPlaceholder": "To, €",
     "emailPlaceholder": "your email",

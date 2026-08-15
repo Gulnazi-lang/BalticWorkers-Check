@@ -3,7 +3,10 @@ export interface JobAlertRow {
   created_at: string;
   email: string;
   query: string;
+  occupation_isco: string | null;
   country: string;
+  wage_min_eur: number | null;
+  wage_max_eur: number | null;
   confirm_token: string;
   confirmed_at: string | null;
   unsubscribe_token: string;

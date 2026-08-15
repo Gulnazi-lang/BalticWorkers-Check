@@ -35,7 +35,11 @@ export async function subscribeToAlerts(
   const email = String(formData.get("email") ?? "")
     .trim()
     .toLowerCase();
-  const query = String(formData.get("q") ?? "").trim();
+  // ISCO-код из выпадающего списка (см. src/lib/occupationOptions.ts) —
+  // не свободный текст. Список профессий строится из фактических вакансий,
+  // так что даже "случайный" код на сервере не приведёт к путанице — просто
+  // не даст совпадений в /api/notify, ничего не сломает.
+  const occupationIsco = String(formData.get("occupation") ?? "").trim() || null;
   const rawCountry = String(formData.get("country") ?? "");
   const country = rawCountry === "SE" || rawCountry === "NO" ? rawCountry : "";
 
@@ -57,7 +61,7 @@ export async function subscribeToAlerts(
   const supabase = await createClient();
   const { error } = await supabase.from("job_alerts").insert({
     email,
-    query,
+    occupation_isco: occupationIsco,
     country,
     wage_min_eur: wageMin,
     wage_max_eur: wageMax,

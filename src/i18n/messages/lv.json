@@ -41,7 +41,7 @@
       "eyebrow": "Zviedrija · Norvēģija · Baltija",
       "title": "Darbs Skandināvijā ar saprotamiem nosacījumiem",
       "subtitle": "Alga, mājoklis, ceļš un darba devējs — viss vienā kartītē. Godīgi parādām, kas jau ir apstiprināts un kas jānoskaidro pirms brauciena.",
-      "searchPlaceholder": "Profesija, piemēram: metinātājs",
+      "occupationAny": "Jebkura profesija",
       "countryAny": "Valsts",
       "submit": "Atrast darbu",
       "disclaimer": "Bez maksas darba meklētājiem · Pieteikšanās oficiālajā avotā · Mēs neņemam samaksu par piekļuvi vakancēm un nepiesakāmies jūsu vietā"
@@ -92,7 +92,6 @@
     "title": "Saņemt šādas vakances e-pastā",
     "note": "Bez maksas. Nosūtīsim apstiprinājuma vēstuli, atteikties var ar vienu klikšķi.",
     "matchingNote": "Zemāk esošie neobligātie lauki palīdz precīzāk atlasīt vakances: profesija, valsts un algas diapazons (eiro). Var atstāt tukšus un norādīt tikai e-pastu.",
-    "professionPlaceholder": "Profesija (neobligāti)",
     "wageMinPlaceholder": "No, €",
     "wageMaxPlaceholder": "Līdz, €",
     "emailPlaceholder": "jūsu e-pasts",

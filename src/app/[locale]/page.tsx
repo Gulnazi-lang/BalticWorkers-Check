@@ -11,6 +11,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { buildAlternates, localeHref } from "@/i18n/href";
 import { interpolate } from "@/i18n/format";
 import { getVacancies } from "@/lib/vacancies";
+import { getOccupationOptions } from "@/lib/occupationOptions";
 import { countryLabel, isKnownCountryCode } from "@/lib/countries";
 import { fetchEcbRates } from "@/lib/ecbRates";
 import { notFound } from "next/navigation";
@@ -35,28 +36,34 @@ export default async function HomePage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ q?: string; country?: string }>;
+  searchParams: Promise<{ occupation?: string; country?: string }>;
 }) {
   const { locale: rawLocale } = await params;
   if (!isEnabledLocale(rawLocale)) notFound();
   const locale: Locale = rawLocale;
   const dict = await getDictionary(locale);
 
-  const [vacancies, eurRates] = await Promise.all([getVacancies(locale), fetchEcbRates()]);
-  const { q: rawQuery, country: rawCountry } = await searchParams;
-  const query = (rawQuery ?? "").trim();
+  const { occupation: rawOccupation, country: rawCountry } = await searchParams;
+  const occupationOptions = await getOccupationOptions(locale);
+  const occupation = occupationOptions.some((o) => o.code === rawOccupation) ? rawOccupation! : "";
   const country = rawCountry && isKnownCountryCode(rawCountry) ? rawCountry : "";
-  const isFiltered = query !== "" || country !== "";
+  const isFiltered = occupation !== "" || country !== "";
 
-  const filteredVacancies = isFiltered
-    ? vacancies.filter(
-        (v) =>
-          (query === "" || v.title.toLowerCase().includes(query.toLowerCase())) &&
-          (country === "" || v.country === country)
-      )
-    : vacancies;
+  // Список профессий строится из фактических occupation_isco опубликованных
+  // вакансий — значит фильтрация идёт в самом запросе к базе (см.
+  // getVacancies), не в памяти по уже урезанной странице. Единственный
+  // случай честного «нет совпадений» — комбинация профессия+страна, которой
+  // не бывает вместе (например профессия только в SE, а выбрана NO).
+  const [vacancies, eurRates] = await Promise.all([
+    getVacancies(locale, { occupationIsco: occupation, country }),
+    fetchEcbRates(),
+  ]);
 
-  const filterLabel = [query && `«${query}»`, country && countryLabel(dict, country)]
+  const selectedOccupationLabel = occupationOptions.find((o) => o.code === occupation)?.label ?? "";
+  const filterLabel = [
+    selectedOccupationLabel && `«${selectedOccupationLabel}»`,
+    country && countryLabel(dict, country),
+  ]
     .filter(Boolean)
     .join(" · ");
 
@@ -83,12 +90,18 @@ export default async function HomePage({
                 action={localeHref(locale, "/#jobs")}
                 className="mt-7 flex flex-col gap-1 rounded-xl border border-line bg-card p-1.5 shadow-lg shadow-deep/5 sm:flex-row"
               >
-                <input
-                  name="q"
-                  defaultValue={query}
+                <select
+                  name="occupation"
+                  defaultValue={occupation}
                   className="min-w-0 flex-1 bg-transparent p-3.5 text-sm outline-none"
-                  placeholder={dict.home.hero.searchPlaceholder}
-                />
+                >
+                  <option value="">{dict.home.hero.occupationAny}</option>
+                  {occupationOptions.map((o) => (
+                    <option key={o.code} value={o.code}>
+                      {o.label} ({o.count})
+                    </option>
+                  ))}
+                </select>
                 <select
                   name="country"
                   defaultValue={country}
@@ -146,7 +159,7 @@ export default async function HomePage({
             </Link>
           </div>
 
-          {vacancies.length === 0 ? (
+          {occupationOptions.length === 0 ? (
             <div className="max-w-3xl rounded-2xl border border-dashed border-[#cbd8d8] bg-card p-8 text-center">
               <h3 className="text-xl font-semibold">{dict.home.jobs.emptyTitle}</h3>
               <p className="mx-auto mt-2.5 max-w-xl leading-relaxed text-muted">
@@ -159,7 +172,7 @@ export default async function HomePage({
                 {dict.home.jobs.emptyCta}
               </Link>
             </div>
-          ) : isFiltered && filteredVacancies.length === 0 ? (
+          ) : isFiltered && vacancies.length === 0 ? (
             // Нет совпадений — честно показываем «0», а не похожую карточку.
             // Соседский тест 14.08.2026 показал: подмена запроса на «похожее»
             // выглядит для пользователя как обман, даже с пояснением рядом.
@@ -186,7 +199,7 @@ export default async function HomePage({
                 </p>
               )}
               <div className="grid gap-4 md:grid-cols-3">
-                {filteredVacancies.map((v) => (
+                {vacancies.map((v) => (
                   <VacancyCard key={v.id} v={v} locale={locale} dict={dict} eurRates={eurRates} />
                 ))}
               </div>
@@ -194,7 +207,13 @@ export default async function HomePage({
           )}
 
           <div className="max-w-xl">
-            <AlertSubscribeForm query={query} country={country} locale={locale} dict={dict} />
+            <AlertSubscribeForm
+              occupation={occupation}
+              occupationOptions={occupationOptions}
+              country={country}
+              locale={locale}
+              dict={dict}
+            />
           </div>
         </section>
 

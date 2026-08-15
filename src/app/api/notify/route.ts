@@ -34,7 +34,9 @@ export async function GET(request: NextRequest) {
   const supabase = createServiceClient();
   const { data: alerts, error: alertsError } = await supabase
     .from("job_alerts")
-    .select("id, email, query, country, confirmed_at, last_notified_at, unsubscribe_token")
+    .select(
+      "id, email, query, occupation_isco, country, confirmed_at, last_notified_at, unsubscribe_token"
+    )
     .not("confirmed_at", "is", null)
     .is("unsubscribed_at", null);
 
@@ -47,7 +49,14 @@ export async function GET(request: NextRequest) {
 
   for (const alert of (alerts ?? []) as Pick<
     JobAlertRow,
-    "id" | "email" | "query" | "country" | "confirmed_at" | "last_notified_at" | "unsubscribe_token"
+    | "id"
+    | "email"
+    | "query"
+    | "occupation_isco"
+    | "country"
+    | "confirmed_at"
+    | "last_notified_at"
+    | "unsubscribe_token"
   >[]) {
     const since = alert.last_notified_at ?? alert.confirmed_at!;
 
@@ -59,7 +68,17 @@ export async function GET(request: NextRequest) {
       .order("created_at", { ascending: false })
       .limit(20);
 
-    if (alert.query) matchQuery = matchQuery.ilike("title", `%${alert.query}%`);
+    // occupation_isco — точное совпадение по коду, для подписок, оформленных
+    // через выпадающий список (см. src/lib/occupationOptions.ts). query —
+    // запасной путь только для подписок, оформленных ДО этого перехода:
+    // ilike по сырому названию на шведском/норвежском ненадёжен (та же
+    // причина, по которой список профессий стал выпадающим), но ломать
+    // старые подписки молча не стоит — пусть работают как раньше.
+    if (alert.occupation_isco) {
+      matchQuery = matchQuery.eq("occupation_isco", alert.occupation_isco);
+    } else if (alert.query) {
+      matchQuery = matchQuery.ilike("title", `%${alert.query}%`);
+    }
     if (alert.country) matchQuery = matchQuery.eq("country", alert.country);
 
     const { data: matches, error: matchError } = await matchQuery;

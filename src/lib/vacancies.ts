@@ -25,6 +25,7 @@ export const DEMO_VACANCIES: Vacancy[] = [
     id: "boden-cable-installer",
     title: "Монтажник кабельных систем",
     occupationTerm: null,
+    occupationIsco: null,
     employerName: null,
     country: "SE",
     location: "Boden",
@@ -48,6 +49,7 @@ export const DEMO_VACANCIES: Vacancy[] = [
     id: "boden-welder",
     title: "Сварщик и монтажник",
     occupationTerm: null,
+    occupationIsco: null,
     employerName: "TUSA Energi AB",
     country: "SE",
     location: "Boden",
@@ -74,6 +76,7 @@ export const DEMO_VACANCIES: Vacancy[] = [
     id: "norway-construction",
     title: "Строительный рабочий",
     occupationTerm: null,
+    occupationIsco: null,
     employerName: null,
     country: "NO",
     location: "Oslo region",
@@ -205,6 +208,7 @@ function fromRow(
     id: row.id,
     title: row.title,
     occupationTerm: row.occupation_term,
+    occupationIsco: row.occupation_isco,
     employerName: row.employer_name,
     country: row.country,
     location: row.location,
@@ -226,24 +230,43 @@ function fromRow(
   };
 }
 
+export interface VacancyFilters {
+  occupationIsco?: string;
+  country?: string;
+}
+
 /**
  * Опубликованные вакансии. Порядок выдачи НЕ зависит от publication_type:
  * платное продвижение влияет на охват вне витрины, но не подменяет проверку
  * и не переставляет карточки вперёд.
+ *
+ * Фильтры применяются в самом запросе к базе, а не после — список профессий
+ * в поиске строится из occupation_counts и гарантированно непуст для
+ * каждого пункта (см. src/lib/occupationOptions.ts); если бы фильтрация шла
+ * по уже выбранным limit последним вакансиям, реальные совпадения за
+ * пределами этого окна просто не находились бы, и гарантия ломалась.
  */
-export async function getVacancies(locale: Locale, limit = 12): Promise<Vacancy[]> {
+export async function getVacancies(
+  locale: Locale,
+  filters: VacancyFilters = {},
+  limit = 12
+): Promise<Vacancy[]> {
   if (!isSupabaseConfigured()) return DEMO_VACANCIES;
 
   const supabase = await createClient();
+
+  let query = supabase
+    .from("vacancies")
+    .select(
+      `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) )`
+    )
+    .eq("published", true);
+  if (filters.occupationIsco) query = query.eq("occupation_isco", filters.occupationIsco);
+  if (filters.country) query = query.eq("country", filters.country);
+  query = query.order("updated_at", { ascending: false }).limit(limit);
+
   const [{ data, error }, fallbackMap] = await Promise.all([
-    supabase
-      .from("vacancies")
-      .select(
-        `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) )`
-      )
-      .eq("published", true)
-      .order("updated_at", { ascending: false })
-      .limit(limit),
+    query,
     fetchAgreementFallbackMap(supabase),
   ]);
 

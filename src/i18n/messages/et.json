@@ -41,7 +41,7 @@
       "eyebrow": "Rootsi · Norra · Balti riigid",
       "title": "Töö Skandinaavias selgete tingimustega",
       "subtitle": "Palk, majutus, sõidukulud ja tööandja — kõik ühel kaardil. Näitame ausalt, mis on juba kinnitatud ja mida tuleb enne reisi täpsustada.",
-      "searchPlaceholder": "Amet, näiteks: keevitaja",
+      "occupationAny": "Suvaline amet",
       "countryAny": "Riik",
       "submit": "Leia töö",
       "disclaimer": "Tööotsijatele tasuta · Kandideerimine ametliku allika kaudu · Me ei võta tasu tööpakkumistele ligipääsu eest ega kandideeri teie nimel"
@@ -92,7 +92,6 @@
     "title": "Saa selliseid tööpakkumisi e-postile",
     "note": "Tasuta. Saadame kinnituskirja, loobuda saab ühe klikiga.",
     "matchingNote": "Allolevad valikulised väljad aitavad täpsemalt sobitada töökuulutusi: amet, riik ja palgavahemik (eurodes). Võite jätta tühjaks ja märkida ainult e-posti.",
-    "professionPlaceholder": "Amet (valikuline)",
     "wageMinPlaceholder": "Alates, €",
     "wageMaxPlaceholder": "Kuni, €",
     "emailPlaceholder": "teie e-post",

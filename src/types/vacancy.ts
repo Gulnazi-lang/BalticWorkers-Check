@@ -26,6 +26,7 @@ export interface Vacancy {
   id: string;
   title: string;
   occupationTerm: string | null;
+  occupationIsco: string | null;
   employerName: string | null;
   // country зеркалит public.countries — строка, а не union, чтобы новая
   // страна не требовала правки типов (см. src/lib/countries.ts).
@@ -53,6 +54,7 @@ export interface VacancyRow {
   id: string;
   title: string;
   occupation_term: string | null;
+  occupation_isco: string | null;
   employer_name: string | null;
   country: string;
   location: string | null;

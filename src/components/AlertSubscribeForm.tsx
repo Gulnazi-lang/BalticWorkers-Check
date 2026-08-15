@@ -4,16 +4,19 @@ import { useActionState } from "react";
 import { subscribeToAlerts, type SubscribeState } from "@/app/actions/alerts";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+import type { OccupationOption } from "@/lib/occupationOptions";
 
 const initialState: SubscribeState = { status: "idle", message: "" };
 
 export function AlertSubscribeForm({
-  query,
+  occupation,
+  occupationOptions,
   country,
   locale,
   dict,
 }: {
-  query: string;
+  occupation: string;
+  occupationOptions: OccupationOption[];
   country: string;
   locale: Locale;
   dict: Dictionary;
@@ -28,12 +31,18 @@ export function AlertSubscribeForm({
         <input type="hidden" name="locale" value={locale} />
 
         <div className="flex flex-col gap-2 sm:flex-row">
-          <input
-            name="q"
-            defaultValue={query}
-            placeholder={dict.alerts.professionPlaceholder}
+          <select
+            name="occupation"
+            defaultValue={occupation}
             className="min-w-0 flex-1 rounded-lg border border-line px-3 py-2.5 text-sm outline-none"
-          />
+          >
+            <option value="">{dict.home.hero.occupationAny}</option>
+            {occupationOptions.map((o) => (
+              <option key={o.code} value={o.code}>
+                {o.label} ({o.count})
+              </option>
+            ))}
+          </select>
           <select
             name="country"
             defaultValue={country}
