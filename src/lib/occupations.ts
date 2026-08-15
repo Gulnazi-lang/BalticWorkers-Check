@@ -185,12 +185,18 @@ export function occupationLabel(term: string | null, locale: Locale): string | n
 
 /**
  * Запасной путь для вакансий, импортированных до появления occupation_term
- * (или если оно почему-то не проставилось): перевод статический, значит
- * ждать повторный импорт не нужно — headline почти всегда содержит один
- * из 12 терминов поиска как подстроку.
+ * (или если оно почему-то не проставилось): сопоставление статическое,
+ * значит ждать повторный импорт не нужно — headline почти всегда содержит
+ * один из 12 терминов поиска как подстроку. Используется и для перевода
+ * названия профессии, и (через agreementCodeForTerm) для привязки тарифа —
+ * оба статические, оба не должны ждать cron.
  */
-export function occupationLabelFromTitle(title: string, locale: Locale): string | null {
+export function occupationTermFromTitle(title: string): string | null {
   const lower = title.toLowerCase();
-  const match = OCCUPATIONS.find((o) => lower.includes(o.term.toLowerCase()));
-  return match?.labels[locale] ?? null;
+  return OCCUPATIONS.find((o) => lower.includes(o.term.toLowerCase()))?.term ?? null;
+}
+
+export function occupationLabelFromTitle(title: string, locale: Locale): string | null {
+  const term = occupationTermFromTitle(title);
+  return term ? (BY_TERM.get(term)?.[locale] ?? null) : null;
 }

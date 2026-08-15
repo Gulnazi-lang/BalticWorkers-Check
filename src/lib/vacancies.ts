@@ -8,6 +8,7 @@ import type {
 } from "@/types/vacancy";
 import type { Locale } from "@/i18n/config";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
+import { agreementCodeForTerm, occupationTermFromTitle } from "@/lib/occupations";
 
 const DATE_LOCALE: Record<Locale, string> = {
   lv: "lv-LV",
@@ -145,7 +146,57 @@ function toAgreementRate(row: VacancyRowWithAgreement): CollectiveAgreementRate 
   };
 }
 
-function fromRow(row: VacancyRowWithAgreement, locale: Locale): Vacancy {
+/** code -> ставка, для вакансий без collective_agreement_id (ещё не переимпортированы). */
+type AgreementFallbackMap = Map<string, CollectiveAgreementRate>;
+
+async function fetchAgreementFallbackMap(
+  supabase: Awaited<ReturnType<typeof createClient>>
+): Promise<AgreementFallbackMap> {
+  const { data } = await supabase
+    .from("collective_agreements")
+    .select(
+      "code, country, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type )"
+    );
+  const map: AgreementFallbackMap = new Map();
+  for (const a of data ?? []) {
+    const rate = a.collective_agreement_rates?.[0];
+    const legalForce = toLegalForce(a.legal_force);
+    if (!rate || !legalForce) continue;
+    if (rate.wage_type !== "gross_hour" && rate.wage_type !== "gross_month") continue;
+    map.set(`${a.country}:${a.code}`, {
+      agreementCode: a.code,
+      legalForce,
+      sourceUrl: a.source_url,
+      minAmount: rate.min_amount,
+      currency: rate.currency,
+      wageType: rate.wage_type,
+    });
+  }
+  return map;
+}
+
+/**
+ * Привязка occupation_term -> договор статическая (см. agreementCodeForTerm),
+ * значит для вакансий, импортированных ДО появления collective_agreement_id,
+ * ждать переимпорт не нужно — тот же принцип, что и с переводом профессии:
+ * перевод/привязку мы делаем сами, cron тут ни при чём.
+ */
+function resolveAgreementRate(
+  row: VacancyRowWithAgreement,
+  fallbackMap: AgreementFallbackMap
+): CollectiveAgreementRate | null {
+  const direct = toAgreementRate(row);
+  if (direct) return direct;
+  const term = row.occupation_term ?? occupationTermFromTitle(row.title);
+  const code = term ? agreementCodeForTerm(term) : null;
+  return code ? (fallbackMap.get(`${row.country}:${code}`) ?? null) : null;
+}
+
+function fromRow(
+  row: VacancyRowWithAgreement,
+  locale: Locale,
+  fallbackMap: AgreementFallbackMap
+): Vacancy {
   return {
     id: row.id,
     title: row.title,
@@ -160,7 +211,7 @@ function fromRow(row: VacancyRowWithAgreement, locale: Locale): Vacancy {
     travelStatus: toCondition(row.travel_status),
     hoursPerWeek: row.hours_per_week,
     collectiveAgreement: row.collective_agreement,
-    collectiveAgreementRate: toAgreementRate(row),
+    collectiveAgreementRate: resolveAgreementRate(row, fallbackMap),
     employerAgreementStatus: toEmployerAgreementStatus(row.employer_agreement_status),
     verificationLevel: row.verification_level,
     publicationType: row.publication_type,
@@ -180,14 +231,17 @@ export async function getVacancies(locale: Locale, limit = 12): Promise<Vacancy[
   if (!isSupabaseConfigured()) return DEMO_VACANCIES;
 
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("vacancies")
-    .select(
-      `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) )`
-    )
-    .eq("published", true)
-    .order("updated_at", { ascending: false })
-    .limit(limit);
+  const [{ data, error }, fallbackMap] = await Promise.all([
+    supabase
+      .from("vacancies")
+      .select(
+        `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) )`
+      )
+      .eq("published", true)
+      .order("updated_at", { ascending: false })
+      .limit(limit),
+    fetchAgreementFallbackMap(supabase),
+  ]);
 
   // База подключена — она и есть источник правды. Пусто значит пусто: главная
   // покажет блок «Первые вакансии готовятся», а не демо-карточки.
@@ -195,5 +249,7 @@ export async function getVacancies(locale: Locale, limit = 12): Promise<Vacancy[
     console.error("Не удалось прочитать вакансии:", error.message);
     return [];
   }
-  return (data as unknown as VacancyRowWithAgreement[]).map((row) => fromRow(row, locale));
+  return (data as unknown as VacancyRowWithAgreement[]).map((row) =>
+    fromRow(row, locale, fallbackMap)
+  );
 }
