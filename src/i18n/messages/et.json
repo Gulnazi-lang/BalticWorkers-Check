@@ -149,7 +149,8 @@
     "tariffSE": "Tariif kokkuleppe {code} järgi: {amount} {currency} {unit}. Kehtib, kui tööandja on kollektiivlepinguga seotud — täpsustage.",
     "tariffNO": "Üldiselt siduv tariif ({code}): vähemalt {amount} {currency} {unit}",
     "tariffBelowMinimumNO": "Märgitud tasu on väiksem üldiselt siduvast miinimumist.",
-    "tariffSourceLink": "Kokkuleppe allikas ↗"
+    "tariffSourceLink": "Kokkuleppe allikas ↗",
+    "tariffAmbiguousSE": "Selles valdkonnas Rootsis kehtib mitu kollektiivlepingut erinevate määradega ning tööandjal, kellel lepingut pole, ei ole seadusest tulenevat miinimumi üldse. Milline leping kehtib, sõltub konkreetsest tööandjast — täpsustage enne kandideerimist."
   },
   "applyHelp": {
     "open": "Kuidas kandideerida →",

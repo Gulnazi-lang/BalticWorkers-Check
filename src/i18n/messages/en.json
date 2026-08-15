@@ -149,7 +149,8 @@
     "tariffSE": "Collective agreement rate {code}: {amount} {currency} {unit}. Applies if the employer is bound by a collective agreement — please check.",
     "tariffNO": "Universally binding minimum rate ({code}): at least {amount} {currency} {unit}",
     "tariffBelowMinimumNO": "The stated rate is below the universally binding minimum.",
-    "tariffSourceLink": "Agreement source ↗"
+    "tariffSourceLink": "Agreement source ↗",
+    "tariffAmbiguousSE": "In this industry in Sweden several collective agreements apply with different rates, and an employer with no agreement at all has no statutory minimum to follow. Which agreement applies depends on the specific employer — please check before applying."
   },
   "applyHelp": {
     "open": "How to apply →",

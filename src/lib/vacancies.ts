@@ -149,6 +149,13 @@ function toAgreementRate(row: VacancyRowWithAgreement): CollectiveAgreementRate 
 /** code -> ставка, для вакансий без collective_agreement_id (ещё не переимпортированы). */
 type AgreementFallbackMap = Map<string, CollectiveAgreementRate>;
 
+/**
+ * Только legal_force = 'universally_binding' (норвежское allmenngjøring) —
+ * см. подробное объяснение в resolveAgreements.ts. Для 'members_only'
+ * (Швеция) вывод по профессии структурно неверен: договор определяет
+ * конкретный работодатель, не категория вакансии — такую привязку
+ * проставляет только редакция вручную на шаге EMPLOYER_CONFIRMED.
+ */
 async function fetchAgreementFallbackMap(
   supabase: Awaited<ReturnType<typeof createClient>>
 ): Promise<AgreementFallbackMap> {
@@ -156,7 +163,8 @@ async function fetchAgreementFallbackMap(
     .from("collective_agreements")
     .select(
       "code, country, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type )"
-    );
+    )
+    .eq("legal_force", "universally_binding");
   const map: AgreementFallbackMap = new Map();
   for (const a of data ?? []) {
     const rate = a.collective_agreement_rates?.[0];
@@ -179,7 +187,10 @@ async function fetchAgreementFallbackMap(
  * Привязка occupation_term -> договор статическая (см. agreementCodeForTerm),
  * значит для вакансий, импортированных ДО появления collective_agreement_id,
  * ждать переимпорт не нужно — тот же принцип, что и с переводом профессии:
- * перевод/привязку мы делаем сами, cron тут ни при чём.
+ * привязку мы делаем сами, cron тут ни при чём. Но fallbackMap уже
+ * отфильтрован по universally_binding, так что для Швеции эта функция
+ * структурно ничего не найдёт — там нужен реальный collective_agreement_id
+ * из БД, который проставляет только редакция.
  */
 function resolveAgreementRate(
   row: VacancyRowWithAgreement,

@@ -149,7 +149,8 @@
     "tariffSE": "Tarifas pagal susitarimą {code}: {amount} {currency} {unit}. Taikoma, jei darbdavys yra susitarimo šalis — patikslinkite.",
     "tariffNO": "Visuotinai privalomas tarifas ({code}): ne mažiau kaip {amount} {currency} {unit}",
     "tariffBelowMinimumNO": "Nurodytas atlygis mažesnis už visuotinai privalomą minimumą.",
-    "tariffSourceLink": "Susitarimo šaltinis ↗"
+    "tariffSourceLink": "Susitarimo šaltinis ↗",
+    "tariffAmbiguousSE": "Šioje srityje Švedijoje galioja keli kolektyviniai susitarimai su skirtingais įkainiais, o darbdaviui be susitarimo įstatyminio minimumo apskritai nėra. Koks susitarimas taikomas, priklauso nuo konkretaus darbdavio — patikslinkite prieš teikdami paraišką."
   },
   "applyHelp": {
     "open": "Kaip kandidatuoti →",

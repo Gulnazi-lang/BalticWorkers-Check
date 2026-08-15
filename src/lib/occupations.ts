@@ -15,10 +15,19 @@ export interface Occupation {
   term: string; // поисковый запрос к JobTech, на шведском
   labels: Record<Locale, string>;
   // Код применимого коллективного договора (public.collective_agreements.code)
-  // для этой категории — детерминированная привязка, ставится при импорте
-  // автоматически. Не путать с employer_agreement_status: связан ли КОНКРЕТНЫЙ
-  // работодатель договором — решает редакция вручную, это не отсюда.
+  // для этой категории — только для тарифов с legal_force =
+  // 'universally_binding' (норвежское allmenngjøring). Для Швеции
+  // (members_only) договор определяется КОНКРЕТНЫМ работодателем, не
+  // профессией — здесь этому полю не место, см. resolveAgreements.ts.
+  // Проставляется автоматически при импорте, но только когда договор и так
+  // одинаков для любого работодателя в отрасли.
   agreementCode?: string;
+  // В Швеции у этой профессии заведомо несколько параллельных договоров с
+  // разными ставками (и у работодателя без договора вообще может быть
+  // любая ставка — законного минимума нет). Карточка должна честно
+  // предупреждать об этом вместо того, чтобы молчать или гадать какой
+  // договор — см. VacancyCard.tsx, tariffAmbiguousSE.
+  seAmbiguousAgreement?: boolean;
   // Норвежские ключевые слова для фильтрации фида NAV (см.
   // src/lib/importers/nav.ts) — NAV не даёт поиск по ключу на своей стороне,
   // фильтруем сами по заголовку. Переводы мои собственные, не вычитаны
@@ -37,7 +46,13 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Asmeninis asistentas / slaugas",
       et: "Isiklik abistaja / hooldaja",
     },
-    agreementCode: "PAN 25",
+    // НЕ agreementCode: минимум четыре параллельных договора (PAN 25,
+    // HÖK 25/AB 25, Fremia/Vårdföretagarna, AB-P) — какой применим,
+    // определяет работодатель, не профессия. 15.08.2026: раньше здесь
+    // ошибочно стоял agreementCode: "PAN 25", это приписывало конкретную
+    // ставку вакансиям, на которые PAN 25 в большинстве случаев не
+    // распространяется — хуже, чем пустое поле.
+    seAmbiguousAgreement: true,
     noKeywords: ["personlig assistent"],
   },
   {
@@ -167,10 +182,18 @@ const BY_TERM = new Map(OCCUPATIONS.map((o) => [o.term, o.labels]));
 const AGREEMENT_CODE_BY_TERM = new Map(
   OCCUPATIONS.filter((o) => o.agreementCode).map((o) => [o.term, o.agreementCode as string])
 );
+const SE_AMBIGUOUS_TERMS = new Set(
+  OCCUPATIONS.filter((o) => o.seAmbiguousAgreement).map((o) => o.term)
+);
 
 /** Код коллективного договора, применимого к этой категории, если есть. */
 export function agreementCodeForTerm(term: string): string | null {
   return AGREEMENT_CODE_BY_TERM.get(term) ?? null;
+}
+
+/** У этой профессии в Швеции заведомо несколько параллельных договоров — см. Occupation.seAmbiguousAgreement. */
+export function hasAmbiguousSeAgreement(term: string): boolean {
+  return SE_AMBIGUOUS_TERMS.has(term);
 }
 
 /**

@@ -4,7 +4,12 @@ import type { Dictionary } from "@/i18n/dictionaries";
 import { interpolate } from "@/i18n/format";
 import { ApplyHelp } from "@/components/ApplyHelp";
 import { countryLabel } from "@/lib/countries";
-import { occupationLabel, occupationLabelFromTitle } from "@/lib/occupations";
+import {
+  hasAmbiguousSeAgreement,
+  occupationLabel,
+  occupationLabelFromTitle,
+  occupationTermFromTitle,
+} from "@/lib/occupations";
 import { TONE_CLASS, verificationLabels } from "@/lib/status";
 
 const TARIFF_WAGE_UNIT_KEY: Record<"gross_hour" | "gross_month", "wageGrossHour" | "wageGrossMonth"> = {
@@ -102,6 +107,14 @@ export function VacancyCard({
     v.wageAmount < v.collectiveAgreementRate.minAmount
       ? dict.vacancy.tariffBelowMinimumNO
       : null;
+  // В Швеции договор определяет работодатель, не профессия — при
+  // отсутствии подтверждённого collective_agreement_id (редакция ещё не
+  // дошла до EMPLOYER_CONFIRMED) честнее предупредить, что договоров
+  // несколько и ставка неизвестна, чем молчать или гадать какой договор.
+  const showAmbiguousSeNote =
+    v.country === "SE" &&
+    !tariff &&
+    hasAmbiguousSeAgreement(v.occupationTerm ?? occupationTermFromTitle(v.title) ?? "");
 
   return (
     <article className="flex flex-col rounded-2xl border border-line bg-card p-5 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-deep/10">
@@ -138,6 +151,12 @@ export function VacancyCard({
               {dict.vacancy.tariffSourceLink}
             </a>
           )}
+        </div>
+      )}
+
+      {showAmbiguousSeNote && (
+        <div className="mb-3 rounded-lg bg-bg px-3 py-2 text-[11px] leading-relaxed text-muted">
+          {dict.vacancy.tariffAmbiguousSE}
         </div>
       )}
 
