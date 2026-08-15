@@ -1,0 +1,240 @@
+{
+  "locale": "Eesti",
+  "nav": {
+    "jobs": "Tööpakkumised",
+    "howWeCheck": "Kuidas kontrollime",
+    "services": "Abi",
+    "forEmployers": "Tööandjatele"
+  },
+  "footer": {
+    "copyright": "© 2026 BalticWorkers Check",
+    "tagline": "Infoplatvorm, mitte värbamisagentuur",
+    "howWeCheck": "Kuidas kontrollime"
+  },
+  "common": {
+    "country": {
+      "SE": "Rootsi",
+      "NO": "Norra"
+    },
+    "backHome": "Avalehele"
+  },
+  "meta": {
+    "home": {
+      "title": "BalticWorkers Check — kontrollitud tööpakkumised välismaal Balti riikide töötajatele",
+      "description": "Palk, majutus, sõidukulud ja tööandja — kõik ühel kaardil. Kontrollime Rootsi ja Norra tööpakkumiste tingimusi enne, kui te teele asute."
+    },
+    "howWeCheck": {
+      "title": "Kuidas kontrollime — BalticWorkers Check",
+      "description": "Neli tööpakkumise kontrollimise taset: alates „vajab kontrolli“ kuni töötaja kinnituseni. Mida täpselt igal tasemel kontrollime."
+    },
+    "services": {
+      "title": "Abi partnerite kaudu — BalticWorkers Check",
+      "description": "Selgitame, milliseid küsimusi tööandjalt küsida, ja viime kokku ala spetsialistiga: leping, A1 ja ID06, maksud."
+    },
+    "forEmployers": {
+      "title": "Tööandjatele — BalticWorkers Check",
+      "description": "Tööpakkumise tõlkimine, tingimuste kontroll ühtse korra alusel ja näitamine sihtkandidaatidele Balti riikides. Tasu mõjutab levikut, mitte kontrollistaatust."
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Rootsi · Norra · Balti riigid",
+      "title": "Töö Skandinaavias selgete tingimustega",
+      "subtitle": "Palk, majutus, sõidukulud ja tööandja — kõik ühel kaardil. Näitame ausalt, mis on juba kinnitatud ja mida tuleb enne reisi täpsustada.",
+      "searchPlaceholder": "Amet, näiteks: keevitaja",
+      "countryAny": "Riik",
+      "submit": "Leia töö",
+      "disclaimer": "Tööotsijatele tasuta · Kandideerimine ametliku allika kaudu · Me ei võta tasu tööpakkumistele ligipääsu eest ega kandideeri teie eest"
+    },
+    "demo": {
+      "badge": "Näidis",
+      "title": "Kaardi näidis",
+      "jobTitle": "Kaablisüsteemide paigaldaja",
+      "location": "Boden, Rootsi",
+      "housing": "Majutus — eraldi real",
+      "travel": "Sõidukulud — eraldi real",
+      "hours": "Tunnid nädalas ja leping"
+    },
+    "jobs": {
+      "eyebrow": "Tööpakkumiste valik",
+      "title": "Viimased pakkumised",
+      "legendLink": "Mida sildid tähendavad →",
+      "emptyTitle": "Esimesed tööpakkumised on ettevalmistamisel",
+      "emptyText": "Ühendame allikaid ja kontrollime tingimusi käsitsi. Siia ilmuvad tööpakkumised, kus on välja toodud palk, majutus, sõidukulud ja tööandja.",
+      "emptyCta": "Vaadake seniks, mida tööandjalt küsida",
+      "noResultsTitle": "Leitud tööpakkumisi: 0",
+      "noResultsText": "Me ei ole veel leidnud kontrollitud pakkumist päringule {filter}.",
+      "noResultsCta": "Vaata kõiki avatud tööpakkumisi",
+      "filtered": "Vasted päringule {filter}",
+      "reset": "Lähtesta"
+    },
+    "legend": {
+      "eyebrow": "Staatuste selgitus",
+      "title": "Mida tähendab silt kaardil",
+      "link": "Kogu kord →"
+    },
+    "trust": {
+      "eyebrow": "Miks meid usaldatakse",
+      "title": "Kontrollime olulise enne reisi",
+      "point1": "Näitame tegelikku tööandjat ja linki ametlikule allikale.",
+      "point2": "Toome palga, majutuse ja sõidukulud eraldi välja — ning märgime ausalt ära selle, mis on veel kontrollimata.",
+      "point3": "Me ei võta töötajalt tasu tööpakkumistele ligipääsu eest. Mitte kunagi."
+    },
+    "employer": {
+      "eyebrow": "Tööandjatele",
+      "title": "Vajate töötajaid Balti riikidest?",
+      "text": "Tõlgime teie tööpakkumise, kontrollime tingimusi ühtse korra alusel ja näitame seda sihtkandidaatidele Balti riikides.",
+      "note": "Reklaami eest tasumine ei mõjuta kontrolli tulemust. Kõik tööpakkumised läbivad ühesuguse toimetuse korra.",
+      "cta": "Avalda tööpakkumine"
+    }
+  },
+  "alerts": {
+    "title": "Saa selliseid tööpakkumisi e-postile",
+    "note": "Tasuta. Saadame kinnituskirja, loobuda saab ühe klikiga.",
+    "emailPlaceholder": "teie e-post",
+    "submit": "Telli",
+    "submitting": "Saadame…",
+    "errorInvalidEmail": "Sisestage korrektne e-posti aadress.",
+    "errorAlreadySubscribed": "Olete need teavitused juba tellinud.",
+    "errorSaveFailed": "Tellimuse salvestamine ebaõnnestus. Proovige hiljem uuesti.",
+    "errorMailFailed": "Tellimus salvestati, kuid kirja ei õnnestunud saata. Proovige hiljem uuesti.",
+    "success": "Kontrollige e-posti ja kinnitage tellimus lingi kaudu.",
+    "emailSubject": "Kinnitage tellimus — BalticWorkers Check"
+  },
+  "alertsStatus": {
+    "confirmedTitle": "Tellimus on kinnitatud",
+    "confirmedText": "Saadame uued sobivad tööpakkumised e-postile.",
+    "unsubscribedTitle": "Olete tellimusest loobunud",
+    "unsubscribedText": "Me ei saada sellele aadressile enam teavitusi.",
+    "errorTitle": "Link ei töötanud",
+    "errorText": "Võimalik, et see on juba kasutatud või aegunud. Proovige avalehel uuesti tellida."
+  },
+  "verification": {
+    "labelWorkerConfirmed": "Töötaja kinnitatud",
+    "labelEmployerConfirmed": "Tingimused kinnitatud",
+    "labelSourceConfirmed": "Allikas leitud",
+    "labelNeedsReview": "Vajab kontrolli",
+    "meaningWorkerConfirmed": "Sellel objektil töötas tegelikult inimene Balti riikidest ja kinnitas tingimused",
+    "meaningEmployerConfirmed": "Tööandja on registrist leitud, tasumäär ja tingimused üle kontrollitud",
+    "meaningSourceConfirmed": "Tööpakkumine on ametlikus allikas olemas, kuid tingimused on kontrollimata",
+    "meaningNeedsReview": "Tööandja ei ole tuvastatud",
+    "checkedWorkerConfirmed": "Olemas on kontrollitud töötaja tagasiside",
+    "checkedEmployerConfirmed": "Äriregister + kollektiivleping + majutus/sõidukulud ei ole varjatud",
+    "checkedSourceConfirmed": "Ainult olemasolu JobTechis/NAVis",
+    "checkedNeedsReview": "Seni mitte midagi — ütleme seda ausalt",
+    "checkedLabel": "Mida kontrollisime:"
+  },
+  "vacancy": {
+    "wageNotSpecified": "Ei ole märgitud",
+    "wageNetHour": "neto / tunnis",
+    "wageGrossHour": "bruto / tunnis",
+    "wageGrossMonth": "bruto / kuus",
+    "employerUnknown": "Tööandja täpsustamisel",
+    "housingIncluded": "Majutus on tasutud",
+    "housingDeducted": "Majutus arvatakse palgast maha",
+    "housingUnknown": "Majutus: vajab täpsustamist",
+    "travelIncluded": "Sõidukulud on tasutud",
+    "travelDeducted": "Sõidukulud arvatakse palgast maha",
+    "travelUnknown": "Sõidukulud: vajavad täpsustamist",
+    "hoursPerWeek": "{hours} h / nädalas",
+    "unconfirmedWarning": "Kõik tingimused ei ole kinnitatud. Täpsustage need tööandjaga enne kandideerimist.",
+    "demo": "Näidis",
+    "demoSource": "Näidis — ei ole tegelik pakkumine",
+    "updated": "Uuendatud {date}",
+    "original": "Originaal ↗",
+    "sourceNamed": "Allikas: {source}",
+    "sourceUnnamed": "Allikas on kaardil märgitud",
+    "sourceLangNoteSE": "Leht on rootsi keeles — lülitage brauseris sisse lehe tõlkimine (tavaliselt pakub see ise).",
+    "sourceLangNoteNO": "Leht on norra keeles — lülitage brauseris sisse lehe tõlkimine (tavaliselt pakub see ise)."
+  },
+  "applyHelp": {
+    "open": "Kuidas kandideerida →",
+    "close": "Peida juhis ↑",
+    "step1": "Avage originaalkuulutus ülaloleva lingi kaudu.",
+    "step2": "Leidke kandideerimisnupp — tavaliselt on see Apply, Ansök või Sök jobbet.",
+    "step3": "Kui tekst ei ole arusaadav, lülitage brauseris sisse lehe tõlkimine.",
+    "step4": "Enne kandideerimist täpsustage tingimusi tööandjaga — allolevat kirja saab kopeerida.",
+    "beforeTitle": "Kontrollige enne nõustumist:",
+    "before1": "Milline summa on märgitud: enne või pärast makse, tunnis või kuus?",
+    "before2": "Kui palju majutus maksab, kes selle tagab ja kas summa arvatakse palgast maha?",
+    "before3": "Mitu garanteeritud tundi nädalas ja millist lepingut pakutakse?",
+    "before4": "Kes tasub sõidukulud ja millised dokumendid on vaja enne töö algust?",
+    "messageLabel": "Kiri tööandjale (inglise keeles):",
+    "copy": "Kopeeri",
+    "copied": "Kopeeritud ✓",
+    "copyManual": "Tekst on valitud — vajutage Ctrl+C"
+  },
+  "howWeCheck": {
+    "eyebrow": "Metoodika",
+    "title": "Kuidas me tööpakkumisi kontrollime",
+    "subtitle": "Kontrollistaatuse annab ainult toimetus. Seda ei saa osta: reklaami eest tasumine muudab tööpakkumise levikut, kuid mitte selle silti.",
+    "levelsTitle": "Neli kontrollimise taset",
+    "levelsText": "Silt kaardil vastab ühele küsimusele: kui kaugele oleme just selle tööpakkumise kontrollimisega jõudnud.",
+    "stepsTitle": "Mida me samm-sammult teeme",
+    "step1Title": "Leiame tööpakkumise ametlikust allikast",
+    "step1Text": "Rootsi — Platsbanken/JobTech Arbetsförmedlingen, Norra — NAV. Lingi originaalile näitame kaardil, kandideerimine käib samuti sinna.",
+    "step2Title": "Tuvastame tööandja",
+    "step2Text": "Võrdleme nime äriregistriga (Bolagsverket, Brønnøysund). Kui kuulutuse taga on vahendaja, mitte tööandja, siis nii ka kirjutame.",
+    "step3Title": "Võtame tingimused ükshaaval lahti",
+    "step3Text": "Palk (neto või bruto), majutus, sõidukulud, tunnid, kollektiivleping. Iga väli eraldi; teadmata jäänu märgime teadmata olevaks, mitte „kokkuleppel“ olevaks.",
+    "step4Title": "Kogume töötajate tagasisidet",
+    "step4Text": "Kui inimene Balti riikidest tegelikult objektil töötas ja tingimused kinnitas, saab tööpakkumine kõrgeima staatuse. Tagasisidet kontrollib toimetus.",
+    "limitsTitle": "Mida me ei tee ega luba",
+    "limit1": "Me ei võta töötajalt tasu — ei ligipääsu, kandideerimise ega „eelisjärjekorra“ eest.",
+    "limit2": "Me ei võta vastu kandidaadi dokumente: kandideerimine käib otse ametlikus allikas.",
+    "limit3": "Me ei tõsta kontrollistaatust raha eest — sellist teed ei ole isegi andmebaasi struktuuris.",
+    "limit4": "Me ei garanteeri töökohta, viisat, maksutulemust ega sissetuleku taset. Me selgitame avaldatud tingimusi ja suuname originaalallika juurde.",
+    "workerNoteBefore": "Kas töötasite Rootsis või Norras ja soovite tingimusi kinnitada?",
+    "workerNoteLink": "Kirjutage meile",
+    "workerNoteAfter": "— nii tekibki staatus „Töötaja kinnitatud“."
+  },
+  "services": {
+    "eyebrow": "Töötajatele",
+    "title": "Aitame dokumentides selgusele jõuda",
+    "subtitle": "Selgitame, milliseid küsimusi tööandjalt küsida, ja vajaduse korral viime teid kokku ala spetsialistiga.",
+    "item1Title": "Enne reisi",
+    "item1Text": "Lepingu, majutuse, sõidukulude, palga ja lähetuse kontrollnimekiri: mida küsida enne, kui nõustuda.",
+    "item2Title": "A1 ja ID06",
+    "item2Text": "Aitame aru saada, millised dokumendid on vajalikud, ja suuname partneri juurde, kes seda teenust osutab.",
+    "item3Title": "Maksud ja deklaratsioon",
+    "item3Text": "Selgitame üldist käiku ja viime kokku raamatupidajaga isiklikuks nõustamiseks.",
+    "partnerPending": "Partnerit alles ühendame. Jätke päring — anname teada, kui spetsialist on olemas.",
+    "partnerPendingCta": "Jäta päring →",
+    "partnerCta": "Kirjuta partnerile →",
+    "partnerDisclosure": "Partneri soovitus. BalticWorkers Check võib suunamise eest saada komisjonitasu. Teenust osutab partner.",
+    "boundaryTitle": "Oluline vastutuse piir",
+    "boundaryText": "BalticWorkers Check ei vormista A1 tõendeid, ei esita maksudeklaratsioone ega anna õiguslikke arvamusi. Me aitame olukorras selgusele jõuda ja suuname spetsialisti juurde, kes vastutab konkreetse teenuse eest.",
+    "methodNoteBefore": "Kuidas tööpakkumiste kontroll käib —",
+    "methodNoteLink": "metoodika lehel"
+  },
+  "forEmployers": {
+    "eyebrow": "Tööandjatele",
+    "title": "Vajate töötajaid Balti riikidest?",
+    "subtitle": "Tõlgime teie tööpakkumise, kontrollime tingimusi ühtse korra alusel ja näitame seda sihtkandidaatidele Balti riikides.",
+    "servicesTitle": "Mis teenusesse kuulub",
+    "service1Title": "Tööpakkumise tõlkimine ja vormistamine",
+    "service1Text": "Tõlgime teksti vene ja läti keelde ning jagame tingimused kaardi väljadele: tasumäär, majutus, sõidukulud, tunnid, leping.",
+    "service2Title": "Reklaam kandidaatide seas Balti riikides",
+    "service2Text": "Näitame tööpakkumist sihtrühmale — ameti ja riigi järgi. Just seda ostetaksegi: levikut.",
+    "service3Title": "Tingimuste kontroll",
+    "service3Text": "Kuulub iga tööpakkumise juurde ja tehakse ühtemoodi nii tasuliste kui ka tasuta kuulutuste puhul. Kontrolli tulemus ei ole müügis.",
+    "buyingTitle": "Mida te täpselt ostate",
+    "buyingTextBefore": "Te ostate tööpakkumise tõlke ja selle leviku kandidaatide seas. Te",
+    "buyingTextEmphasis": "ei osta",
+    "buyingTextAfter": "kontrollisilti: staatuse annab toimetus ühe ja sama korra alusel kõigile tööpakkumistele, nii tasulistele kui ka tasuta omadele. Reklaami eest tasumine ei mõjuta kontrolli tulemust ega tõsta kaarti üldnimekirjas kõrgemale.",
+    "checkNoteBefore": "Kuidas kontroll toimib —",
+    "checkNoteLink": "kogu kord eraldi lehel",
+    "postTitle": "Avalda tööpakkumine",
+    "postText": "Praegu võtame päringuid vastu e-kirjaga. Saatke link tööpakkumisele ametlikus allikas ja vastutava isiku kontakt — tuleme tagasi küsimustega tingimuste kohta.",
+    "sendTitle": "Mida saata",
+    "send1": "Link tööpakkumisele (Platsbanken, NAV või teie oma veebileht)",
+    "send2": "Tasumäär koos märkega: neto või bruto",
+    "send3": "Majutus ja sõidukulud: kas tasutakse või arvatakse palgast maha",
+    "send4": "Tunnid nädalas ja kollektiivleping, kui see on olemas",
+    "send5": "Ettevõtte nimi registris ja vastutava isiku kontakt",
+    "whereTitle": "Kuhu saata",
+    "whereText": "Kiri allpool olevale aadressile. Vastame tööpäevadel.",
+    "whereCta": "Kirjutage meile",
+    "mailSubject": "Tööpakkumine BalticWorkers Checki jaoks"
+  }
+}

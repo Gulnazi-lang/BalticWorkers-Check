@@ -1,0 +1,240 @@
+{
+  "locale": "English",
+  "nav": {
+    "jobs": "Jobs",
+    "howWeCheck": "How we check",
+    "services": "Help",
+    "forEmployers": "For employers"
+  },
+  "footer": {
+    "copyright": "© 2026 BalticWorkers Check",
+    "tagline": "An information platform, not a recruitment agency",
+    "howWeCheck": "How we check"
+  },
+  "common": {
+    "country": {
+      "SE": "Sweden",
+      "NO": "Norway"
+    },
+    "backHome": "Back to home"
+  },
+  "meta": {
+    "home": {
+      "title": "BalticWorkers Check — verified jobs abroad for workers from the Baltics",
+      "description": "Pay, housing, travel and employer — all on one card. We check the terms of jobs in Sweden and Norway before you travel."
+    },
+    "howWeCheck": {
+      "title": "How we check — BalticWorkers Check",
+      "description": "Four levels of job verification, from «needs review» to confirmation by a worker. What exactly we check at each level."
+    },
+    "services": {
+      "title": "Help through partners — BalticWorkers Check",
+      "description": "We explain which questions to ask the employer and connect you with a specialist: contract, A1 and ID06, taxes."
+    },
+    "forEmployers": {
+      "title": "For employers — BalticWorkers Check",
+      "description": "Job translation, verification of terms under a single procedure, and exposure to target candidates in the Baltics. Payment affects reach, not verification status."
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Sweden · Norway · Baltics",
+      "title": "Work in Scandinavia with clear terms",
+      "subtitle": "Pay, housing, travel and employer — all on one card. We show honestly what has been confirmed and what you need to clarify before you travel.",
+      "searchPlaceholder": "Occupation, for example: welder",
+      "countryAny": "Country",
+      "submit": "Find work",
+      "disclaimer": "Free for job seekers · Apply through the official source · We charge nothing for access to jobs and do not apply on your behalf"
+    },
+    "demo": {
+      "badge": "Demonstration",
+      "title": "Example card",
+      "jobTitle": "Cable systems installer",
+      "location": "Boden, Sweden",
+      "housing": "Housing — listed separately",
+      "travel": "Travel — listed separately",
+      "hours": "Hours per week and contract"
+    },
+    "jobs": {
+      "eyebrow": "Selected jobs",
+      "title": "Latest offers",
+      "legendLink": "What the badges mean →",
+      "emptyTitle": "The first jobs are being prepared",
+      "emptyText": "We are connecting sources and checking terms by hand. Jobs will appear here with pay, housing, travel and employer stated.",
+      "emptyCta": "In the meantime, see what to ask the employer",
+      "noResultsTitle": "Jobs found: 0",
+      "noResultsText": "We have not yet found a verified offer matching {filter}.",
+      "noResultsCta": "See all open jobs",
+      "filtered": "Matches for {filter}",
+      "reset": "Reset"
+    },
+    "legend": {
+      "eyebrow": "Status legend",
+      "title": "What the badge on a card means",
+      "link": "The full procedure →"
+    },
+    "trust": {
+      "eyebrow": "Why people trust us",
+      "title": "We check what matters before you travel",
+      "point1": "We show the actual employer and a link to the official source.",
+      "point2": "We state pay, housing and travel separately — and honestly mark what has not been checked yet.",
+      "point3": "We never charge workers for access to jobs. Never."
+    },
+    "employer": {
+      "eyebrow": "For employers",
+      "title": "Need workers from the Baltics?",
+      "text": "We will translate your job posting, check the terms under a single procedure, and show it to target candidates in the Baltics.",
+      "note": "Paying for promotion does not affect the verification result. All jobs go through the same editorial procedure.",
+      "cta": "Post a job"
+    }
+  },
+  "alerts": {
+    "title": "Get jobs like these by email",
+    "note": "Free. We will send a confirmation email; you can unsubscribe in one click.",
+    "emailPlaceholder": "your email",
+    "submit": "Subscribe",
+    "submitting": "Sending…",
+    "errorInvalidEmail": "Please enter a valid email address.",
+    "errorAlreadySubscribed": "You are already subscribed to these alerts.",
+    "errorSaveFailed": "We could not save your subscription. Please try again later.",
+    "errorMailFailed": "Subscription saved, but the email could not be sent. Please try again later.",
+    "success": "Check your inbox and confirm your subscription via the link.",
+    "emailSubject": "Confirm your subscription — BalticWorkers Check"
+  },
+  "alertsStatus": {
+    "confirmedTitle": "Subscription confirmed",
+    "confirmedText": "We will send new matching jobs to your email.",
+    "unsubscribedTitle": "You have unsubscribed",
+    "unsubscribedText": "We will no longer send alerts to this address.",
+    "errorTitle": "The link did not work",
+    "errorText": "It may already have been used or expired. Try subscribing again from the home page."
+  },
+  "verification": {
+    "labelWorkerConfirmed": "Confirmed by a worker",
+    "labelEmployerConfirmed": "Terms confirmed",
+    "labelSourceConfirmed": "Source found",
+    "labelNeedsReview": "Needs review",
+    "meaningWorkerConfirmed": "Someone from the Baltics actually worked at this site and confirmed the terms",
+    "meaningEmployerConfirmed": "Employer found in the register, rate and terms cross-checked",
+    "meaningSourceConfirmed": "The job exists in an official source, but the terms have not been checked",
+    "meaningNeedsReview": "The employer has not been identified",
+    "checkedWorkerConfirmed": "A verified worker review exists",
+    "checkedEmployerConfirmed": "Company register + collective agreement + housing/travel not hidden",
+    "checkedSourceConfirmed": "Only presence in JobTech/NAV",
+    "checkedNeedsReview": "Nothing so far — we say so honestly",
+    "checkedLabel": "What we checked:"
+  },
+  "vacancy": {
+    "wageNotSpecified": "Not stated",
+    "wageNetHour": "net / hour",
+    "wageGrossHour": "gross / hour",
+    "wageGrossMonth": "gross / month",
+    "employerUnknown": "Employer to be confirmed",
+    "housingIncluded": "Housing is paid for",
+    "housingDeducted": "Housing is deducted from pay",
+    "housingUnknown": "Housing: needs clarification",
+    "travelIncluded": "Travel is paid for",
+    "travelDeducted": "Travel is deducted from pay",
+    "travelUnknown": "Travel: needs clarification",
+    "hoursPerWeek": "{hours} h / week",
+    "unconfirmedWarning": "Not all terms have been confirmed. Clarify them with the employer before applying.",
+    "demo": "Demonstration",
+    "demoSource": "Demonstration — not a real offer",
+    "updated": "Updated {date}",
+    "original": "Original ↗",
+    "sourceNamed": "Source: {source}",
+    "sourceUnnamed": "Source stated on the card",
+    "sourceLangNoteSE": "The page is in Swedish — turn on page translation in your browser (it usually offers this itself).",
+    "sourceLangNoteNO": "The page is in Norwegian — turn on page translation in your browser (it usually offers this itself)."
+  },
+  "applyHelp": {
+    "open": "How to apply →",
+    "close": "Hide tips ↑",
+    "step1": "Open the original posting using the link above.",
+    "step2": "Find the apply button — usually labelled Apply, Ansök or Sök jobbet.",
+    "step3": "If the text is unclear, turn on page translation in your browser.",
+    "step4": "Before applying, clarify the terms with the employer — you can copy the message below.",
+    "beforeTitle": "Check before you agree:",
+    "before1": "What is the stated amount: before or after tax, per hour or per month?",
+    "before2": "How much does housing cost, who provides it, and will the amount be deducted from pay?",
+    "before3": "How many guaranteed hours per week, and what type of contract is offered?",
+    "before4": "Who pays for travel, and which documents will be needed before work starts?",
+    "messageLabel": "Message to the employer (in English):",
+    "copy": "Copy",
+    "copied": "Copied ✓",
+    "copyManual": "Text selected — press Ctrl+C"
+  },
+  "howWeCheck": {
+    "eyebrow": "Methodology",
+    "title": "How we check job postings",
+    "subtitle": "Only the editorial team assigns a verification status. It cannot be bought: paying for promotion changes a job's reach, not its badge.",
+    "levelsTitle": "Four levels of verification",
+    "levelsText": "The badge on a card answers one question: how far we have got in checking that particular job.",
+    "stepsTitle": "What we do, step by step",
+    "step1Title": "We find the job in an official source",
+    "step1Text": "Sweden — Platsbanken/JobTech Arbetsförmedlingen, Norway — NAV. We show the link to the original on the card, and applications go there too.",
+    "step2Title": "We identify the employer",
+    "step2Text": "We cross-check the name against the company register (Bolagsverket, Brønnøysund). If an intermediary rather than the employer is behind the posting, we say so.",
+    "step3Title": "We break the terms down one by one",
+    "step3Text": "Pay (net or gross), housing, travel, hours, collective agreement. Every field separately; we mark the unknown as unknown, not as «by agreement».",
+    "step4Title": "We collect worker feedback",
+    "step4Text": "If someone from the Baltics actually worked at the site and confirmed the terms, the job gets the top status. The editorial team verifies the review.",
+    "limitsTitle": "What we do not do and do not promise",
+    "limit1": "We take no payment from workers — not for access, not for applying, not for «priority».",
+    "limit2": "We do not accept candidates' documents: applications go directly to the official source.",
+    "limit3": "We do not raise verification status for money — that path does not exist even in the database structure.",
+    "limit4": "We do not guarantee employment, a visa, a tax outcome or a level of income. We explain the published terms and point you to the original source.",
+    "workerNoteBefore": "Have you worked in Sweden or Norway and want to confirm the terms?",
+    "workerNoteLink": "Write to us",
+    "workerNoteAfter": "— that is how the «Confirmed by a worker» status appears."
+  },
+  "services": {
+    "eyebrow": "For workers",
+    "title": "We will help you make sense of the paperwork",
+    "subtitle": "We explain which questions to ask the employer and, if needed, connect you with a specialist in the field.",
+    "item1Title": "Before you travel",
+    "item1Text": "A checklist for the contract, housing, travel, pay and posting: what to ask before you agree.",
+    "item2Title": "A1 and ID06",
+    "item2Text": "We will help you understand which documents are needed and refer you to a partner who provides the service.",
+    "item3Title": "Taxes and tax returns",
+    "item3Text": "We explain the general sequence and connect you with an accountant for personal advice.",
+    "partnerPending": "We are still onboarding a partner. Leave a request and we will let you know when a specialist is available.",
+    "partnerPendingCta": "Leave a request →",
+    "partnerCta": "Contact the partner →",
+    "partnerDisclosure": "Partner referral. BalticWorkers Check may receive a commission for the referral. The service is provided by the partner.",
+    "boundaryTitle": "An important limit of responsibility",
+    "boundaryText": "BalticWorkers Check does not issue A1 forms, does not file tax returns and does not give legal opinions. We help you understand the situation and refer you to a specialist who is responsible for the specific service.",
+    "methodNoteBefore": "How job verification works —",
+    "methodNoteLink": "on the methodology page"
+  },
+  "forEmployers": {
+    "eyebrow": "For employers",
+    "title": "Need workers from the Baltics?",
+    "subtitle": "We will translate your job posting, check the terms under a single procedure, and show it to target candidates in the Baltics.",
+    "servicesTitle": "What the service includes",
+    "service1Title": "Translation and formatting of the job posting",
+    "service1Text": "We translate the text into Russian and Latvian and lay the terms out across the card's fields: rate, housing, travel, hours, contract.",
+    "service2Title": "Promotion among candidates in the Baltics",
+    "service2Text": "We show the job to the target audience — by occupation and country. That is exactly what is being bought: reach.",
+    "service3Title": "Verification of terms",
+    "service3Text": "It is part of the work on every job and is done identically for paid and unpaid postings. The verification result is not for sale.",
+    "buyingTitle": "What exactly you are buying",
+    "buyingTextBefore": "You are buying the translation of the job posting and its reach among candidates. You are",
+    "buyingTextEmphasis": "not buying",
+    "buyingTextAfter": "the verification badge: the status is assigned by the editorial team under one and the same procedure for all jobs, paid and unpaid. Paying for promotion does not affect the verification result and does not move the card up the general list.",
+    "checkNoteBefore": "How verification works —",
+    "checkNoteLink": "the full procedure on a separate page",
+    "postTitle": "Post a job",
+    "postText": "For now we accept requests by email. Send a link to the job in an official source and a contact person — we will come back with questions about the terms.",
+    "sendTitle": "What to send",
+    "send1": "A link to the job (Platsbanken, NAV or your own site)",
+    "send2": "The rate, stating whether it is net or gross",
+    "send3": "Housing and travel: paid for or deducted from pay",
+    "send4": "Hours per week and the collective agreement, if there is one",
+    "send5": "The company name as registered and a contact person",
+    "whereTitle": "Where to send it",
+    "whereText": "By email to the address below. We reply on working days.",
+    "whereCta": "Write to us",
+    "mailSubject": "Job posting for BalticWorkers Check"
+  }
+}

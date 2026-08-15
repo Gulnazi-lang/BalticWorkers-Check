@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/config";
+
 // Профессии, релевантные для целевой аудитории (работники из Балтии).
 // Приоритет — массовые, доступные без квалификации категории: именно там
 // основной спрос, а не в сварщиках/электриках, которых и так полно в рекламе
@@ -6,37 +8,147 @@
 // barnvakt 217, barnskötare 204, vårdbiträde 230.
 //
 // Единый список для импортёра (src/lib/importers/jobtech.ts, поиск по `term`)
-// и для карточки вакансии (перевод названия профессии в объявлении по `ru`).
+// и для карточки вакансии (перевод названия профессии в объявлении по `labels`).
+// lt/et переведены для структурной полноты, но не показываются, пока сами
+// эти локали за ENABLED_LOCALES (см. src/i18n/config.ts) — не вычитаны носителем.
 export interface Occupation {
   term: string; // поисковый запрос к JobTech, на шведском
-  ru: string; // перевод для отображения в карточке
+  labels: Record<Locale, string>;
 }
 
 export const OCCUPATIONS: Occupation[] = [
-  { term: "personlig assistent", ru: "Личный ассистент / сиделка" },
-  { term: "hemtjänst", ru: "Соцработник на дому" },
-  { term: "vårdbiträde", ru: "Помощник по уходу" },
-  { term: "städare", ru: "Уборщик" },
-  { term: "barnvakt", ru: "Няня" },
-  { term: "barnskötare", ru: "Няня (детский сад)" },
-  { term: "lagerarbetare", ru: "Складской рабочий" },
-  { term: "chaufför", ru: "Водитель" },
-  { term: "svetsare", ru: "Сварщик" },
-  { term: "elektriker", ru: "Электрик" },
-  { term: "byggnadsarbetare", ru: "Строительный рабочий" },
-  { term: "montör", ru: "Монтажник" },
+  {
+    term: "personlig assistent",
+    labels: {
+      lv: "Personīgais asistents / aprūpētājs",
+      ru: "Личный ассистент / сиделка",
+      en: "Personal assistant / carer",
+      lt: "Asmeninis asistentas / slaugas",
+      et: "Isiklik abistaja / hooldaja",
+    },
+  },
+  {
+    term: "hemtjänst",
+    labels: {
+      lv: "Mājas aprūpes darbinieks",
+      ru: "Соцработник на дому",
+      en: "Home care worker",
+      lt: "Namų priežiūros darbuotojas",
+      et: "Koduhooldustöötaja",
+    },
+  },
+  {
+    term: "vårdbiträde",
+    labels: {
+      lv: "Aprūpes palīgs",
+      ru: "Помощник по уходу",
+      en: "Care assistant",
+      lt: "Slaugos padėjėjas",
+      et: "Hooldusabiline",
+    },
+  },
+  {
+    term: "städare",
+    labels: {
+      lv: "Apkopējs",
+      ru: "Уборщик",
+      en: "Cleaner",
+      lt: "Valytojas",
+      et: "Koristaja",
+    },
+  },
+  {
+    term: "barnvakt",
+    labels: {
+      lv: "Auklīte",
+      ru: "Няня",
+      en: "Babysitter",
+      lt: "Auklė",
+      et: "Lapsehoidja",
+    },
+  },
+  {
+    term: "barnskötare",
+    labels: {
+      lv: "Bērnu aprūpētājs (bērnudārzā)",
+      ru: "Няня (детский сад)",
+      en: "Childcare worker (kindergarten)",
+      lt: "Auklė (darželyje)",
+      et: "Lapsehoidja (lasteaias)",
+    },
+  },
+  {
+    term: "lagerarbetare",
+    labels: {
+      lv: "Noliktavas darbinieks",
+      ru: "Складской рабочий",
+      en: "Warehouse worker",
+      lt: "Sandėlio darbuotojas",
+      et: "Laotöötaja",
+    },
+  },
+  {
+    term: "chaufför",
+    labels: {
+      lv: "Šoferis",
+      ru: "Водитель",
+      en: "Driver",
+      lt: "Vairuotojas",
+      et: "Autojuht",
+    },
+  },
+  {
+    term: "svetsare",
+    labels: {
+      lv: "Metinātājs",
+      ru: "Сварщик",
+      en: "Welder",
+      lt: "Suvirintojas",
+      et: "Keevitaja",
+    },
+  },
+  {
+    term: "elektriker",
+    labels: {
+      lv: "Elektriķis",
+      ru: "Электрик",
+      en: "Electrician",
+      lt: "Elektrikas",
+      et: "Elektrik",
+    },
+  },
+  {
+    term: "byggnadsarbetare",
+    labels: {
+      lv: "Būvstrādnieks",
+      ru: "Строительный рабочий",
+      en: "Construction worker",
+      lt: "Statybininkas",
+      et: "Ehitustööline",
+    },
+  },
+  {
+    term: "montör",
+    labels: {
+      lv: "Montieris",
+      ru: "Монтажник",
+      en: "Fitter / assembler",
+      lt: "Montuotojas",
+      et: "Montöör",
+    },
+  },
 ];
 
-const RU_BY_TERM = new Map(OCCUPATIONS.map((o) => [o.term, o.ru]));
+const BY_TERM = new Map(OCCUPATIONS.map((o) => [o.term, o.labels]));
 
 /**
  * Headline из JobTech — свободный текст на шведском, целиком его не
  * перевести без внешнего MT. Вместо этого переводим фиксированный список
  * из 12 категорий поиска, которым и так ограничен импортёр.
  */
-export function occupationRu(term: string | null): string | null {
+export function occupationLabel(term: string | null, locale: Locale): string | null {
   if (!term) return null;
-  return RU_BY_TERM.get(term) ?? null;
+  return BY_TERM.get(term)?.[locale] ?? null;
 }
 
 /**
@@ -45,8 +157,8 @@ export function occupationRu(term: string | null): string | null {
  * ждать повторный импорт не нужно — headline почти всегда содержит один
  * из 12 терминов поиска как подстроку.
  */
-export function occupationRuFromTitle(title: string): string | null {
+export function occupationLabelFromTitle(title: string, locale: Locale): string | null {
   const lower = title.toLowerCase();
   const match = OCCUPATIONS.find((o) => lower.includes(o.term.toLowerCase()));
-  return match?.ru ?? null;
+  return match?.labels[locale] ?? null;
 }

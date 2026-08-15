@@ -1,5 +1,14 @@
 import type { ConditionStatus, Vacancy, VacancyRow } from "@/types/vacancy";
+import type { Locale } from "@/i18n/config";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
+
+const DATE_LOCALE: Record<Locale, string> = {
+  lv: "lv-LV",
+  ru: "ru-RU",
+  en: "en-GB",
+  lt: "lt-LT",
+  et: "et-EE",
+};
 
 /**
  * Демо-карточки до подключения Supabase. Все помечены isDemo — в UI это
@@ -82,7 +91,7 @@ function toCondition(value: string | null): ConditionStatus {
   return CONDITIONS.find((c) => c === value) ?? "unknown";
 }
 
-function fromRow(row: VacancyRow): Vacancy {
+function fromRow(row: VacancyRow, locale: Locale): Vacancy {
   return {
     id: row.id,
     title: row.title,
@@ -102,7 +111,7 @@ function fromRow(row: VacancyRow): Vacancy {
     sourceUrl: row.source_url,
     sourceName: row.source_name,
     isDemo: row.is_demo,
-    updatedAt: new Date(row.updated_at).toLocaleDateString("ru-RU"),
+    updatedAt: new Date(row.updated_at).toLocaleDateString(DATE_LOCALE[locale]),
   };
 }
 
@@ -111,7 +120,7 @@ function fromRow(row: VacancyRow): Vacancy {
  * платное продвижение влияет на охват вне витрины, но не подменяет проверку
  * и не переставляет карточки вперёд.
  */
-export async function getVacancies(limit = 12): Promise<Vacancy[]> {
+export async function getVacancies(locale: Locale, limit = 12): Promise<Vacancy[]> {
   if (!isSupabaseConfigured()) return DEMO_VACANCIES;
 
   const supabase = await createClient();
@@ -128,5 +137,5 @@ export async function getVacancies(limit = 12): Promise<Vacancy[]> {
     console.error("Не удалось прочитать вакансии:", error.message);
     return [];
   }
-  return (data as VacancyRow[]).map(fromRow);
+  return (data as VacancyRow[]).map((row) => fromRow(row, locale));
 }

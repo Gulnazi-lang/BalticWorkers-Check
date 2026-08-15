@@ -1,13 +1,13 @@
+import type { Dictionary } from "@/i18n/dictionaries";
 import type { VerificationLevel } from "@/types/vacancy";
 
 export type Tone = "green" | "blue" | "amber";
 
-/** Подписи статусов — в одном месте, чтобы не расходились по сайту. */
-export const VERIFICATION_LABELS: Record<VerificationLevel, { text: string; tone: Tone }> = {
-  WORKER_CONFIRMED: { text: "Подтверждено работником", tone: "green" },
-  EMPLOYER_CONFIRMED: { text: "Условия подтверждены", tone: "green" },
-  SOURCE_CONFIRMED: { text: "Источник найден", tone: "blue" },
-  NEEDS_REVIEW: { text: "Проверка нужна", tone: "amber" },
+const TONE_BY_LEVEL: Record<VerificationLevel, Tone> = {
+  WORKER_CONFIRMED: "green",
+  EMPLOYER_CONFIRMED: "green",
+  SOURCE_CONFIRMED: "blue",
+  NEEDS_REVIEW: "amber",
 };
 
 export const TONE_CLASS: Record<Tone, string> = {
@@ -16,33 +16,57 @@ export const TONE_CLASS: Record<Tone, string> = {
   amber: "bg-tone-amber-bg text-tone-amber-ink",
 };
 
+/** Подписи статусов — из словаря локали, чтобы не расходились по сайту. */
+export function verificationLabels(
+  dict: Dictionary
+): Record<VerificationLevel, { text: string; tone: Tone }> {
+  return {
+    WORKER_CONFIRMED: {
+      text: dict.verification.labelWorkerConfirmed,
+      tone: TONE_BY_LEVEL.WORKER_CONFIRMED,
+    },
+    EMPLOYER_CONFIRMED: {
+      text: dict.verification.labelEmployerConfirmed,
+      tone: TONE_BY_LEVEL.EMPLOYER_CONFIRMED,
+    },
+    SOURCE_CONFIRMED: {
+      text: dict.verification.labelSourceConfirmed,
+      tone: TONE_BY_LEVEL.SOURCE_CONFIRMED,
+    },
+    NEEDS_REVIEW: {
+      text: dict.verification.labelNeedsReview,
+      tone: TONE_BY_LEVEL.NEEDS_REVIEW,
+    },
+  };
+}
+
 /**
  * Легенда статусов: короткий блок на главной + полная таблица на /how-we-check.
  * Порядок — от самого сильного подтверждения к самому слабому.
  */
-export const VERIFICATION_LEGEND: {
-  level: VerificationLevel;
-  meaning: string;
-  checked: string;
-}[] = [
-  {
-    level: "WORKER_CONFIRMED",
-    meaning: "На этом объекте реально работал человек из Балтии и подтвердил условия",
-    checked: "Есть проверенный отзыв работника",
-  },
-  {
-    level: "EMPLOYER_CONFIRMED",
-    meaning: "Работодатель найден в реестре, ставка и условия сверены",
-    checked: "Реестр компании + коллективный договор + жильё/дорога не скрыты",
-  },
-  {
-    level: "SOURCE_CONFIRMED",
-    meaning: "Вакансия есть в официальном источнике, но условия не проверены",
-    checked: "Только наличие в JobTech/NAV",
-  },
-  {
-    level: "NEEDS_REVIEW",
-    meaning: "Работодатель не идентифицирован",
-    checked: "Пока ничего — показываем честно",
-  },
-];
+export function verificationLegend(
+  dict: Dictionary
+): { level: VerificationLevel; meaning: string; checked: string }[] {
+  return [
+    {
+      level: "WORKER_CONFIRMED",
+      meaning: dict.verification.meaningWorkerConfirmed,
+      checked: dict.verification.checkedWorkerConfirmed,
+    },
+    {
+      level: "EMPLOYER_CONFIRMED",
+      meaning: dict.verification.meaningEmployerConfirmed,
+      checked: dict.verification.checkedEmployerConfirmed,
+    },
+    {
+      level: "SOURCE_CONFIRMED",
+      meaning: dict.verification.meaningSourceConfirmed,
+      checked: dict.verification.checkedSourceConfirmed,
+    },
+    {
+      level: "NEEDS_REVIEW",
+      meaning: dict.verification.meaningNeedsReview,
+      checked: dict.verification.checkedNeedsReview,
+    },
+  ];
+}

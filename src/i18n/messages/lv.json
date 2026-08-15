@@ -1,0 +1,240 @@
+{
+  "locale": "Latviešu",
+  "nav": {
+    "jobs": "Vakances",
+    "howWeCheck": "Kā pārbaudām",
+    "services": "Palīdzība",
+    "forEmployers": "Darba devējiem"
+  },
+  "footer": {
+    "copyright": "© 2026 BalticWorkers Check",
+    "tagline": "Informatīva platforma, nevis personāla atlases aģentūra",
+    "howWeCheck": "Kā pārbaudām"
+  },
+  "common": {
+    "country": {
+      "SE": "Zviedrija",
+      "NO": "Norvēģija"
+    },
+    "backHome": "Uz sākumlapu"
+  },
+  "meta": {
+    "home": {
+      "title": "BalticWorkers Check — pārbaudītas darba vakances ārzemēs Baltijas darbiniekiem",
+      "description": "Alga, mājoklis, ceļš un darba devējs — viss vienā kartītē. Pārbaudām vakanču nosacījumus Zviedrijā un Norvēģijā, pirms jūs dodaties ceļā."
+    },
+    "howWeCheck": {
+      "title": "Kā pārbaudām — BalticWorkers Check",
+      "description": "Četri vakances pārbaudes līmeņi: no «nepieciešama pārbaude» līdz darbinieka apstiprinājumam. Ko tieši pārbaudām katrā līmenī."
+    },
+    "services": {
+      "title": "Palīdzība ar partneru starpniecību — BalticWorkers Check",
+      "description": "Paskaidrosim, kādus jautājumus uzdot darba devējam, un savedīsim ar nozares speciālistu: līgums, A1 un ID06, nodokļi."
+    },
+    "forEmployers": {
+      "title": "Darba devējiem — BalticWorkers Check",
+      "description": "Vakances tulkojums, nosacījumu pārbaude pēc vienotas procedūras un rādīšana mērķa kandidātiem Baltijā. Samaksa ietekmē sasniedzamību, nevis pārbaudes statusu."
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Zviedrija · Norvēģija · Baltija",
+      "title": "Darbs Skandināvijā ar saprotamiem nosacījumiem",
+      "subtitle": "Alga, mājoklis, ceļš un darba devējs — viss vienā kartītē. Godīgi parādām, kas jau ir apstiprināts un kas jānoskaidro pirms brauciena.",
+      "searchPlaceholder": "Profesija, piemēram: metinātājs",
+      "countryAny": "Valsts",
+      "submit": "Atrast darbu",
+      "disclaimer": "Bez maksas darba meklētājiem · Pieteikšanās oficiālajā avotā · Mēs neņemam samaksu par piekļuvi vakancēm un nepiesakāmies jūsu vietā"
+    },
+    "demo": {
+      "badge": "Demonstrācija",
+      "title": "Kartītes paraugs",
+      "jobTitle": "Kabeļu sistēmu montētājs",
+      "location": "Boden, Zviedrija",
+      "housing": "Mājoklis — atsevišķā rindā",
+      "travel": "Ceļš — atsevišķā rindā",
+      "hours": "Stundas nedēļā un līgums"
+    },
+    "jobs": {
+      "eyebrow": "Vakanču atlase",
+      "title": "Jaunākie piedāvājumi",
+      "legendLink": "Ko nozīmē apzīmējumi →",
+      "emptyTitle": "Pirmās vakances tiek gatavotas",
+      "emptyText": "Mēs pieslēdzam avotus un pārbaudām nosacījumus manuāli. Šeit parādīsies vakances ar norādītu algu, mājokli, ceļu un darba devēju.",
+      "emptyCta": "Pagaidām apskatīt, ko pajautāt darba devējam",
+      "noResultsTitle": "Atrastas vakances: 0",
+      "noResultsText": "Pagaidām neatradām pārbaudītu piedāvājumu pēc pieprasījuma {filter}.",
+      "noResultsCta": "Apskatīt visas atvērtās vakances",
+      "filtered": "Sakritības pēc {filter}",
+      "reset": "Atiestatīt"
+    },
+    "legend": {
+      "eyebrow": "Statusu apzīmējumi",
+      "title": "Ko nozīmē apzīmējums uz kartītes",
+      "link": "Visa procedūra →"
+    },
+    "trust": {
+      "eyebrow": "Kāpēc mums uzticas",
+      "title": "Pārbaudām svarīgāko pirms brauciena",
+      "point1": "Parādām reālo darba devēju un saiti uz oficiālo avotu.",
+      "point2": "Atsevišķi norādām algu, mājokli, ceļu — un godīgi atzīmējam to, kas vēl nav pārbaudīts.",
+      "point3": "Neņemam no darbinieka samaksu par piekļuvi vakancēm. Nekad."
+    },
+    "employer": {
+      "eyebrow": "Darba devējiem",
+      "title": "Vajadzīgi darbinieki no Baltijas?",
+      "text": "Pārtulkosim jūsu vakanci, pārbaudīsim nosacījumus pēc vienotas procedūras un parādīsim to mērķa kandidātiem Baltijā.",
+      "note": "Samaksa par reklāmu neietekmē pārbaudes rezultātu. Visas vakances iziet vienādu redakcijas procedūru.",
+      "cta": "Publicēt vakanci"
+    }
+  },
+  "alerts": {
+    "title": "Saņemt šādas vakances e-pastā",
+    "note": "Bez maksas. Nosūtīsim apstiprinājuma vēstuli, atteikties var ar vienu klikšķi.",
+    "emailPlaceholder": "jūsu e-pasts",
+    "submit": "Pieteikties",
+    "submitting": "Nosūtām…",
+    "errorInvalidEmail": "Ievadiet derīgu e-pasta adresi.",
+    "errorAlreadySubscribed": "Jūs jau esat pieteicies šiem paziņojumiem.",
+    "errorSaveFailed": "Neizdevās saglabāt pieteikumu. Mēģiniet vēlāk.",
+    "errorMailFailed": "Pieteikums saglabāts, bet vēstule netika nosūtīta. Mēģiniet vēlreiz vēlāk.",
+    "success": "Pārbaudiet e-pastu un apstipriniet pieteikumu, izmantojot saiti.",
+    "emailSubject": "Apstipriniet pieteikumu — BalticWorkers Check"
+  },
+  "alertsStatus": {
+    "confirmedTitle": "Pieteikums apstiprināts",
+    "confirmedText": "Sūtīsim jaunas piemērotas vakances uz e-pastu.",
+    "unsubscribedTitle": "Jūs esat atteicies",
+    "unsubscribedText": "Vairs nesūtīsim paziņojumus uz šo adresi.",
+    "errorTitle": "Saite nenostrādāja",
+    "errorText": "Iespējams, tā jau ir izmantota vai novecojusi. Mēģiniet pieteikties no jauna sākumlapā."
+  },
+  "verification": {
+    "labelWorkerConfirmed": "Apstiprinājis darbinieks",
+    "labelEmployerConfirmed": "Nosacījumi apstiprināti",
+    "labelSourceConfirmed": "Avots atrasts",
+    "labelNeedsReview": "Nepieciešama pārbaude",
+    "meaningWorkerConfirmed": "Šajā objektā reāli strādāja cilvēks no Baltijas un apstiprināja nosacījumus",
+    "meaningEmployerConfirmed": "Darba devējs atrasts reģistrā, likme un nosacījumi salīdzināti",
+    "meaningSourceConfirmed": "Vakance ir oficiālajā avotā, bet nosacījumi nav pārbaudīti",
+    "meaningNeedsReview": "Darba devējs nav identificēts",
+    "checkedWorkerConfirmed": "Ir pārbaudīta darbinieka atsauksme",
+    "checkedEmployerConfirmed": "Uzņēmuma reģistrs + koplīgums + mājoklis/ceļš nav noklusēti",
+    "checkedSourceConfirmed": "Tikai esamība JobTech/NAV",
+    "checkedNeedsReview": "Pagaidām nekas — rādām godīgi",
+    "checkedLabel": "Ko pārbaudījām:"
+  },
+  "vacancy": {
+    "wageNotSpecified": "Nav norādīta",
+    "wageNetHour": "neto / stundā",
+    "wageGrossHour": "bruto / stundā",
+    "wageGrossMonth": "bruto / mēnesī",
+    "employerUnknown": "Darba devējs tiek precizēts",
+    "housingIncluded": "Mājoklis tiek apmaksāts",
+    "housingDeducted": "Mājoklis tiek ieturēts no algas",
+    "housingUnknown": "Mājoklis: nepieciešams precizējums",
+    "travelIncluded": "Ceļš tiek apmaksāts",
+    "travelDeducted": "Ceļš tiek ieturēts no algas",
+    "travelUnknown": "Ceļš: nepieciešams precizējums",
+    "hoursPerWeek": "{hours} h / ned.",
+    "unconfirmedWarning": "Ne visi nosacījumi ir apstiprināti. Precizējiet tos ar darba devēju pirms pieteikšanās.",
+    "demo": "Demonstrācija",
+    "demoSource": "Demonstrācija — nav reāls piedāvājums",
+    "updated": "Atjaunināts {date}",
+    "original": "Oriģināls ↗",
+    "sourceNamed": "Avots: {source}",
+    "sourceUnnamed": "Avots norādīts kartītē",
+    "sourceLangNoteSE": "Lapa ir zviedru valodā — ieslēdziet lapas tulkošanu pārlūkprogrammā (parasti tā piedāvā pati).",
+    "sourceLangNoteNO": "Lapa ir norvēģu valodā — ieslēdziet lapas tulkošanu pārlūkprogrammā (parasti tā piedāvā pati)."
+  },
+  "applyHelp": {
+    "open": "Kā pieteikties →",
+    "close": "Paslēpt padomu ↑",
+    "step1": "Atveriet oriģinālo sludinājumu pa saiti augstāk.",
+    "step2": "Atrodiet pieteikšanās pogu — parasti tā ir Apply, Ansök vai Sök jobbet.",
+    "step3": "Ja teksts nav skaidrs, ieslēdziet lapas tulkošanu pārlūkprogrammā.",
+    "step4": "Pirms pieteikšanās precizējiet nosacījumus ar darba devēju — varat nokopēt zemāk esošo ziņojumu.",
+    "beforeTitle": "Pārbaudiet pirms piekrišanas:",
+    "before1": "Kāda summa ir norādīta: pirms vai pēc nodokļiem, par stundu vai par mēnesi?",
+    "before2": "Cik maksā mājoklis, kas to nodrošina un vai summa tiks ieturēta no algas?",
+    "before3": "Cik garantētu stundu nedēļā un kāda veida līgumu piedāvā?",
+    "before4": "Kas apmaksā ceļu un kādi dokumenti būs vajadzīgi pirms darba sākuma?",
+    "messageLabel": "Ziņojums darba devējam (angļu valodā):",
+    "copy": "Kopēt",
+    "copied": "Nokopēts ✓",
+    "copyManual": "Teksts iezīmēts — nospiediet Ctrl+C"
+  },
+  "howWeCheck": {
+    "eyebrow": "Metodika",
+    "title": "Kā mēs pārbaudām vakances",
+    "subtitle": "Pārbaudes statusu piešķir tikai redakcija. To nevar nopirkt: samaksa par reklāmu maina vakances sasniedzamību, bet ne tās apzīmējumu.",
+    "levelsTitle": "Četri pārbaudes līmeņi",
+    "levelsText": "Apzīmējums uz kartītes atbild uz vienu jautājumu: cik tālu esam tikuši tieši šīs vakances pārbaudē.",
+    "stepsTitle": "Ko mēs darām soli pa solim",
+    "step1Title": "Atrodam vakanci oficiālajā avotā",
+    "step1Text": "Zviedrija — Platsbanken/JobTech Arbetsförmedlingen, Norvēģija — NAV. Saiti uz oriģinālu rādām kartītē, pieteikšanās notiek turpat.",
+    "step2Title": "Identificējam darba devēju",
+    "step2Text": "Salīdzinām nosaukumu ar uzņēmumu reģistru (Bolagsverket, Brønnøysund). Ja aiz vakances stāv starpnieks, nevis darba devējs, — tā arī rakstām.",
+    "step3Title": "Izšķiram nosacījumus pa vienam",
+    "step3Text": "Alga (neto vai bruto), mājoklis, ceļš, stundas, koplīgums. Katrs lauks atsevišķi; nezināmo atzīmējam kā nezināmu, nevis kā «pēc vienošanās».",
+    "step4Title": "Vācam darbinieku atsauksmes",
+    "step4Text": "Ja cilvēks no Baltijas reāli strādāja objektā un apstiprināja nosacījumus — vakance saņem augstāko statusu. Atsauksmi pārbauda redakcija.",
+    "limitsTitle": "Ko mēs nedarām un nesolām",
+    "limit1": "Neņemam samaksu no darbinieka — ne par piekļuvi, ne par pieteikšanos, ne par «prioritāti».",
+    "limit2": "Nepieņemam kandidāta dokumentus: pieteikšanās notiek tieši oficiālajā avotā.",
+    "limit3": "Nepaaugstinām pārbaudes statusu par naudu — šāda ceļa nav pat datubāzes struktūrā.",
+    "limit4": "Negarantējam darbā iekārtošanos, vīzu, nodokļu rezultātu vai ienākumu līmeni. Mēs izskaidrojam publicētos nosacījumus un novirzām uz oriģinālo avotu.",
+    "workerNoteBefore": "Strādājāt Zviedrijā vai Norvēģijā un vēlaties apstiprināt nosacījumus?",
+    "workerNoteLink": "Rakstiet mums",
+    "workerNoteAfter": "— tā rodas statuss «Apstiprinājis darbinieks»."
+  },
+  "services": {
+    "eyebrow": "Darbiniekiem",
+    "title": "Palīdzēsim tikt skaidrībā ar dokumentiem",
+    "subtitle": "Paskaidrosim, kādus jautājumus uzdot darba devējam, un vajadzības gadījumā savedīsim jūs ar nozares speciālistu.",
+    "item1Title": "Pirms brauciena",
+    "item1Text": "Līguma, mājokļa, ceļa, algas un norīkošanas kontrolsaraksts: ko pajautāt, pirms piekrist.",
+    "item2Title": "A1 un ID06",
+    "item2Text": "Palīdzēsim saprast, kādi dokumenti vajadzīgi, un novirzīsim pie partnera, kas sniedz šo pakalpojumu.",
+    "item3Title": "Nodokļi un deklarācija",
+    "item3Text": "Izskaidrosim vispārīgo secību un savedīsim ar grāmatvedi personīgai konsultācijai.",
+    "partnerPending": "Partneri pagaidām pieslēdzam. Atstājiet pieteikumu — paziņosim, kad speciālists būs pieejams.",
+    "partnerPendingCta": "Atstāt pieteikumu →",
+    "partnerCta": "Rakstīt partnerim →",
+    "partnerDisclosure": "Partnera ieteikums. BalticWorkers Check var saņemt komisiju par novirzīšanu. Pakalpojumu sniedz partneris.",
+    "boundaryTitle": "Svarīga atbildības robeža",
+    "boundaryText": "BalticWorkers Check nenoformē A1, neiesniedz nodokļu deklarācijas un nesniedz juridiskus atzinumus. Mēs palīdzam tikt skaidrībā un novirzām pie speciālista, kas atbild par konkrēto pakalpojumu.",
+    "methodNoteBefore": "Kā notiek vakanču pārbaude —",
+    "methodNoteLink": "metodikas lapā"
+  },
+  "forEmployers": {
+    "eyebrow": "Darba devējiem",
+    "title": "Vajadzīgi darbinieki no Baltijas?",
+    "subtitle": "Pārtulkosim jūsu vakanci, pārbaudīsim nosacījumus pēc vienotas procedūras un parādīsim to mērķa kandidātiem Baltijā.",
+    "servicesTitle": "Kas ietilpst pakalpojumā",
+    "service1Title": "Vakances tulkojums un noformēšana",
+    "service1Text": "Tulkojam tekstu krievu un latviešu valodā, sadalām nosacījumus pa kartītes laukiem: likme, mājoklis, ceļš, stundas, līgums.",
+    "service2Title": "Reklāma kandidātu vidū Baltijā",
+    "service2Text": "Rādām vakanci mērķauditorijai — pēc profesijas un valsts. Tieši tas arī tiek pirkts: sasniedzamība.",
+    "service3Title": "Nosacījumu pārbaude",
+    "service3Text": "Ietilpst darbā ar katru vakanci un tiek veikta vienādi maksas un bezmaksas vakancēm. Pārbaudes rezultāts netiek pārdots.",
+    "buyingTitle": "Ko tieši jūs pērkat",
+    "buyingTextBefore": "Jūs pērkat vakances tulkojumu un tās sasniedzamību kandidātu vidū. Jūs",
+    "buyingTextEmphasis": "nepērkat",
+    "buyingTextAfter": "pārbaudes apzīmējumu: statusu piešķir redakcija pēc vienas un tās pašas procedūras visām vakancēm — maksas un bezmaksas. Samaksa par reklāmu neietekmē pārbaudes rezultātu un nepaceļ kartīti augstāk kopējā sarakstā.",
+    "checkNoteBefore": "Kā darbojas pārbaude —",
+    "checkNoteLink": "visa procedūra atsevišķā lapā",
+    "postTitle": "Publicēt vakanci",
+    "postText": "Pagaidām pieņemam pieteikumus pa e-pastu. Atsūtiet saiti uz vakanci oficiālajā avotā un atbildīgās personas kontaktu — atgriezīsimies ar jautājumiem par nosacījumiem.",
+    "sendTitle": "Ko atsūtīt",
+    "send1": "Saiti uz vakanci (Platsbanken, NAV vai jūsu vietne)",
+    "send2": "Likmi un norādi: neto vai bruto",
+    "send3": "Mājoklis un ceļš: tiek apmaksāts vai ieturēts no algas",
+    "send4": "Stundas nedēļā un koplīgums, ja ir",
+    "send5": "Uzņēmuma nosaukumu reģistrā un atbildīgās personas kontaktu",
+    "whereTitle": "Kur atsūtīt",
+    "whereText": "Vēstule uz zemāk norādīto adresi. Atbildam darba dienās.",
+    "whereCta": "Rakstiet mums",
+    "mailSubject": "Vakance BalticWorkers Check"
+  }
+}

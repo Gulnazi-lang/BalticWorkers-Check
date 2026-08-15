@@ -3,6 +3,8 @@
 import { randomBytes } from "crypto";
 import { sendEmail } from "@/lib/email";
 import { createClient } from "@/lib/supabase/server";
+import { DEFAULT_LOCALE, isEnabledLocale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 
 export interface SubscribeState {
   status: "idle" | "success" | "error";
@@ -20,6 +22,10 @@ export async function subscribeToAlerts(
   _prevState: SubscribeState,
   formData: FormData
 ): Promise<SubscribeState> {
+  const rawLocale = String(formData.get("locale") ?? "");
+  const locale = isEnabledLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const dict = await getDictionary(locale);
+
   const email = String(formData.get("email") ?? "")
     .trim()
     .toLowerCase();
@@ -28,7 +34,7 @@ export async function subscribeToAlerts(
   const country = rawCountry === "SE" || rawCountry === "NO" ? rawCountry : "";
 
   if (!EMAIL_PATTERN.test(email)) {
-    return { status: "error", message: "Введите корректный email." };
+    return { status: "error", message: dict.alerts.errorInvalidEmail };
   }
 
   const confirmToken = randomBytes(24).toString("base64url");
@@ -45,13 +51,16 @@ export async function subscribeToAlerts(
 
   if (error) {
     if (error.code === UNIQUE_VIOLATION) {
-      return { status: "success", message: "Вы уже подписаны на эти уведомления." };
+      return { status: "success", message: dict.alerts.errorAlreadySubscribed };
     }
-    return { status: "error", message: "Не получилось сохранить подписку. Попробуйте позже." };
+    return { status: "error", message: dict.alerts.errorSaveFailed };
   }
 
   const confirmUrl = `${siteUrl()}/api/alerts/confirm?token=${confirmToken}`;
 
+  // Письмо намеренно остаётся на русском независимо от локали формы —
+  // локализация транзакционных писем вне текущего объёма задачи (см. спеку
+  // i18n: /api/* не локализуем).
   try {
     await sendEmail(
       email,
@@ -63,11 +72,8 @@ export async function subscribeToAlerts(
     );
   } catch (err) {
     console.error("Не удалось отправить письмо подтверждения:", err);
-    return {
-      status: "error",
-      message: "Подписка сохранена, но письмо не отправилось. Попробуйте ещё раз позже.",
-    };
+    return { status: "error", message: dict.alerts.errorMailFailed };
   }
 
-  return { status: "success", message: "Проверьте почту и подтвердите подписку по ссылке." };
+  return { status: "success", message: dict.alerts.success };
 }

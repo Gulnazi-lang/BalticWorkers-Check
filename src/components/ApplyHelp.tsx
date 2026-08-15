@@ -1,21 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
+import type { Dictionary } from "@/i18n/dictionaries";
 
-const STEPS = [
-  "Откройте оригинальное объявление по ссылке выше.",
-  "Найдите кнопку отклика — обычно подписана Apply, Ansök или Sök jobbet.",
-  "Если текст неясен, включите перевод страницы в браузере.",
-  "Перед откликом уточните условия у работодателя — можно скопировать сообщение ниже.",
-];
-
-const BEFORE_YOU_AGREE = [
-  "Какая сумма указана: до налогов или после, за час или за месяц?",
-  "Сколько стоит жильё, кто его предоставляет и будет ли сумма удержана из зарплаты?",
-  "Сколько гарантированных часов в неделю и какой тип договора предлагают?",
-  "Кто оплачивает дорогу и какие документы понадобятся до начала работы?",
-];
-
+// Сообщение работодателю всегда на английском — это язык, на котором его
+// поймут в Швеции/Норвегии, независимо от локали сайта соискателя.
 function buildMessage(sourceUrl: string): string {
   return `Hello,
 
@@ -40,11 +29,24 @@ type CopyState = "idle" | "copied" | "manual";
  * для копирования. Сайт остаётся информационной платформой, а не агентством:
  * отклик и переписка происходят на стороне работодателя.
  */
-export function ApplyHelp({ sourceUrl }: { sourceUrl: string }) {
+export function ApplyHelp({ sourceUrl, dict }: { sourceUrl: string; dict: Dictionary }) {
   const [open, setOpen] = useState(false);
   const [copyState, setCopyState] = useState<CopyState>("idle");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const message = buildMessage(sourceUrl);
+
+  const steps = [
+    dict.applyHelp.step1,
+    dict.applyHelp.step2,
+    dict.applyHelp.step3,
+    dict.applyHelp.step4,
+  ];
+  const beforeYouAgree = [
+    dict.applyHelp.before1,
+    dict.applyHelp.before2,
+    dict.applyHelp.before3,
+    dict.applyHelp.before4,
+  ];
 
   async function handleCopy() {
     try {
@@ -66,29 +68,27 @@ export function ApplyHelp({ sourceUrl }: { sourceUrl: string }) {
         onClick={() => setOpen((v) => !v)}
         className="text-[11px] font-medium text-accent"
       >
-        {open ? "Скрыть подсказку ↑" : "Как откликнуться →"}
+        {open ? dict.applyHelp.close : dict.applyHelp.open}
       </button>
 
       {open && (
         <div className="mt-2 rounded-lg bg-bg p-3">
           <ol className="grid list-decimal gap-1 pl-4 text-[11px] text-muted">
-            {STEPS.map((step) => (
+            {steps.map((step) => (
               <li key={step}>{step}</li>
             ))}
           </ol>
 
           <div className="mt-3 rounded-md border border-line bg-card p-2.5">
-            <p className="text-[11px] font-medium text-ink">Проверьте до согласия:</p>
+            <p className="text-[11px] font-medium text-ink">{dict.applyHelp.beforeTitle}</p>
             <ul className="mt-1.5 grid list-disc gap-1 pl-4 text-[11px] text-muted">
-              {BEFORE_YOU_AGREE.map((item) => (
+              {beforeYouAgree.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
           </div>
 
-          <p className="mt-2.5 text-[11px] font-medium text-ink">
-            Сообщение работодателю (на английском):
-          </p>
+          <p className="mt-2.5 text-[11px] font-medium text-ink">{dict.applyHelp.messageLabel}</p>
           <textarea
             ref={textareaRef}
             readOnly
@@ -97,12 +97,16 @@ export function ApplyHelp({ sourceUrl }: { sourceUrl: string }) {
             onClick={(e) => e.currentTarget.select()}
             className="mt-1 w-full resize-none rounded-md border border-line bg-card p-2 text-[11px] text-ink"
           />
-          <button type="button" onClick={handleCopy} className="mt-1.5 rounded-md bg-accent px-3 py-1.5 text-[11px] font-bold text-white">
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="mt-1.5 rounded-md bg-accent px-3 py-1.5 text-[11px] font-bold text-white"
+          >
             {copyState === "copied"
-              ? "Скопировано ✓"
+              ? dict.applyHelp.copied
               : copyState === "manual"
-                ? "Текст выделен — нажмите Ctrl+C"
-                : "Скопировать"}
+                ? dict.applyHelp.copyManual
+                : dict.applyHelp.copy}
           </button>
         </div>
       )}

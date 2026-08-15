@@ -1,0 +1,240 @@
+{
+  "locale": "Lietuvių",
+  "nav": {
+    "jobs": "Darbo skelbimai",
+    "howWeCheck": "Kaip tikriname",
+    "services": "Pagalba",
+    "forEmployers": "Darbdaviams"
+  },
+  "footer": {
+    "copyright": "© 2026 BalticWorkers Check",
+    "tagline": "Informacinė platforma, ne įdarbinimo agentūra",
+    "howWeCheck": "Kaip tikriname"
+  },
+  "common": {
+    "country": {
+      "SE": "Švedija",
+      "NO": "Norvegija"
+    },
+    "backHome": "Į pradžią"
+  },
+  "meta": {
+    "home": {
+      "title": "BalticWorkers Check — patikrinti darbo skelbimai užsienyje darbuotojams iš Baltijos šalių",
+      "description": "Atlyginimas, būstas, kelionė ir darbdavys — viskas vienoje kortelėje. Tikriname darbo skelbimų sąlygas Švedijoje ir Norvegijoje prieš jums išvykstant."
+    },
+    "howWeCheck": {
+      "title": "Kaip tikriname — BalticWorkers Check",
+      "description": "Keturi skelbimo tikrinimo lygiai: nuo „reikia patikrinti“ iki darbuotojo patvirtinimo. Ką tiksliai tikriname kiekviename lygyje."
+    },
+    "services": {
+      "title": "Pagalba per partnerius — BalticWorkers Check",
+      "description": "Paaiškinsime, kokius klausimus užduoti darbdaviui, ir sujungsime su srities specialistu: sutartis, A1 ir ID06, mokesčiai."
+    },
+    "forEmployers": {
+      "title": "Darbdaviams — BalticWorkers Check",
+      "description": "Skelbimo vertimas, sąlygų patikrinimas pagal vieningą procedūrą ir rodymas tiksliniams kandidatams Baltijos šalyse. Mokestis veikia pasiekiamumą, o ne tikrinimo statusą."
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Švedija · Norvegija · Baltijos šalys",
+      "title": "Darbas Skandinavijoje su aiškiomis sąlygomis",
+      "subtitle": "Atlyginimas, būstas, kelionė ir darbdavys — viskas vienoje kortelėje. Sąžiningai rodome, kas jau patvirtinta, o ką reikia išsiaiškinti prieš išvykstant.",
+      "searchPlaceholder": "Profesija, pavyzdžiui: suvirintojas",
+      "countryAny": "Šalis",
+      "submit": "Rasti darbą",
+      "disclaimer": "Nemokama ieškantiems darbo · Kandidatuojama per oficialų šaltinį · Neimame mokesčio už prieigą prie skelbimų ir nekandidatuojame už jus"
+    },
+    "demo": {
+      "badge": "Demonstracija",
+      "title": "Kortelės pavyzdys",
+      "jobTitle": "Kabelių sistemų montuotojas",
+      "location": "Boden, Švedija",
+      "housing": "Būstas — atskira eilute",
+      "travel": "Kelionė — atskira eilute",
+      "hours": "Valandos per savaitę ir sutartis"
+    },
+    "jobs": {
+      "eyebrow": "Skelbimų atranka",
+      "title": "Naujausi pasiūlymai",
+      "legendLink": "Ką reiškia ženkleliai →",
+      "emptyTitle": "Pirmieji skelbimai ruošiami",
+      "emptyText": "Jungiame šaltinius ir tikriname sąlygas rankiniu būdu. Čia atsiras skelbimai su nurodytu atlyginimu, būstu, kelione ir darbdaviu.",
+      "emptyCta": "Kol kas pažiūrėkite, ko paklausti darbdavio",
+      "noResultsTitle": "Rasta skelbimų: 0",
+      "noResultsText": "Kol kas neradome patikrinto pasiūlymo pagal užklausą {filter}.",
+      "noResultsCta": "Peržiūrėti visus atvirus skelbimus",
+      "filtered": "Atitikmenys pagal {filter}",
+      "reset": "Atstatyti"
+    },
+    "legend": {
+      "eyebrow": "Statusų paaiškinimas",
+      "title": "Ką reiškia ženklelis ant kortelės",
+      "link": "Visa procedūra →"
+    },
+    "trust": {
+      "eyebrow": "Kodėl mumis pasitiki",
+      "title": "Tikriname tai, kas svarbu, prieš išvykstant",
+      "point1": "Rodome tikrą darbdavį ir nuorodą į oficialų šaltinį.",
+      "point2": "Atskirai nurodome atlyginimą, būstą, kelionę — ir sąžiningai pažymime tai, kas dar nepatikrinta.",
+      "point3": "Neimame iš darbuotojo mokesčio už prieigą prie skelbimų. Niekada."
+    },
+    "employer": {
+      "eyebrow": "Darbdaviams",
+      "title": "Reikia darbuotojų iš Baltijos šalių?",
+      "text": "Išversime jūsų skelbimą, patikrinsime sąlygas pagal vieningą procedūrą ir parodysime jį tiksliniams kandidatams Baltijos šalyse.",
+      "note": "Mokestis už reklamą neturi įtakos tikrinimo rezultatui. Visi skelbimai pereina tą pačią redakcinę procedūrą.",
+      "cta": "Paskelbti skelbimą"
+    }
+  },
+  "alerts": {
+    "title": "Gauti tokius skelbimus el. paštu",
+    "note": "Nemokamai. Atsiųsime patvirtinimo laišką, atsisakyti galima vienu paspaudimu.",
+    "emailPlaceholder": "jūsų el. paštas",
+    "submit": "Prenumeruoti",
+    "submitting": "Siunčiame…",
+    "errorInvalidEmail": "Įveskite teisingą el. pašto adresą.",
+    "errorAlreadySubscribed": "Jūs jau prenumeruojate šiuos pranešimus.",
+    "errorSaveFailed": "Nepavyko išsaugoti prenumeratos. Pabandykite vėliau.",
+    "errorMailFailed": "Prenumerata išsaugota, bet laiškas neišsiųstas. Pabandykite dar kartą vėliau.",
+    "success": "Patikrinkite el. paštą ir patvirtinkite prenumeratą per nuorodą.",
+    "emailSubject": "Patvirtinkite prenumeratą — BalticWorkers Check"
+  },
+  "alertsStatus": {
+    "confirmedTitle": "Prenumerata patvirtinta",
+    "confirmedText": "Siųsime naujus tinkamus skelbimus el. paštu.",
+    "unsubscribedTitle": "Jūs atsisakėte prenumeratos",
+    "unsubscribedText": "Daugiau nesiųsime pranešimų šiuo adresu.",
+    "errorTitle": "Nuoroda nesuveikė",
+    "errorText": "Galbūt ji jau panaudota arba nebegalioja. Pabandykite prenumeruoti iš naujo pradžios puslapyje."
+  },
+  "verification": {
+    "labelWorkerConfirmed": "Patvirtino darbuotojas",
+    "labelEmployerConfirmed": "Sąlygos patvirtintos",
+    "labelSourceConfirmed": "Šaltinis rastas",
+    "labelNeedsReview": "Reikia patikrinti",
+    "meaningWorkerConfirmed": "Šiame objekte iš tikrųjų dirbo žmogus iš Baltijos šalių ir patvirtino sąlygas",
+    "meaningEmployerConfirmed": "Darbdavys rastas registre, įkainis ir sąlygos sutikrinti",
+    "meaningSourceConfirmed": "Skelbimas yra oficialiame šaltinyje, bet sąlygos nepatikrintos",
+    "meaningNeedsReview": "Darbdavys neidentifikuotas",
+    "checkedWorkerConfirmed": "Yra patikrintas darbuotojo atsiliepimas",
+    "checkedEmployerConfirmed": "Įmonių registras + kolektyvinė sutartis + būstas/kelionė nenuslėpti",
+    "checkedSourceConfirmed": "Tik buvimas JobTech/NAV",
+    "checkedNeedsReview": "Kol kas nieko — rodome sąžiningai",
+    "checkedLabel": "Ką patikrinome:"
+  },
+  "vacancy": {
+    "wageNotSpecified": "Nenurodytas",
+    "wageNetHour": "į rankas / val.",
+    "wageGrossHour": "neatskaičius mokesčių / val.",
+    "wageGrossMonth": "neatskaičius mokesčių / mėn.",
+    "employerUnknown": "Darbdavys tikslinamas",
+    "housingIncluded": "Būstas apmokamas",
+    "housingDeducted": "Būstas išskaičiuojamas iš atlyginimo",
+    "housingUnknown": "Būstas: reikia patikslinti",
+    "travelIncluded": "Kelionė apmokama",
+    "travelDeducted": "Kelionė išskaičiuojama iš atlyginimo",
+    "travelUnknown": "Kelionė: reikia patikslinti",
+    "hoursPerWeek": "{hours} val. / sav.",
+    "unconfirmedWarning": "Ne visos sąlygos patvirtintos. Patikslinkite jas su darbdaviu prieš kandidatuodami.",
+    "demo": "Demonstracija",
+    "demoSource": "Demonstracija — ne tikras pasiūlymas",
+    "updated": "Atnaujinta {date}",
+    "original": "Originalas ↗",
+    "sourceNamed": "Šaltinis: {source}",
+    "sourceUnnamed": "Šaltinis nurodytas kortelėje",
+    "sourceLangNoteSE": "Puslapis švedų kalba — įjunkite puslapio vertimą naršyklėje (paprastai ji pati tai pasiūlo).",
+    "sourceLangNoteNO": "Puslapis norvegų kalba — įjunkite puslapio vertimą naršyklėje (paprastai ji pati tai pasiūlo)."
+  },
+  "applyHelp": {
+    "open": "Kaip kandidatuoti →",
+    "close": "Slėpti patarimą ↑",
+    "step1": "Atidarykite originalų skelbimą pagal nuorodą aukščiau.",
+    "step2": "Raskite kandidatavimo mygtuką — paprastai jis pažymėtas Apply, Ansök arba Sök jobbet.",
+    "step3": "Jei tekstas neaiškus, įjunkite puslapio vertimą naršyklėje.",
+    "step4": "Prieš kandidatuodami patikslinkite sąlygas su darbdaviu — galite nukopijuoti žemiau esantį laišką.",
+    "beforeTitle": "Patikrinkite prieš sutikdami:",
+    "before1": "Kokia suma nurodyta: prieš mokesčius ar po jų, už valandą ar už mėnesį?",
+    "before2": "Kiek kainuoja būstas, kas jį suteikia ir ar suma bus išskaičiuota iš atlyginimo?",
+    "before3": "Kiek garantuotų valandų per savaitę ir kokio tipo sutartis siūloma?",
+    "before4": "Kas apmoka kelionę ir kokių dokumentų reikės prieš pradedant dirbti?",
+    "messageLabel": "Laiškas darbdaviui (anglų kalba):",
+    "copy": "Kopijuoti",
+    "copied": "Nukopijuota ✓",
+    "copyManual": "Tekstas pažymėtas — spauskite Ctrl+C"
+  },
+  "howWeCheck": {
+    "eyebrow": "Metodika",
+    "title": "Kaip mes tikriname darbo skelbimus",
+    "subtitle": "Tikrinimo statusą suteikia tik redakcija. Jo negalima nusipirkti: mokestis už reklamą keičia skelbimo pasiekiamumą, bet ne jo ženklelį.",
+    "levelsTitle": "Keturi tikrinimo lygiai",
+    "levelsText": "Ženklelis ant kortelės atsako į vieną klausimą: kaip toli pažengėme tikrindami būtent šį skelbimą.",
+    "stepsTitle": "Ką darome žingsnis po žingsnio",
+    "step1Title": "Randame skelbimą oficialiame šaltinyje",
+    "step1Text": "Švedija — Platsbanken/JobTech Arbetsförmedlingen, Norvegija — NAV. Nuorodą į originalą rodome kortelėje, kandidatuojama taip pat ten.",
+    "step2Title": "Identifikuojame darbdavį",
+    "step2Text": "Sutikriname pavadinimą su įmonių registru (Bolagsverket, Brønnøysund). Jei už skelbimo stovi tarpininkas, o ne darbdavys, — taip ir parašome.",
+    "step3Title": "Išnagrinėjame sąlygas po vieną",
+    "step3Text": "Atlyginimas (į rankas ar neatskaičius mokesčių), būstas, kelionė, valandos, kolektyvinė sutartis. Kiekvienas laukas atskirai; nežinomą žymime kaip nežinomą, o ne kaip „pagal susitarimą“.",
+    "step4Title": "Renkame darbuotojų atsiliepimus",
+    "step4Text": "Jei žmogus iš Baltijos šalių iš tikrųjų dirbo objekte ir patvirtino sąlygas — skelbimas gauna aukščiausią statusą. Atsiliepimą patikrina redakcija.",
+    "limitsTitle": "Ko nedarome ir nežadame",
+    "limit1": "Neimame mokesčio iš darbuotojo — nei už prieigą, nei už kandidatavimą, nei už „pirmenybę“.",
+    "limit2": "Nepriimame kandidato dokumentų: kandidatuojama tiesiogiai oficialiame šaltinyje.",
+    "limit3": "Nekeliame tikrinimo statuso už pinigus — tokio kelio nėra net duomenų bazės struktūroje.",
+    "limit4": "Negarantuojame įdarbinimo, vizos, mokestinio rezultato ar pajamų lygio. Mes paaiškiname paskelbtas sąlygas ir nukreipiame į originalų šaltinį.",
+    "workerNoteBefore": "Dirbote Švedijoje ar Norvegijoje ir norite patvirtinti sąlygas?",
+    "workerNoteLink": "Parašykite mums",
+    "workerNoteAfter": "— taip atsiranda statusas „Patvirtino darbuotojas“."
+  },
+  "services": {
+    "eyebrow": "Darbuotojams",
+    "title": "Padėsime susigaudyti dokumentuose",
+    "subtitle": "Paaiškinsime, kokius klausimus užduoti darbdaviui, ir prireikus sujungsime jus su srities specialistu.",
+    "item1Title": "Prieš išvykstant",
+    "item1Text": "Sutarties, būsto, kelionės, atlyginimo ir komandiravimo kontrolinis sąrašas: ko paklausti prieš sutinkant.",
+    "item2Title": "A1 ir ID06",
+    "item2Text": "Padėsime suprasti, kokių dokumentų reikia, ir nukreipsime pas partnerį, kuris teikia šią paslaugą.",
+    "item3Title": "Mokesčiai ir deklaracija",
+    "item3Text": "Paaiškinsime bendrą eigą ir sujungsime su buhalteriu asmeninei konsultacijai.",
+    "partnerPending": "Partnerį kol kas prijungiame. Palikite užklausą — pranešime, kai atsiras specialistas.",
+    "partnerPendingCta": "Palikti užklausą →",
+    "partnerCta": "Parašyti partneriui →",
+    "partnerDisclosure": "Partnerio rekomendacija. BalticWorkers Check gali gauti komisinį atlygį už nukreipimą. Paslaugą teikia partneris.",
+    "boundaryTitle": "Svarbi atsakomybės riba",
+    "boundaryText": "BalticWorkers Check neformina A1, neteikia mokesčių deklaracijų ir neteikia teisinių išvadų. Mes padedame susigaudyti ir nukreipiame pas specialistą, kuris atsako už konkrečią paslaugą.",
+    "methodNoteBefore": "Kaip veikia skelbimų tikrinimas —",
+    "methodNoteLink": "metodikos puslapyje"
+  },
+  "forEmployers": {
+    "eyebrow": "Darbdaviams",
+    "title": "Reikia darbuotojų iš Baltijos šalių?",
+    "subtitle": "Išversime jūsų skelbimą, patikrinsime sąlygas pagal vieningą procedūrą ir parodysime jį tiksliniams kandidatams Baltijos šalyse.",
+    "servicesTitle": "Kas įeina į paslaugą",
+    "service1Title": "Skelbimo vertimas ir parengimas",
+    "service1Text": "Verčiame tekstą į rusų ir latvių kalbas, išdėstome sąlygas pagal kortelės laukus: įkainis, būstas, kelionė, valandos, sutartis.",
+    "service2Title": "Reklama tarp kandidatų Baltijos šalyse",
+    "service2Text": "Rodome skelbimą tikslinei auditorijai — pagal profesiją ir šalį. Būtent tai ir perkama: pasiekiamumas.",
+    "service3Title": "Sąlygų tikrinimas",
+    "service3Text": "Įeina į darbą su kiekvienu skelbimu ir atliekamas vienodai mokamiems ir nemokamiems. Tikrinimo rezultatas neparduodamas.",
+    "buyingTitle": "Ką tiksliai jūs perkate",
+    "buyingTextBefore": "Jūs perkate skelbimo vertimą ir jo pasiekiamumą tarp kandidatų. Jūs",
+    "buyingTextEmphasis": "neperkate",
+    "buyingTextAfter": "tikrinimo ženklelio: statusą suteikia redakcija pagal vieną ir tą pačią procedūrą visiems skelbimams — mokamiems ir nemokamiems. Mokestis už reklamą neturi įtakos tikrinimo rezultatui ir nekelia kortelės aukščiau bendrame sąraše.",
+    "checkNoteBefore": "Kaip veikia tikrinimas —",
+    "checkNoteLink": "visa procedūra atskirame puslapyje",
+    "postTitle": "Paskelbti skelbimą",
+    "postText": "Kol kas priimame užklausas el. paštu. Atsiųskite nuorodą į skelbimą oficialiame šaltinyje ir atsakingo asmens kontaktą — grįšime su klausimais dėl sąlygų.",
+    "sendTitle": "Ką atsiųsti",
+    "send1": "Nuorodą į skelbimą (Platsbanken, NAV arba jūsų svetainė)",
+    "send2": "Įkainį ir nurodyti: į rankas ar neatskaičius mokesčių",
+    "send3": "Būstas ir kelionė: apmokama ar išskaičiuojama iš atlyginimo",
+    "send4": "Valandas per savaitę ir kolektyvinę sutartį, jei yra",
+    "send5": "Įmonės pavadinimą registre ir atsakingo asmens kontaktą",
+    "whereTitle": "Kur atsiųsti",
+    "whereText": "Laišką žemiau nurodytu adresu. Atsakome darbo dienomis.",
+    "whereCta": "Parašykite mums",
+    "mailSubject": "Skelbimas BalticWorkers Check"
+  }
+}
