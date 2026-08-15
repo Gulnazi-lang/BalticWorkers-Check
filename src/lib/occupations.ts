@@ -19,6 +19,12 @@ export interface Occupation {
   // автоматически. Не путать с employer_agreement_status: связан ли КОНКРЕТНЫЙ
   // работодатель договором — решает редакция вручную, это не отсюда.
   agreementCode?: string;
+  // Норвежские ключевые слова для фильтрации фида NAV (см.
+  // src/lib/importers/nav.ts) — NAV не даёт поиск по ключу на своей стороне,
+  // фильтруем сами по заголовку. Переводы мои собственные, не вычитаны
+  // носителем норвежского — как и lt/et, риск невысокий: ошибка здесь
+  // максимум пропустит релевантную вакансию, а не исказит показанные данные.
+  noKeywords?: string[];
 }
 
 export const OCCUPATIONS: Occupation[] = [
@@ -32,6 +38,7 @@ export const OCCUPATIONS: Occupation[] = [
       et: "Isiklik abistaja / hooldaja",
     },
     agreementCode: "PAN 25",
+    noKeywords: ["personlig assistent"],
   },
   {
     term: "hemtjänst",
@@ -42,6 +49,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Namų priežiūros darbuotojas",
       et: "Koduhooldustöötaja",
     },
+    noKeywords: ["hjemmetjeneste", "hjemmehjelp"],
   },
   {
     term: "vårdbiträde",
@@ -52,6 +60,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Slaugos padėjėjas",
       et: "Hooldusabiline",
     },
+    noKeywords: ["helsefagarbeider", "pleiemedarbeider", "omsorgsarbeider"],
   },
   {
     term: "städare",
@@ -62,6 +71,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Valytojas",
       et: "Koristaja",
     },
+    noKeywords: ["renholder", "renhold"],
   },
   {
     term: "barnvakt",
@@ -72,6 +82,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Auklė",
       et: "Lapsehoidja",
     },
+    noKeywords: ["barnevakt"],
   },
   {
     term: "barnskötare",
@@ -82,6 +93,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Auklė (darželyje)",
       et: "Lapsehoidja (lasteaias)",
     },
+    noKeywords: ["barnehageassistent", "barnehagemedarbeider"],
   },
   {
     term: "lagerarbetare",
@@ -92,6 +104,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Sandėlio darbuotojas",
       et: "Laotöötaja",
     },
+    noKeywords: ["lagermedarbeider", "lagerarbeider"],
   },
   {
     term: "chaufför",
@@ -102,6 +115,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Vairuotojas",
       et: "Autojuht",
     },
+    noKeywords: ["sjåfør"],
   },
   {
     term: "svetsare",
@@ -112,6 +126,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Suvirintojas",
       et: "Keevitaja",
     },
+    noKeywords: ["sveiser"],
   },
   {
     term: "elektriker",
@@ -122,6 +137,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Elektrikas",
       et: "Elektrik",
     },
+    noKeywords: ["elektriker"],
   },
   {
     term: "byggnadsarbetare",
@@ -132,6 +148,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Statybininkas",
       et: "Ehitustööline",
     },
+    noKeywords: ["bygningsarbeider", "byggearbeider"],
   },
   {
     term: "montör",
@@ -142,6 +159,7 @@ export const OCCUPATIONS: Occupation[] = [
       lt: "Montuotojas",
       et: "Montöör",
     },
+    noKeywords: ["montør"],
   },
 ];
 
