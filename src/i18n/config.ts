@@ -21,3 +21,8 @@ export const LOCALE_LABELS: Record<Locale, string> = {
 export function isEnabledLocale(value: string): value is Locale {
   return (ENABLED_LOCALES as readonly string[]).includes(value);
 }
+
+/** Любой код локали из LOCALES, включая ещё не включённые (lt/et). */
+export function isKnownLocale(value: string): value is Locale {
+  return (LOCALES as readonly string[]).includes(value);
+}

@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { DEFAULT_LOCALE, isEnabledLocale } from "@/i18n/config";
+import { DEFAULT_LOCALE, isEnabledLocale, isKnownLocale } from "@/i18n/config";
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const firstSegment = pathname.split("/")[1];
-  if (isEnabledLocale(firstSegment)) {
+  // lt/et тоже пропускаем как есть (не превращаем "/lt" в "/lv/lt") — за
+  // честный 404 для них отвечает notFound() в [locale]/layout.tsx.
+  if (isKnownLocale(firstSegment)) {
     return NextResponse.next();
   }
 
