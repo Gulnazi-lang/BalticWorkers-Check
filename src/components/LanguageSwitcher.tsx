@@ -33,9 +33,12 @@ export function LanguageSwitcher({ locale }: { locale: Locale }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="rounded-lg border border-line px-3 py-2 text-sm"
+        className="flex items-center gap-1.5 rounded-lg border border-line px-3 py-2 text-sm font-medium whitespace-nowrap"
       >
-        {locale.toUpperCase()}
+        {LOCALE_LABELS[locale]}
+        <span className="text-muted" aria-hidden>
+          ▾
+        </span>
       </button>
       {open && (
         <div className="absolute right-0 z-10 mt-1 min-w-32 overflow-hidden rounded-lg border border-line bg-card py-1 shadow-lg">
