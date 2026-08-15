@@ -6,6 +6,14 @@
 -- Заполнено для кодов, реально встречающихся в базе на 15.08.2026 (22 шт).
 -- Синонимы для свободного ввода ("доярка" -> ISCO 6121) — отдельная
 -- задача, этой миграцией не покрыта.
+--
+-- Вся миграция в одной транзакции: если что-то упадёт между drop и create
+-- constraint на job_alerts, откатится целиком, а не оставит таблицу без
+-- защиты от дублирующих подписок. Перед запуском таблица job_alerts
+-- выгружена в CSV (3 живые строки на 15.08.2026) — на случай, если что-то
+-- пойдёт не так, а бесплатный тариф Supabase не гарантирует бэкапы.
+
+begin;
 
 create table public.occupation_labels (
   isco_code text not null,
@@ -191,3 +199,5 @@ end $$;
 alter table public.job_alerts
   add constraint job_alerts_email_occupation_country_key
   unique (email, occupation_isco, country);
+
+commit;
