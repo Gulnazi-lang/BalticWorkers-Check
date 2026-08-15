@@ -11,6 +11,7 @@ export const DEMO_VACANCIES: Vacancy[] = [
   {
     id: "boden-cable-installer",
     title: "Монтажник кабельных систем",
+    occupationTerm: null,
     employerName: null,
     country: "SE",
     location: "Boden",
@@ -31,6 +32,7 @@ export const DEMO_VACANCIES: Vacancy[] = [
   {
     id: "boden-welder",
     title: "Сварщик и монтажник",
+    occupationTerm: null,
     employerName: "TUSA Energi AB",
     country: "SE",
     location: "Boden",
@@ -54,6 +56,7 @@ export const DEMO_VACANCIES: Vacancy[] = [
   {
     id: "norway-construction",
     title: "Строительный рабочий",
+    occupationTerm: null,
     employerName: null,
     country: "NO",
     location: "Oslo region",
@@ -83,6 +86,7 @@ function fromRow(row: VacancyRow): Vacancy {
   return {
     id: row.id,
     title: row.title,
+    occupationTerm: row.occupation_term,
     employerName: row.employer_name,
     country: row.country === "NO" ? "NO" : "SE",
     location: row.location,

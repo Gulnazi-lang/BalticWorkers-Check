@@ -1,5 +1,6 @@
 import type { ConditionStatus, Vacancy } from "@/types/vacancy";
 import { ApplyHelp } from "@/components/ApplyHelp";
+import { occupationRu } from "@/lib/occupations";
 import { TONE_CLASS, VERIFICATION_LABELS } from "@/lib/status";
 
 const COUNTRY_NAMES: Record<Vacancy["country"], string> = { SE: "Швеция", NO: "Норвегия" };
@@ -41,6 +42,10 @@ function sourceLabel(v: Vacancy): string {
 export function VacancyCard({ v }: { v: Vacancy }) {
   const badge = VERIFICATION_LABELS[v.verificationLevel];
   const wage = wageLabel(v);
+  // Headline из JobTech — свободный текст на шведском (не только должность,
+  // может включать город/работодателя). Переводим саму профессию по
+  // фиксированному списку категорий импортёра, оригинал оставляем под ней.
+  const translatedTitle = occupationRu(v.occupationTerm);
 
   return (
     <article className="flex flex-col rounded-2xl border border-line bg-card p-5 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-deep/10">
@@ -51,7 +56,8 @@ export function VacancyCard({ v }: { v: Vacancy }) {
         </span>
       </div>
 
-      <h3 className="mt-5 text-lg leading-tight font-semibold">{v.title}</h3>
+      <h3 className="mt-5 text-lg leading-tight font-semibold">{translatedTitle ?? v.title}</h3>
+      {translatedTitle && <p className="mt-0.5 text-[11px] text-muted italic">{v.title}</p>}
       <p className="mt-1 text-[13px] text-muted">{v.employerName ?? "Работодатель уточняется"}</p>
       <p className="text-[13px] text-muted">{v.location}</p>
 

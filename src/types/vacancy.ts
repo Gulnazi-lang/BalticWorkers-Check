@@ -11,6 +11,7 @@ export type ConditionStatus = "included" | "deducted" | "unknown";
 export interface Vacancy {
   id: string;
   title: string;
+  occupationTerm: string | null;
   employerName: string | null;
   country: "SE" | "NO";
   location: string | null;
@@ -33,6 +34,7 @@ export interface Vacancy {
 export interface VacancyRow {
   id: string;
   title: string;
+  occupation_term: string | null;
   employer_name: string | null;
   country: string;
   location: string | null;
