@@ -5,8 +5,9 @@ export const LOCALES = ["lv", "ru", "en", "lt", "et"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 // Локали, реально отдаваемые пользователю.
-// lt/et включить после вычитки носителем.
-export const ENABLED_LOCALES: readonly Locale[] = ["lv", "ru", "en"];
+// lt/et вычитаны носителями 15.08.2026 и включены — дальнейшая полировка
+// возможна по фидбеку уже с живой страницы.
+export const ENABLED_LOCALES: readonly Locale[] = ["lv", "ru", "en", "lt", "et"];
 
 export const DEFAULT_LOCALE: Locale = "lv";
 
