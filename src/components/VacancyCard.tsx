@@ -1,6 +1,6 @@
 import type { ConditionStatus, Vacancy } from "@/types/vacancy";
 import { ApplyHelp } from "@/components/ApplyHelp";
-import { occupationRu } from "@/lib/occupations";
+import { occupationRu, occupationRuFromTitle } from "@/lib/occupations";
 import { TONE_CLASS, VERIFICATION_LABELS } from "@/lib/status";
 
 const COUNTRY_NAMES: Record<Vacancy["country"], string> = { SE: "Швеция", NO: "Норвегия" };
@@ -45,7 +45,7 @@ export function VacancyCard({ v }: { v: Vacancy }) {
   // Headline из JobTech — свободный текст на шведском (не только должность,
   // может включать город/работодателя). Переводим саму профессию по
   // фиксированному списку категорий импортёра, оригинал оставляем под ней.
-  const translatedTitle = occupationRu(v.occupationTerm);
+  const translatedTitle = occupationRu(v.occupationTerm) ?? occupationRuFromTitle(v.title);
 
   return (
     <article className="flex flex-col rounded-2xl border border-line bg-card p-5 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-deep/10">

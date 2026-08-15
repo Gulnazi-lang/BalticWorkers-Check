@@ -38,3 +38,15 @@ export function occupationRu(term: string | null): string | null {
   if (!term) return null;
   return RU_BY_TERM.get(term) ?? null;
 }
+
+/**
+ * Запасной путь для вакансий, импортированных до появления occupation_term
+ * (или если оно почему-то не проставилось): перевод статический, значит
+ * ждать повторный импорт не нужно — headline почти всегда содержит один
+ * из 12 терминов поиска как подстроку.
+ */
+export function occupationRuFromTitle(title: string): string | null {
+  const lower = title.toLowerCase();
+  const match = OCCUPATIONS.find((o) => lower.includes(o.term.toLowerCase()));
+  return match?.ru ?? null;
+}
