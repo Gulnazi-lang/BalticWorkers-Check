@@ -19,10 +19,13 @@ export async function getOccupationOptions(locale: Locale): Promise<OccupationOp
   if (!isSupabaseConfigured()) return [];
 
   const supabase = await createClient();
-  const [{ data: counts }, { data: labels }] = await Promise.all([
-    supabase.from("occupation_counts").select("occupation_isco, vacancy_count"),
-    supabase.from("occupation_labels").select("isco_code, label").eq("locale", locale),
-  ]);
+  const [{ data: counts, error: countsError }, { data: labels, error: labelsError }] =
+    await Promise.all([
+      supabase.from("occupation_counts").select("occupation_isco, vacancy_count"),
+      supabase.from("occupation_labels").select("isco_code, label").eq("locale", locale),
+    ]);
+  if (countsError) console.error("occupation_counts:", countsError.message);
+  if (labelsError) console.error("occupation_labels:", labelsError.message);
 
   const labelByCode = new Map((labels ?? []).map((l) => [l.isco_code as string, l.label as string]));
 
