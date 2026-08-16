@@ -7,7 +7,10 @@ import { isEnabledLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { buildAlternates, localeHref } from "@/i18n/href";
 
-const CONTACT_EMAIL = "hello@balticworkers-check.example";
+// Те же адреса, что на /employers/{sv,nb}: второй в копии, чтобы письмо
+// работодателя не зависело от одного ящика.
+const CONTACT_EMAIL = "baltworkers@gmail.com";
+const CONTACT_EMAIL_CC = "gelvua@gmail.com";
 
 export async function generateMetadata({
   params,
@@ -110,12 +113,14 @@ export default async function ForEmployersPage({
                 <h3 className="font-semibold">{dict.forEmployers.whereTitle}</h3>
                 <p className="mt-3 text-muted">{dict.forEmployers.whereText}</p>
                 <a
-                  href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(dict.forEmployers.mailSubject)}`}
+                  href={`mailto:${CONTACT_EMAIL}?cc=${encodeURIComponent(CONTACT_EMAIL_CC)}&subject=${encodeURIComponent(dict.forEmployers.mailSubject)}`}
                   className="mt-4 inline-block rounded-lg bg-accent px-5 py-3.5 font-bold text-white"
                 >
                   {dict.forEmployers.whereCta}
                 </a>
-                <p className="mt-3 text-sm text-muted">{CONTACT_EMAIL}</p>
+                <p className="mt-3 text-sm text-muted">
+                  {CONTACT_EMAIL} · {CONTACT_EMAIL_CC}
+                </p>
               </div>
             </div>
           </div>
