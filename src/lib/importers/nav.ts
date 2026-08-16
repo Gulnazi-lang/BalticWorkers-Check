@@ -15,6 +15,10 @@
 
 import { OCCUPATIONS } from "@/lib/occupations";
 
+// Значение vacancies.source_name для этого источника — см. пояснение
+// у JOBTECH_SOURCE_NAME.
+export const NAV_SOURCE_NAME = "NAV";
+
 const NAV_FEED_BASE = "https://pam-stilling-feed.nav.no/api/v1/feed";
 const NAV_FEEDENTRY_BASE = "https://pam-stilling-feed.nav.no/api/v1/feedentry";
 
@@ -62,7 +66,7 @@ export interface ImportedNavVacancy {
   verification_level: "SOURCE_CONFIRMED";
   publication_type: "ORGANIC";
   source_url: string;
-  source_name: "NAV";
+  source_name: typeof NAV_SOURCE_NAME;
   external_id: string;
   is_demo: false;
   published: true;
@@ -151,7 +155,7 @@ export async function fetchNavVacancies(token: string, since: string): Promise<N
         verification_level: "SOURCE_CONFIRMED",
         publication_type: "ORGANIC",
         source_url: ad.link,
-        source_name: "NAV",
+        source_name: NAV_SOURCE_NAME,
         external_id: item._feed_entry.uuid,
         is_demo: false,
         published: true,

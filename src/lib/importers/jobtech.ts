@@ -11,6 +11,11 @@ import { OCCUPATIONS } from "@/lib/occupations";
 
 const JOBTECH_SEARCH_URL = "https://jobsearch.api.jobtechdev.se/search";
 
+// Значение vacancies.source_name для этого источника. Константа, а не
+// литерал в двух местах: по нему же ищется exclusion-лист, и расхождение
+// строк тихо отключило бы фильтр снятых вакансий.
+export const JOBTECH_SOURCE_NAME = "Arbetsförmedlingen";
+
 interface JobTechHit {
   id: string;
   headline: string;
@@ -46,7 +51,7 @@ export interface ImportedVacancy {
   verification_level: "SOURCE_CONFIRMED";
   publication_type: "ORGANIC";
   source_url: string;
-  source_name: string;
+  source_name: typeof JOBTECH_SOURCE_NAME;
   external_id: string;
   is_demo: false;
   published: true;
@@ -82,7 +87,7 @@ export async function fetchJobTechVacancies(limitPerOccupation = 5): Promise<Imp
         verification_level: "SOURCE_CONFIRMED",
         publication_type: "ORGANIC",
         source_url: hit.webpage_url,
-        source_name: "Arbetsförmedlingen",
+        source_name: JOBTECH_SOURCE_NAME,
         external_id: hit.id,
         is_demo: false,
         published: true,

@@ -219,3 +219,48 @@ grant insert on public.job_alerts to anon, authenticated;
 -- Подтверждение/отписка/подбор совпадений — только service_role по токену
 -- в route handlers (/api/alerts/confirm, /api/alerts/unsubscribe, /api/notify).
 grant select, update on public.job_alerts to service_role;
+
+
+-- ---------------------------------------------------------------------------
+-- Вакансии, снятые по просьбе работодателя (миграция 014).
+--
+-- Держит обещание со страниц /employers/sv и /employers/nb: «не хотите
+-- показываться — уберём вакансию». Без таблицы импортёр возвращал бы снятую
+-- вакансию при следующем прогоне.
+--
+-- Ключ (source_name, external_id) — те же колонки, что и в vacancies.
+-- Два уровня исключения: по объявлению и по работодателю. Второй нужен
+-- потому, что id объявления в источнике не переиспользуется (у JobTech
+-- глобальный возрастающий счётчик, у NAV uuid), и повторная публикация той
+-- же вакансии получает НОВЫЙ id, мимо исключения по id.
+-- ---------------------------------------------------------------------------
+create table public.excluded_vacancies (
+  id            uuid primary key default gen_random_uuid(),
+
+  source_name   text not null,        -- как в vacancies.source_name
+  external_id   text,                 -- одно объявление; null = не по объявлению
+  employer_name text,                 -- все объявления работодателя; null = не по нему
+
+  reason        text,
+  requested_by  text,                 -- email обратившегося, для аудита
+  created_at    timestamptz not null default now(),
+
+  -- Пустая запись исключила бы всё подряд из источника.
+  constraint excluded_vacancies_target_ck
+    check (external_id is not null or employer_name is not null)
+);
+
+create unique index excluded_vacancies_ad_uq
+  on public.excluded_vacancies (source_name, external_id)
+  where external_id is not null;
+
+create unique index excluded_vacancies_employer_uq
+  on public.excluded_vacancies (source_name, lower(employer_name))
+  where employer_name is not null;
+
+alter table public.excluded_vacancies enable row level security;
+
+-- Не публичные данные (в reason/requested_by переписка с работодателем).
+-- service_role обходит RLS, но НЕ обычный GRANT — без него Data API таблицу
+-- не увидит.
+grant select, insert, update, delete on public.excluded_vacancies to service_role;

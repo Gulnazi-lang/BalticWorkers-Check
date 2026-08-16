@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { fetchNavVacancies } from "@/lib/importers/nav";
+import { fetchNavVacancies, NAV_SOURCE_NAME } from "@/lib/importers/nav";
+import { isExcluded, loadExclusions, purgeExcluded } from "@/lib/importers/exclusions";
 import { collectiveAgreementIdFor, resolveAgreementIds } from "@/lib/importers/resolveAgreements";
 import { createServiceClient } from "@/lib/supabase/service";
 
@@ -48,14 +49,21 @@ export async function GET(request: NextRequest) {
 
     const { toUpsert, toDeactivate, nextCursor } = await fetchNavVacancies(token, since);
 
+    // Снятые по просьбе работодателя (миграция 014) — см. тот же блок в
+    // /api/import. Здесь это особенно важно: NAV читается журналом событий,
+    // и любое изменение объявления вернуло бы его в toUpsert заново.
+    const exclusions = await loadExclusions(supabase, NAV_SOURCE_NAME);
+    const purged = await purgeExcluded(supabase, NAV_SOURCE_NAME, exclusions);
+    const allowed = toUpsert.filter((v) => isExcluded(exclusions, v) === false);
+
     let imported = 0;
-    if (toUpsert.length > 0) {
+    if (allowed.length > 0) {
       const agreementIdByCode = await resolveAgreementIds(
         supabase,
         "NO",
-        toUpsert.map((v) => v.occupation_term)
+        allowed.map((v) => v.occupation_term)
       );
-      const vacanciesWithAgreement = toUpsert.map((v) => ({
+      const vacanciesWithAgreement = allowed.map((v) => ({
         ...v,
         collective_agreement_id: collectiveAgreementIdFor(agreementIdByCode, v.occupation_term),
       }));
@@ -72,7 +80,7 @@ export async function GET(request: NextRequest) {
       const { data, error } = await supabase
         .from("vacancies")
         .delete()
-        .eq("source_name", "NAV")
+        .eq("source_name", NAV_SOURCE_NAME)
         .in("external_id", toDeactivate)
         .select("id");
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -83,7 +91,7 @@ export async function GET(request: NextRequest) {
       .from("import_cursors")
       .upsert({ source: CURSOR_SOURCE, cursor_time: nextCursor }, { onConflict: "source" });
 
-    return NextResponse.json({ imported, deactivated, source: "nav", cursor: nextCursor });
+    return NextResponse.json({ imported, deactivated, purged, source: "nav", cursor: nextCursor });
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
     return NextResponse.json({ error: message }, { status: 502 });
