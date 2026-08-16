@@ -1,9 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { fetchJobTechVacancies, JOBTECH_SOURCE_NAME } from "@/lib/importers/jobtech";
+import { fetchJobTechVacancies, findRemovedJobTechIds, JOBTECH_SOURCE_NAME } from "@/lib/importers/jobtech";
 import { isExcluded, loadExclusions, purgeExcluded } from "@/lib/importers/exclusions";
 import { collectiveAgreementIdFor, resolveAgreementIds } from "@/lib/importers/resolveAgreements";
 import { createServiceClient } from "@/lib/supabase/service";
+
+// Проверка на снятие (findRemovedJobTechIds) добавляет по одному запросу
+// к JobTech на каждую уже опубликованную вакансию источника — раньше роут
+// делал только поисковые запросы (по числу терминов/работодателей),
+// теперь ещё и это. На сегодняшнем масштабе (десятки строк) укладывается
+// с запасом, но растёт линейно с количеством published-вакансий. Если
+// когда-нибудь станет тесно в лимите — резать не логику, а способ (пачками
+// по дням, не все строки за один прогон). На Hobby-плане Vercel лимит
+// выполнения функции может быть жёстко зашит ниже, чем maxDuration ниже
+// заявляет — это надо увидеть на реальном прогоне, не предполагать.
+export const maxDuration = 60;
 
 // GET, а не POST: чтобы без лишней настройки триггерился Vercel Cron
 // (он умеет вызывать только GET). Защита не в методе, а в секрете.
@@ -43,45 +54,78 @@ export async function GET(request: NextRequest) {
     const purged = await purgeExcluded(supabase, JOBTECH_SOURCE_NAME, exclusions);
     const allowed = vacancies.filter((v) => isExcluded(exclusions, v) === false);
 
-    if (allowed.length === 0) {
-      return NextResponse.json({ imported: 0, purged, source: "jobtech" });
+    let imported = 0;
+    if (allowed.length > 0) {
+      // Привязка вакансии к договору по occupation_term — детерминированная,
+      // не требует решения человека (в отличие от employer_agreement_status,
+      // которое остаётся редакционным полем и импортёром не трогается).
+      const agreementIdByCode = await resolveAgreementIds(
+        supabase,
+        "SE",
+        allowed.map((v) => v.occupation_term)
+      );
+      const vacanciesWithAgreement = allowed.map((v) => {
+        const collectiveAgreementId = collectiveAgreementIdFor(agreementIdByCode, v.occupation_term);
+        return {
+          ...v,
+          collective_agreement_id: collectiveAgreementId,
+          // agreement_status идёт в паре с collective_agreement_id: CHECK
+          // vacancies_agreement_rate_ck (015_agreement_status.sql) требует
+          // agreement_status = 'named', когда FK на ставку задан — без этой
+          // строки upsert падал бы для любой вакансии с найденным договором.
+          // Без совпадения поле не трогаем — не затираем возможную ручную
+          // правку редакции повторным импортом (upsert обновляет только
+          // перечисленные здесь колонки).
+          ...(collectiveAgreementId ? { agreement_status: "named" } : {}),
+        };
+      });
+
+      const { data, error } = await supabase
+        .from("vacancies")
+        .upsert(vacanciesWithAgreement, { onConflict: "source_name,external_id" })
+        .select("id");
+
+      if (error) {
+        console.error(`[import:jobtech] vacancies upsert failed: ${error.message}`);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+      imported = data?.length ?? 0;
     }
 
-    // Привязка вакансии к договору по occupation_term — детерминированная,
-    // не требует решения человека (в отличие от employer_agreement_status,
-    // которое остаётся редакционным полем и импортёром не трогается).
-    const agreementIdByCode = await resolveAgreementIds(
-      supabase,
-      "SE",
-      allowed.map((v) => v.occupation_term)
-    );
-    const vacanciesWithAgreement = allowed.map((v) => {
-      const collectiveAgreementId = collectiveAgreementIdFor(agreementIdByCode, v.occupation_term);
-      return {
-        ...v,
-        collective_agreement_id: collectiveAgreementId,
-        // agreement_status идёт в паре с collective_agreement_id: CHECK
-        // vacancies_agreement_rate_ck (015_agreement_status.sql) требует
-        // agreement_status = 'named', когда FK на ставку задан — без этой
-        // строки upsert падал бы для любой вакансии с найденным договором.
-        // Без совпадения поле не трогаем — не затираем возможную ручную
-        // правку редакции повторным импортом (upsert обновляет только
-        // перечисленные здесь колонки).
-        ...(collectiveAgreementId ? { agreement_status: "named" } : {}),
-      };
-    });
-
-    const { data, error } = await supabase
+    // Снятие вакансий, пропавших у источника (не по просьбе работодателя —
+    // это purgeExcluded выше — а сами по себе: employer снял объявление,
+    // JobTech больше его не отдаёт). У JobTech нет событийного фида статусов
+    // как у NAV, поэтому проверяем напрямую: берём все текущие published
+    // строки этого источника и спрашиваем JobTech по каждому id, жив ли он
+    // ещё (см. findRemovedJobTechIds в jobtech.ts — 404 или removed:true).
+    // Без этого шага снятая вакансия висела бы на сайте бессрочно.
+    const { data: publishedRows, error: publishedError } = await supabase
       .from("vacancies")
-      .upsert(vacanciesWithAgreement, { onConflict: "source_name,external_id" })
-      .select("id");
+      .select("external_id")
+      .eq("source_name", JOBTECH_SOURCE_NAME)
+      .eq("published", true);
 
-    if (error) {
-      console.error(`[import:jobtech] vacancies upsert failed: ${error.message}`);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    let deactivated = 0;
+    if (publishedError) {
+      console.error(`[import:jobtech] published lookup failed: ${publishedError.message}`);
+    } else if (publishedRows && publishedRows.length > 0) {
+      const removedIds = await findRemovedJobTechIds(publishedRows.map((r) => r.external_id));
+      if (removedIds.length > 0) {
+        const { data: deactivatedData, error: deactivateError } = await supabase
+          .from("vacancies")
+          .delete()
+          .eq("source_name", JOBTECH_SOURCE_NAME)
+          .in("external_id", removedIds)
+          .select("id");
+        if (deactivateError) {
+          console.error(`[import:jobtech] deactivate failed: ${deactivateError.message}`);
+        } else {
+          deactivated = deactivatedData?.length ?? 0;
+        }
+      }
     }
 
-    return NextResponse.json({ imported: data?.length ?? 0, purged, source: "jobtech" });
+    return NextResponse.json({ imported, purged, deactivated, source: "jobtech" });
   } catch (err) {
     // Vercel Runtime Logs пишут код ответа и время выполнения по умолчанию,
     // но НЕ тело JSON — без явного console.error 502 был бы виден в логах

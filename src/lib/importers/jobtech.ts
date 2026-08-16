@@ -11,6 +11,7 @@ import { OCCUPATIONS, occupationTermFromTitle } from "@/lib/occupations";
 import { CONTRACTOR_EMPLOYERS, PRIORITY_REGIONS } from "@/lib/contractors";
 
 const JOBTECH_SEARCH_URL = "https://jobsearch.api.jobtechdev.se/search";
+const JOBTECH_AD_URL = "https://jobsearch.api.jobtechdev.se/ad";
 
 // Значение vacancies.source_name для этого источника. Константа, а не
 // литерал в двух местах: по нему же ищется exclusion-лист, и расхождение
@@ -126,6 +127,41 @@ function toImportedVacancy(hit: JobTechHit, occupationTerm: string | null): Impo
     is_demo: false,
     published: true,
   };
+}
+
+// Снятие вакансий, пропавших у источника — то, чего JobTech-импортёру не
+// хватало (в отличие от NAV, у которого этот механизм есть с 15.08.2026,
+// через toDeactivate/status фида). У JobTech нет событийного фида статусов
+// — только поиск по терминам/работодателям с ограниченным limit, а
+// поисковая выдача не сигнал "вакансия пропала": она могла просто выпасть
+// из топ-N по релевантности, оставаясь живой. Единственный надёжный сигнал
+// — прямой запрос к самой вакансии по id (/ad/{id}): removed:true или 404
+// значит вакансию реально сняли у источника, не то что поиск её не нашёл.
+//
+// Без этого шага работодатель, снявший объявление, продолжал бы висеть на
+// сайте бессрочно — прямой удар по «проверенным условиям» (человек
+// откликается на пропавшую вакансию) и по обещанию с /employers/* убрать
+// вакансию по запросу (см. excluded_vacancies, миграция 014 — это другой
+// механизм, для снятия ПО ПРОСЬБЕ работодателя; этот — для вакансий,
+// которые пропали сами, без обращения).
+export async function findRemovedJobTechIds(externalIds: readonly string[]): Promise<string[]> {
+  const removed: string[] = [];
+  for (const id of externalIds) {
+    const res = await fetch(`${JOBTECH_AD_URL}/${encodeURIComponent(id)}`, {
+      headers: { accept: "application/json" },
+    });
+    if (res.status === 404) {
+      removed.push(id);
+    } else if (res.ok) {
+      const ad = (await res.json()) as { removed?: boolean };
+      if (ad.removed) removed.push(id);
+    }
+    // Сетевая ошибка/иной статус — НЕ считаем снятой: отсутствие ответа не
+    // доказательство, что вакансии больше нет, а ложное снятие ломает то
+    // же обещание, которое эта проверка должна защищать.
+    await new Promise((resolve) => setTimeout(resolve, 120));
+  }
+  return removed;
 }
 
 export async function fetchJobTechVacancies(limitPerOccupation = 5): Promise<ImportedVacancy[]> {
