@@ -197,13 +197,27 @@ export function VacancyCard({
         </div>
       )}
 
+      {/* exists_unnamed — намеренно НЕ в общей строке с housing/travel/hours:
+          та строка про подтверждённые факты, эта — про факт, который есть,
+          но не назван, ставку по нему показывать нельзя (см. CLAUDE.md,
+          agreement_status). Отдельная приглушённая рамка, как и у
+          showAmbiguousSeNote выше — тот же визуальный регистр «известно, но
+          не разрешено до конца», не спутать с уверенной строкой § ниже. */}
+      {v.agreementStatus === "exists_unnamed" && (
+        <div className="mb-3 rounded-lg bg-bg px-3 py-2 text-[11px] leading-relaxed text-muted">
+          {dict.vacancy.agreementExistsUnnamed}
+        </div>
+      )}
+
       <div className="grid gap-2 border-t border-line pt-3 text-xs text-muted">
         <span>⌂ {conditionLine(dict, "housing", v.housingStatus)}</span>
         <span>→ {conditionLine(dict, "travel", v.travelStatus)}</span>
         {v.hoursPerWeek && (
           <span>◷ {interpolate(dict.vacancy.hoursPerWeek, { hours: v.hoursPerWeek })}</span>
         )}
-        {v.collectiveAgreement && <span>§ {v.collectiveAgreement}</span>}
+        {v.agreementStatus === "named" && v.collectiveAgreement && (
+          <span>§ {v.collectiveAgreement}</span>
+        )}
       </div>
 
       {(v.housingStatus === "unknown" || v.travelStatus === "unknown" || !v.hoursPerWeek) && (

@@ -146,7 +146,8 @@
     "tariffBelowMinimumNO": "Nurodytas atlygis mažesnis už visuotinai privalomą minimumą.",
     "tariffSourceLink": "Susitarimo šaltinis ↗",
     "tariffAmbiguousSE": "Šioje srityje Švedijoje galioja keli kolektyviniai susitarimai su skirtingais įkainiais, o darbdaviui be susitarimo įstatyminio minimumo apskritai nėra. Koks susitarimas taikomas, priklauso nuo konkretaus darbdavio — patikslinkite prieš teikdami paraišką.",
-    "eurApprox": "≈ {amount} € (ECB kursas {date})"
+    "eurApprox": "≈ {amount} € (ECB kursas {date})",
+    "agreementExistsUnnamed": "Kolektyvinė sutartis yra, pavadinimas nenurodytas"
   },
   "applyHelp": {
     "open": "Kaip kandidatuoti →",

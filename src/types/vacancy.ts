@@ -12,6 +12,16 @@ export type EmployerAgreementStatus = "bound" | "not_bound" | "unknown";
 
 export type AgreementLegalForce = "universally_binding" | "members_only";
 
+/**
+ * Различает "условия сверены редакцией/работодателем" от "объявление
+ * упоминает какой-то договор, не называя его" — раньше обе формы попадали
+ * в одно и то же collectiveAgreement (text) и рендерились на карточке
+ * одинаково. exists_unnamed — реальная информация (минимум гарантирован
+ * каким-то договором), но НЕ основание показывать конкретную ставку —
+ * см. правило в CLAUDE.md, раздел про agreement_status.
+ */
+export type AgreementStatus = "named" | "exists_unnamed" | "unknown";
+
 /** Тариф по коллективному договору — не зарплата вакансии, отдельный факт. */
 export interface CollectiveAgreementRate {
   agreementCode: string;
@@ -39,6 +49,7 @@ export interface Vacancy {
   travelStatus: ConditionStatus;
   hoursPerWeek: number | null;
   collectiveAgreement: string | null;
+  agreementStatus: AgreementStatus;
   collectiveAgreementRate: CollectiveAgreementRate | null;
   employerAgreementStatus: EmployerAgreementStatus | null;
   verificationLevel: VerificationLevel;
@@ -65,6 +76,7 @@ export interface VacancyRow {
   travel_status: string | null;
   hours_per_week: number | null;
   collective_agreement: string | null;
+  agreement_status: string | null;
   collective_agreement_id: string | null;
   employer_agreement_status: string | null;
   verification_level: VerificationLevel;

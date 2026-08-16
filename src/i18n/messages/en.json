@@ -146,7 +146,8 @@
     "tariffBelowMinimumNO": "The stated rate is below the universally binding minimum.",
     "tariffSourceLink": "Agreement source ↗",
     "tariffAmbiguousSE": "In this industry in Sweden several collective agreements apply with different rates, and an employer with no agreement at all has no statutory minimum to follow. Which agreement applies depends on the specific employer — please check before applying.",
-    "eurApprox": "≈ €{amount} (ECB rate as of {date})"
+    "eurApprox": "≈ €{amount} (ECB rate as of {date})",
+    "agreementExistsUnnamed": "A collective agreement exists, name not stated"
   },
   "applyHelp": {
     "open": "How to apply →",

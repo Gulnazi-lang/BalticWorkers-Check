@@ -21,7 +21,7 @@ import { agreementCodeForTerm } from "@/lib/occupations";
 export async function resolveAgreementIds(
   supabase: SupabaseClient,
   country: string,
-  occupationTerms: string[]
+  occupationTerms: (string | null)[]
 ): Promise<Map<string, string>> {
   const codes = [
     ...new Set(occupationTerms.map(agreementCodeForTerm).filter((c): c is string => c != null)),
@@ -41,7 +41,7 @@ export async function resolveAgreementIds(
 
 export function collectiveAgreementIdFor(
   idByCode: Map<string, string>,
-  occupationTerm: string
+  occupationTerm: string | null
 ): string | null {
   const code = agreementCodeForTerm(occupationTerm);
   return code ? (idByCode.get(code) ?? null) : null;

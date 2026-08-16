@@ -63,10 +63,16 @@ export async function GET(request: NextRequest) {
         "NO",
         allowed.map((v) => v.occupation_term)
       );
-      const vacanciesWithAgreement = allowed.map((v) => ({
-        ...v,
-        collective_agreement_id: collectiveAgreementIdFor(agreementIdByCode, v.occupation_term),
-      }));
+      const vacanciesWithAgreement = allowed.map((v) => {
+        const collectiveAgreementId = collectiveAgreementIdFor(agreementIdByCode, v.occupation_term);
+        return {
+          ...v,
+          collective_agreement_id: collectiveAgreementId,
+          // См. тот же блок в /api/import: agreement_status = 'named' —
+          // обязательное условие CHECK-констрейнта, когда FK задан.
+          ...(collectiveAgreementId ? { agreement_status: "named" } : {}),
+        };
+      });
       const { data, error } = await supabase
         .from("vacancies")
         .upsert(vacanciesWithAgreement, { onConflict: "source_name,external_id" })

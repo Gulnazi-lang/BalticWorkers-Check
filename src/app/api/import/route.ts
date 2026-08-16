@@ -48,10 +48,21 @@ export async function GET(request: NextRequest) {
       "SE",
       allowed.map((v) => v.occupation_term)
     );
-    const vacanciesWithAgreement = allowed.map((v) => ({
-      ...v,
-      collective_agreement_id: collectiveAgreementIdFor(agreementIdByCode, v.occupation_term),
-    }));
+    const vacanciesWithAgreement = allowed.map((v) => {
+      const collectiveAgreementId = collectiveAgreementIdFor(agreementIdByCode, v.occupation_term);
+      return {
+        ...v,
+        collective_agreement_id: collectiveAgreementId,
+        // agreement_status идёт в паре с collective_agreement_id: CHECK
+        // vacancies_agreement_rate_ck (015_agreement_status.sql) требует
+        // agreement_status = 'named', когда FK на ставку задан — без этой
+        // строки upsert падал бы для любой вакансии с найденным договором.
+        // Без совпадения поле не трогаем — не затираем возможную ручную
+        // правку редакции повторным импортом (upsert обновляет только
+        // перечисленные здесь колонки).
+        ...(collectiveAgreementId ? { agreement_status: "named" } : {}),
+      };
+    });
 
     const { data, error } = await supabase
       .from("vacancies")

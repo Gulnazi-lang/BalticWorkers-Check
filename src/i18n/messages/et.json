@@ -146,7 +146,8 @@
     "tariffBelowMinimumNO": "Märgitud tasu on väiksem üldiselt siduvast miinimumist.",
     "tariffSourceLink": "Kokkuleppe allikas ↗",
     "tariffAmbiguousSE": "Selles valdkonnas Rootsis kehtib mitu kollektiivlepingut erinevate määradega ning tööandjal, kellel lepingut pole, ei ole seadusest tulenevat miinimumi üldse. Milline leping kehtib, sõltub konkreetsest tööandjast — täpsustage enne kandideerimist.",
-    "eurApprox": "≈ {amount} € (EKP kurss seisuga {date})"
+    "eurApprox": "≈ {amount} € (EKP kurss seisuga {date})",
+    "agreementExistsUnnamed": "Kollektiivleping on olemas, nimetust pole märgitud"
   },
   "applyHelp": {
     "open": "Kuidas kandideerida →",

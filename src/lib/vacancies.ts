@@ -1,5 +1,6 @@
 import type {
   AgreementLegalForce,
+  AgreementStatus,
   CollectiveAgreementRate,
   ConditionStatus,
   EmployerAgreementStatus,
@@ -36,6 +37,7 @@ export const DEMO_VACANCIES: Vacancy[] = [
     travelStatus: "included",
     hoursPerWeek: 40,
     collectiveAgreement: null,
+    agreementStatus: "unknown",
     collectiveAgreementRate: null,
     employerAgreementStatus: null,
     verificationLevel: "EMPLOYER_CONFIRMED",
@@ -60,6 +62,7 @@ export const DEMO_VACANCIES: Vacancy[] = [
     travelStatus: "unknown",
     hoursPerWeek: null,
     collectiveAgreement: null,
+    agreementStatus: "unknown",
     collectiveAgreementRate: null,
     employerAgreementStatus: null,
     verificationLevel: "SOURCE_CONFIRMED",
@@ -87,6 +90,7 @@ export const DEMO_VACANCIES: Vacancy[] = [
     travelStatus: "unknown",
     hoursPerWeek: null,
     collectiveAgreement: null,
+    agreementStatus: "unknown",
     collectiveAgreementRate: null,
     employerAgreementStatus: null,
     verificationLevel: "NEEDS_REVIEW",
@@ -102,6 +106,12 @@ const CONDITIONS: ConditionStatus[] = ["included", "deducted", "unknown"];
 
 function toCondition(value: string | null): ConditionStatus {
   return CONDITIONS.find((c) => c === value) ?? "unknown";
+}
+
+const AGREEMENT_STATUSES: AgreementStatus[] = ["named", "exists_unnamed", "unknown"];
+
+function toAgreementStatus(value: string | null): AgreementStatus {
+  return AGREEMENT_STATUSES.find((s) => s === value) ?? "unknown";
 }
 
 function toEmployerAgreementStatus(value: string | null): EmployerAgreementStatus | null {
@@ -127,6 +137,11 @@ interface VacancyRowWithAgreement extends VacancyRow {
 }
 
 function toAgreementRate(row: VacancyRowWithAgreement): CollectiveAgreementRate | null {
+  // Правило, зафиксированное в CLAUDE.md: расчёт/показ тарифной ставки
+  // работает только при agreement_status = 'named'. Дублирует CHECK-
+  // констрейнт в БД (015_agreement_status.sql) на уровне чтения — так
+  // правило переживёт будущие правки этой функции, а не только миграции.
+  if (row.agreement_status !== "named") return null;
   const agreement = row.collective_agreements;
   const rate = agreement?.collective_agreement_rates?.[0];
   const legalForce = agreement ? toLegalForce(agreement.legal_force) : null;
@@ -219,6 +234,7 @@ function fromRow(
     travelStatus: toCondition(row.travel_status),
     hoursPerWeek: row.hours_per_week,
     collectiveAgreement: row.collective_agreement,
+    agreementStatus: toAgreementStatus(row.agreement_status),
     collectiveAgreementRate: resolveAgreementRate(row, fallbackMap),
     employerAgreementStatus: toEmployerAgreementStatus(row.employer_agreement_status),
     verificationLevel: row.verification_level,
@@ -235,17 +251,6 @@ export interface VacancyFilters {
   country?: string;
 }
 
-/**
- * Опубликованные вакансии. Порядок выдачи НЕ зависит от publication_type:
- * платное продвижение влияет на охват вне витрины, но не подменяет проверку
- * и не переставляет карточки вперёд.
- *
- * Фильтры применяются в самом запросе к базе, а не после — список профессий
- * в поиске строится из occupation_counts и гарантированно непуст для
- * каждого пункта (см. src/lib/occupationOptions.ts); если бы фильтрация шла
- * по уже выбранным limit последним вакансиям, реальные совпадения за
- * пределами этого окна просто не находились бы, и гарантия ломалась.
- */
 /**
  * Живая вакансия для героя на главной — заменяет прежнюю хардкод демо-
  * карточку (см. CLAUDE.md, «Герой на главной»). Правило отбора: среди самых
@@ -265,7 +270,10 @@ const HERO_FIELD_TESTS: ((v: Vacancy) => boolean)[] = [
   (v) => v.housingStatus !== "unknown",
   (v) => v.travelStatus !== "unknown",
   (v) => v.hoursPerWeek != null,
-  (v) => v.collectiveAgreement != null,
+  // exists_unnamed засчитывается наравне с named: "Lön enligt kollektivavtal"
+  // без названия — реальная информация (минимум чем-то гарантирован), не
+  // пустышка. Решение зафиксировано в CLAUDE.md.
+  (v) => v.agreementStatus !== "unknown",
 ];
 const HERO_MIN_FILLED_FIELDS = 3;
 const HERO_POOL_SIZE = 5;
@@ -317,6 +325,17 @@ export async function getHeroVacancy(locale: Locale): Promise<Vacancy | null> {
   return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
+/**
+ * Опубликованные вакансии. Порядок выдачи НЕ зависит от publication_type:
+ * платное продвижение влияет на охват вне витрины, но не подменяет проверку
+ * и не переставляет карточки вперёд.
+ *
+ * Фильтры применяются в самом запросе к базе, а не после — список профессий
+ * в поиске строится из occupation_counts и гарантированно непуст для
+ * каждого пункта (см. src/lib/occupationOptions.ts); если бы фильтрация шла
+ * по уже выбранным limit последним вакансиям, реальные совпадения за
+ * пределами этого окна просто не находились бы, и гарантия ломалась.
+ */
 export async function getVacancies(
   locale: Locale,
   filters: VacancyFilters = {},
