@@ -1,0 +1,60 @@
+{
+  "htmlLang": "sv",
+  "meta": {
+    "title": "Till arbetsgivare i Sverige — BalticWorkers Check",
+    "description": "Vi visar publicerade svenska jobbannonser för arbetssökande i Baltikum och vill återge villkoren korrekt. Så här rättar ni uppgifterna om er annons."
+  },
+  "header": {
+    "tagline": "Information om jobb utomlands för arbetssökande i Baltikum"
+  },
+  "hero": {
+    "eyebrow": "Till arbetsgivare i Sverige",
+    "title": "Er annons syns hos oss — vi vill återge villkoren rätt",
+    "subtitle": "BalticWorkers Check är en informationsplattform i Lettland. Vi hämtar publicerade annonser från Platsbanken och visar dem för arbetssökande i Baltikum på deras eget språk, alltid med länk till originalannonsen. Vi säljer ingen annonsplats — vi vill bara att villkoren vi visar ska stämma.",
+    "cta": "Rätta uppgifterna om er annons"
+  },
+  "who": {
+    "title": "Vilka vi är",
+    "text": "En liten informationsplattform, inte en bemanningsförmedling. Vi förmedlar ingen arbetskraft, tar inga rekryteringsuppdrag och tar aldrig betalt av arbetssökande.",
+    "point1": "Vi hämtar annonser ur Arbetsförmedlingens öppna data (JobTech/Platsbanken). Vi publicerar ingenting annat än det ni själva redan har lagt ut offentligt.",
+    "point2": "Varje annonskort länkar till originalet. Ansökningar går direkt till er på vanlig väg — vi tar aldrig emot handlingar från kandidater.",
+    "point3": "Arbetssökande betalar ingenting för att se annonserna, för att söka eller för ”förtur”.",
+    "siteLinkBefore": "Vill ni se hur en annons ser ut hos oss:",
+    "siteLink": "vår sida på engelska"
+  },
+  "why": {
+    "title": "Varför vi hör av oss",
+    "text": "Annonsen är offentlig, så vi behöver inget tillstånd för att visa den. Men annonstexten svarar sällan på det som avgör mest för någon som ska flytta till ett annat land: är lönen brutto eller netto, ingår boendet eller dras det från lönen, vem betalar resan.",
+    "point1": "Står lönen inte i annonsen skriver vi ”okänt”. Vi gissar aldrig och skriver aldrig ”enligt överenskommelse” i stället för en siffra.",
+    "point2": "Finns ett kollektivavtal för yrket visar vi avtalets timlön bredvid er uppgift, som referens. Vi ersätter aldrig er siffra med avtalets.",
+    "point3": "Vi vill hellre ha era uppgifter än våra egna antaganden. Det är hela anledningen till det här."
+  },
+  "ask": {
+    "title": "Det här hjälper oss mest",
+    "text": "Ett kort svar räcker. Det finns inget formulär att fylla i — svara med det ni vet.",
+    "item1": "Lönen, och om beloppet är brutto eller netto, per timme eller per månad.",
+    "item2": "Boende: ordnar ni det, ingår det, eller dras det från lönen?",
+    "item3": "Resa till och från Sverige: betalar ni, eller gör den anställde det?",
+    "item4": "Arbetstid per vecka, och vilket kollektivavtal som gäller om något gör det.",
+    "item5": "Företagets registrerade namn och en kontaktperson — och om annonsen gäller er själva eller ett bemanningsföretag.",
+    "note": "Är något vi redan visar felaktigt: säg till, så rättar vi det. Vill ni inte synas hos oss alls, hör av er så tar vi bort annonsen."
+  },
+  "limits": {
+    "title": "Vad vi inte gör",
+    "item1": "Vi säljer ingen annonsplats. Det här är inget säljbrev — att svara kostar ingenting och förpliktar er till ingenting.",
+    "item2": "Vi tar inte emot ansökningar eller handlingar från kandidater. Allt går till originalannonsen.",
+    "item3": "Kontrollstatusen på ett annonskort går inte att köpa. Betalning påverkar aldrig vilken status en annons får.",
+    "item4": "Vi lovar ingen anställning, inget visum och inget skatteutfall. Vi förklarar de publicerade villkoren och hänvisar till originalet."
+  },
+  "contact": {
+    "title": "Skriv till oss",
+    "text": "Skriv till adressen nedan, eller svara direkt på mejlet ni fick. Vi svarar på vardagar.",
+    "cta": "Skicka villkoren",
+    "mailSubject": "Villkor i vår annons — BalticWorkers Check",
+    "note": "Skriv på svenska eller engelska — båda fungerar."
+  },
+  "footer": {
+    "copyright": "© 2026 BalticWorkers Check",
+    "tagline": "En informationsplattform, inte en bemanningsförmedling"
+  }
+}

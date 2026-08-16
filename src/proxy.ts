@@ -34,8 +34,11 @@ function resolveLocale(request: NextRequest): string {
   return DEFAULT_LOCALE;
 }
 
-// matcher сам исключает /api, /go, /_next и файлы с расширением — они
+// matcher сам исключает /api, /go, /employers, /_next и файлы с расширением — они
 // физически не доходят до proxy.
+// /employers/{sv,nb} — посадочные страницы для работодателей: язык задан
+// в самом URL и не должен перебиваться cookie или Accept-Language — без
+// этого исключения ссылка из письма уехала бы в /lv/employers/sv.
 export const config = {
-  matcher: ["/((?!api|go|_next|.*\\..*).*)"],
+  matcher: ["/((?!api|go|employers|_next|.*\\..*).*)"],
 };
