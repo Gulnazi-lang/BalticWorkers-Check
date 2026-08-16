@@ -10,7 +10,7 @@ import { isEnabledLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { buildAlternates, localeHref } from "@/i18n/href";
 import { interpolate } from "@/i18n/format";
-import { getVacancies } from "@/lib/vacancies";
+import { getHeroVacancy, getVacancies } from "@/lib/vacancies";
 import { getOccupationOptions } from "@/lib/occupationOptions";
 import { countryLabel, isKnownCountryCode } from "@/lib/countries";
 import { fetchEcbRates } from "@/lib/ecbRates";
@@ -54,8 +54,11 @@ export default async function HomePage({
   // getVacancies), не в памяти по уже урезанной странице. Единственный
   // случай честного «нет совпадений» — комбинация профессия+страна, которой
   // не бывает вместе (например профессия только в SE, а выбрана NO).
-  const [vacancies, eurRates] = await Promise.all([
+  const [vacancies, heroVacancy, eurRates] = await Promise.all([
     getVacancies(locale, { occupationIsco: occupation, country }),
+    // Независимо от фильтров поиска — герой не часть результатов запроса,
+    // это отдельный живой пример, случайный на каждом рендере.
+    getHeroVacancy(locale),
     fetchEcbRates(),
   ]);
 
@@ -76,7 +79,11 @@ export default async function HomePage({
 
       <main>
         <section className="bg-accent-soft py-16 md:py-22">
-          <div className="mx-auto grid w-[min(1120px,calc(100%-40px))] items-center gap-14 md:grid-cols-[1.25fr_0.75fr]">
+          <div
+            className={`mx-auto grid w-[min(1120px,calc(100%-40px))] items-center gap-14 ${
+              heroVacancy ? "md:grid-cols-[1.25fr_0.75fr]" : ""
+            }`}
+          >
             <div>
               <div className="text-[11px] font-extrabold tracking-[0.12em] text-accent uppercase">
                 {dict.home.hero.eyebrow}
@@ -120,24 +127,25 @@ export default async function HomePage({
               </form>
 
               <p className="mt-3.5 text-xs text-muted">{dict.home.hero.disclaimer}</p>
+
+              <Link
+                href={localeHref(locale, "/#jobs")}
+                className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg border-2 border-deep px-5 py-3 text-sm font-bold text-deep transition hover:bg-deep hover:text-white"
+              >
+                {dict.home.hero.jobsCta} →
+              </Link>
             </div>
 
-            {/* Демо-карточка: показывает формат, а не конкретное предложение. */}
-            <div className="rounded-2xl bg-deep p-7 text-white shadow-xl shadow-deep/20">
-              <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-[11px] text-emerald-200">
-                {dict.home.demo.badge}
-              </span>
-              <div className="mt-7 mb-2 text-3xl font-extrabold tracking-tight">
-                {dict.home.demo.title}
-              </div>
-              <div className="text-lg font-semibold">{dict.home.demo.jobTitle}</div>
-              <div className="mt-2 text-sm text-white/70">{dict.home.demo.location}</div>
-              <div className="mt-5 grid gap-2 border-t border-white/15 pt-4 text-sm text-white/80">
-                <span>⌂ {dict.home.demo.housing}</span>
-                <span>→ {dict.home.demo.travel}</span>
-                <span>◷ {dict.home.demo.hours}</span>
-              </div>
-            </div>
+            {/* Живая вакансия из фида, не хардкод: карточка совпадает 1:1 с
+                теми же карточками в /#jobs (тот же компонент), включая
+                честное "нужно уточнить" на незаполненных полях — это и есть
+                демонстрация тезиса витрины, не её слабое место. Если по
+                правилу отбора не нашлось ни одной подходящей вакансии,
+                heroVacancy === null и герой рендерится одноколоночным —
+                см. className выше. */}
+            {heroVacancy && (
+              <VacancyCard v={heroVacancy} locale={locale} dict={dict} eurRates={eurRates} />
+            )}
           </div>
         </section>
 

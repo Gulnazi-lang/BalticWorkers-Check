@@ -246,6 +246,77 @@ export interface VacancyFilters {
  * по уже выбранным limit последним вакансиям, реальные совпадения за
  * пределами этого окна просто не находились бы, и гарантия ломалась.
  */
+/**
+ * Живая вакансия для героя на главной — заменяет прежнюю хардкод демо-
+ * карточку (см. CLAUDE.md, «Герой на главной»). Правило отбора: среди самых
+ * свежих published-вакансий берём те, где заполнено минимум
+ * HERO_MIN_FILLED_FIELDS из пяти ключевых полей — иначе герой выглядел бы
+ * пусто, — и ротируем случайно среди HERO_POOL_SIZE самых свежих из них.
+ * Пустое поле НЕ повод исключить вакансию отовсюду, только из героя:
+ * VacancyCard и так честно показывает unknown как «нужно уточнить» —
+ * герой просто выбирает более наглядный пример для первого экрана.
+ *
+ * Случайный выбор на каждом рендере, не детерминированная ротация по дате:
+ * `/[locale]` уже рендерится динамически (HomePage принимает searchParams),
+ * статический кеш здесь рвать нечего.
+ */
+const HERO_FIELD_TESTS: ((v: Vacancy) => boolean)[] = [
+  (v) => v.wageAmount != null,
+  (v) => v.housingStatus !== "unknown",
+  (v) => v.travelStatus !== "unknown",
+  (v) => v.hoursPerWeek != null,
+  (v) => v.collectiveAgreement != null,
+];
+const HERO_MIN_FILLED_FIELDS = 3;
+const HERO_POOL_SIZE = 5;
+// Насколько вглубь по свежести искать 3-5 подходящих кандидатов — не весь
+// published-фид: одна богатая полями, но давно не обновлявшаяся вакансия
+// иначе обошла бы правило «свежайшие среди подходящих».
+const HERO_CANDIDATE_WINDOW = 40;
+
+function heroFilledCount(v: Vacancy): number {
+  return HERO_FIELD_TESTS.filter((test) => test(v)).length;
+}
+
+export async function getHeroVacancy(locale: Locale): Promise<Vacancy | null> {
+  let pool: Vacancy[];
+
+  if (!isSupabaseConfigured()) {
+    pool = DEMO_VACANCIES;
+  } else {
+    const supabase = await createClient();
+    const query = supabase
+      .from("vacancies")
+      .select(
+        `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) )`
+      )
+      .eq("published", true)
+      .eq("is_demo", false)
+      .order("updated_at", { ascending: false })
+      .limit(HERO_CANDIDATE_WINDOW);
+
+    const [{ data, error }, fallbackMap] = await Promise.all([
+      query,
+      fetchAgreementFallbackMap(supabase),
+    ]);
+    if (error) {
+      console.error("Не удалось прочитать вакансию для героя:", error.message);
+      return null;
+    }
+    pool = (data as unknown as VacancyRowWithAgreement[]).map((row) =>
+      fromRow(row, locale, fallbackMap)
+    );
+  }
+
+  // pool уже отсортирован по updated_at desc (запросом или порядком в
+  // DEMO_VACANCIES) — filter сохраняет порядок, freshest-first не теряется.
+  const qualifying = pool.filter((v) => heroFilledCount(v) >= HERO_MIN_FILLED_FIELDS);
+  if (qualifying.length === 0) return null;
+
+  const candidates = qualifying.slice(0, HERO_POOL_SIZE);
+  return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
 export async function getVacancies(
   locale: Locale,
   filters: VacancyFilters = {},

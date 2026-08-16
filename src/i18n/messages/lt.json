@@ -44,16 +44,8 @@
       "occupationAny": "Bet kokia profesija",
       "countryAny": "Šalis",
       "submit": "Rasti darbą",
-      "disclaimer": "Nemokama ieškantiems darbo · Kandidatuojama per oficialų šaltinį · Neimame mokesčio už prieigą prie skelbimų ir nekandidatuojame už jus"
-    },
-    "demo": {
-      "badge": "Demonstracija",
-      "title": "Kortelės pavyzdys",
-      "jobTitle": "Kabelių sistemų montuotojas",
-      "location": "Boden, Švedija",
-      "housing": "Būstas — atskira eilute",
-      "travel": "Kelionė — atskira eilute",
-      "hours": "Valandos per savaitę ir sutartis"
+      "disclaimer": "Nemokama ieškantiems darbo · Kandidatuojama per oficialų šaltinį · Neimame mokesčio už prieigą prie skelbimų ir nekandidatuojame už jus",
+      "jobsCta": "Žiūrėti darbo skelbimus"
     },
     "jobs": {
       "eyebrow": "Skelbimų atranka",

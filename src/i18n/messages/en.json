@@ -44,16 +44,8 @@
       "occupationAny": "Any profession",
       "countryAny": "Country",
       "submit": "Find work",
-      "disclaimer": "Free for job seekers · Apply through the official source · We charge nothing for access to jobs and do not apply on your behalf"
-    },
-    "demo": {
-      "badge": "Demonstration",
-      "title": "Example card",
-      "jobTitle": "Cable systems installer",
-      "location": "Boden, Sweden",
-      "housing": "Housing — listed separately",
-      "travel": "Travel — listed separately",
-      "hours": "Hours per week and contract"
+      "disclaimer": "Free for job seekers · Apply through the official source · We charge nothing for access to jobs and do not apply on your behalf",
+      "jobsCta": "See vacancies"
     },
     "jobs": {
       "eyebrow": "Selected jobs",

@@ -44,16 +44,8 @@
       "occupationAny": "Jebkura profesija",
       "countryAny": "Valsts",
       "submit": "Atrast darbu",
-      "disclaimer": "Bez maksas darba meklētājiem · Pieteikšanās oficiālajā avotā · Mēs neņemam samaksu par piekļuvi vakancēm un nepiesakāmies jūsu vietā"
-    },
-    "demo": {
-      "badge": "Demonstrācija",
-      "title": "Kartītes paraugs",
-      "jobTitle": "Kabeļu sistēmu montētājs",
-      "location": "Boden, Zviedrija",
-      "housing": "Mājoklis — atsevišķā rindā",
-      "travel": "Ceļš — atsevišķā rindā",
-      "hours": "Stundas nedēļā un līgums"
+      "disclaimer": "Bez maksas darba meklētājiem · Pieteikšanās oficiālajā avotā · Mēs neņemam samaksu par piekļuvi vakancēm un nepiesakāmies jūsu vietā",
+      "jobsCta": "Skatīt vakances"
     },
     "jobs": {
       "eyebrow": "Vakanču atlase",

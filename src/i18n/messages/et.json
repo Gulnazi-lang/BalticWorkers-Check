@@ -44,16 +44,8 @@
       "occupationAny": "Suvaline amet",
       "countryAny": "Riik",
       "submit": "Leia töö",
-      "disclaimer": "Tööotsijatele tasuta · Kandideerimine ametliku allika kaudu · Me ei võta tasu tööpakkumistele ligipääsu eest ega kandideeri teie nimel"
-    },
-    "demo": {
-      "badge": "Näidis",
-      "title": "Kaardi näidis",
-      "jobTitle": "Kaablisüsteemide paigaldaja",
-      "location": "Boden, Rootsi",
-      "housing": "Majutus — eraldi real",
-      "travel": "Sõidukulud — eraldi real",
-      "hours": "Tunnid nädalas ja leping"
+      "disclaimer": "Tööotsijatele tasuta · Kandideerimine ametliku allika kaudu · Me ei võta tasu tööpakkumistele ligipääsu eest ega kandideeri teie nimel",
+      "jobsCta": "Vaata töökuulutusi"
     },
     "jobs": {
       "eyebrow": "Tööpakkumiste valik",
