@@ -280,12 +280,16 @@ grant select, insert, update, delete on public.excluded_vacancies to service_rol
 begin;
 
 alter table public.vacancies
-  add column agreement_status text not null default 'unknown';
+  add column if not exists agreement_status text not null default 'unknown';
 
+alter table public.vacancies
+  drop constraint if exists vacancies_agreement_name_ck;
 alter table public.vacancies
   add constraint vacancies_agreement_name_ck
     check (collective_agreement is null or agreement_status = 'named');
 
+alter table public.vacancies
+  drop constraint if exists vacancies_agreement_rate_ck;
 alter table public.vacancies
   add constraint vacancies_agreement_rate_ck
     check (collective_agreement_id is null or agreement_status = 'named');

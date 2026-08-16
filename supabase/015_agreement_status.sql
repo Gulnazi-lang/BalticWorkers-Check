@@ -28,16 +28,22 @@
 --
 -- BEGIN/COMMIT — не потому что этому конкретному файлу они были нужны
 -- (см. выше), а как стандарт для любой будущей миграции: Studio отправляет
--- вставленный текст одним query string, и без explicit BEGIN весь файл и
+-- вставленный текст одним query string, и без явного BEGIN весь файл и
 -- так выполняется как одна неявная транзакция (простой query protocol
 -- Postgres) — но полагаться на неявное поведение хуже, чем сказать явно,
--- и explizit-обёртка не зависит от того, как именно вставленный текст
--- будет исполнен в будущем (например, если кто-то скопирует один блок
+-- и явная обёртка не зависит от того, как именно вставленный текст будет
+-- исполнен в будущем (например, если кто-то скопирует один блок
 -- statement'ов из середины файла в отдельный запрос).
+--
+-- IF NOT EXISTS / DROP CONSTRAINT IF EXISTS — миграцию можно безопасно
+-- запустить повторно (например, по ошибке дважды вставили файл в SQL
+-- Editor): без этого второй прогон падал бы на первом же ADD COLUMN
+-- ("column already exists"), а с BEGIN/COMMIT ещё и откатывал бы весь
+-- блок целиком — рабочий результат, но потерянное время на ровном месте.
 begin;
 
 alter table public.vacancies
-  add column agreement_status text not null default 'unknown';
+  add column if not exists agreement_status text not null default 'unknown';
 
 -- Правило, которое должно пережить будущие правки тарифной части (решение
 -- зафиксировано в CLAUDE.md): расчёт или показ конкретной тарифной ставки
@@ -48,9 +54,13 @@ alter table public.vacancies
 -- 'named' — даже будущий баг в коде импортёра или редакционная правка
 -- через Studio мимо этого правила не пройдут на уровне базы.
 alter table public.vacancies
+  drop constraint if exists vacancies_agreement_name_ck;
+alter table public.vacancies
   add constraint vacancies_agreement_name_ck
     check (collective_agreement is null or agreement_status = 'named');
 
+alter table public.vacancies
+  drop constraint if exists vacancies_agreement_rate_ck;
 alter table public.vacancies
   add constraint vacancies_agreement_rate_ck
     check (collective_agreement_id is null or agreement_status = 'named');
