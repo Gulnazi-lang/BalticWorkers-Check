@@ -254,8 +254,13 @@ create unique index excluded_vacancies_ad_uq
   on public.excluded_vacancies (source_name, external_id)
   where external_id is not null;
 
+-- lower(btrim(...)), не просто lower(...): сравнение в коде
+-- (src/lib/importers/exclusions.ts) делает trim().toLowerCase(), и без
+-- btrim здесь пара строк "Bodens kommun" / "Bodens kommun " (хвостовой
+-- пробел при вставке в Studio) не считалась бы дублем на уровне БД, хотя
+-- в рантайме матчится как один и тот же работодатель.
 create unique index excluded_vacancies_employer_uq
-  on public.excluded_vacancies (source_name, lower(employer_name))
+  on public.excluded_vacancies (source_name, lower(btrim(employer_name)))
   where employer_name is not null;
 
 alter table public.excluded_vacancies enable row level security;

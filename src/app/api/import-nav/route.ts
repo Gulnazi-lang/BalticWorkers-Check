@@ -71,7 +71,10 @@ export async function GET(request: NextRequest) {
         .from("vacancies")
         .upsert(vacanciesWithAgreement, { onConflict: "source_name,external_id" })
         .select("id");
-      if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+      if (error) {
+        console.error(`[import:nav] vacancies upsert failed: ${error.message}`);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
       imported = data?.length ?? 0;
     }
 
@@ -83,7 +86,10 @@ export async function GET(request: NextRequest) {
         .eq("source_name", NAV_SOURCE_NAME)
         .in("external_id", toDeactivate)
         .select("id");
-      if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+      if (error) {
+        console.error(`[import:nav] deactivate failed: ${error.message}`);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
       deactivated = data?.length ?? 0;
     }
 
@@ -93,7 +99,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ imported, deactivated, purged, source: "nav", cursor: nextCursor });
   } catch (err) {
+    // См. пояснение к тому же блоку в /api/import: без console.error тело
+    // 502-ответа не попадёт в Vercel Runtime Logs, только код и время.
     const message = err instanceof Error ? err.message : "unknown error";
+    console.error(`[import:nav] ${message}`);
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }

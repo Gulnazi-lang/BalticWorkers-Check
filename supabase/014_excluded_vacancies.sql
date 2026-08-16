@@ -19,9 +19,15 @@
 -- датой публикации 0.97, дублей нет), у NAV — uuid. То есть id никогда не
 -- переиспользуется, и исключение по нему безопасно — но повторная
 -- публикация той же вакансии получает НОВЫЙ id и мимо такого исключения
--- проходит. Работодатель, который просит его не показывать, обычно имеет
--- в виду себя, а не один конкретный номер объявления, — поэтому нужен и
--- второй уровень.
+-- проходит.
+--
+-- Какой уровень использовать при вставке — НЕ наугад:
+--   * по умолчанию external_id — одно объявление, риска нет;
+--   * employer_name — только когда работодатель прямо просит убрать себя
+--     целиком, а не одну вакансию: этот уровень снимает ВСЕ его объявления
+--     в источнике, включая те, про которые не спрашивали;
+--   * в reason — дословно, что просили, не пересказ своими словами.
+-- Подробнее — раздел «Снятие вакансии по просьбе работодателя» в CLAUDE.md.
 --
 -- Заполняется руками через Supabase Studio: обращения приходят на
 -- baltworkers@gmail.com письмами, потока, который оправдал бы форму на
@@ -50,8 +56,13 @@ create unique index excluded_vacancies_ad_uq
   on public.excluded_vacancies (source_name, external_id)
   where external_id is not null;
 
+-- lower(btrim(...)), не просто lower(...): сравнение в коде
+-- (src/lib/importers/exclusions.ts) делает trim().toLowerCase(), и без
+-- btrim здесь пара строк "Bodens kommun" / "Bodens kommun " (хвостовой
+-- пробел при вставке в Studio) не считалась бы дублем на уровне БД, хотя
+-- в рантайме матчится как один и тот же работодатель.
 create unique index excluded_vacancies_employer_uq
-  on public.excluded_vacancies (source_name, lower(employer_name))
+  on public.excluded_vacancies (source_name, lower(btrim(employer_name)))
   where employer_name is not null;
 
 -- Не публичные данные (в reason/requested_by может быть переписка с

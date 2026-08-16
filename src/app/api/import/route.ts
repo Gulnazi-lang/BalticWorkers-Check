@@ -59,12 +59,19 @@ export async function GET(request: NextRequest) {
       .select("id");
 
     if (error) {
+      console.error(`[import:jobtech] vacancies upsert failed: ${error.message}`);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json({ imported: data?.length ?? 0, purged, source: "jobtech" });
   } catch (err) {
+    // Vercel Runtime Logs пишут код ответа и время выполнения по умолчанию,
+    // но НЕ тело JSON — без явного console.error 502 был бы виден в логах
+    // как голая цифра, без сообщения, по которому можно отличить недоступную
+    // excluded_vacancies (см. префикс в src/lib/importers/exclusions.ts) от
+    // сбоя самого фида JobTech (префикс "JobTech (term): ...").
     const message = err instanceof Error ? err.message : "unknown error";
+    console.error(`[import:jobtech] ${message}`);
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }
