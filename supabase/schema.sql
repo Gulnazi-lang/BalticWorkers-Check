@@ -272,10 +272,13 @@ grant select, insert, update, delete on public.excluded_vacancies to service_rol
 
 -- ---------------------------------------------------------------------------
 -- agreement_status (миграция 015) — тристейт вокруг collective_agreement.
+-- Полный разбор порядка/безопасности — в 015_agreement_status.sql.
 -- Примечание: collective_agreement_id/employer_agreement_status (миграция
 -- 009) и другие ALTER'ы 005-013 в этом файле не отражены — schema.sql уже
 -- отстаёт от реальной схемы, это не изменено этой правкой, только замечено.
 -- ---------------------------------------------------------------------------
+begin;
+
 alter table public.vacancies
   add column agreement_status text not null default 'unknown';
 
@@ -286,3 +289,5 @@ alter table public.vacancies
 alter table public.vacancies
   add constraint vacancies_agreement_rate_ck
     check (collective_agreement_id is null or agreement_status = 'named');
+
+commit;

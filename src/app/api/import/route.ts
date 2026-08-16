@@ -25,6 +25,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // fetchJobTechVacancies() уже возвращает ОДИН объединённый массив —
+    // термины и работодатели (см. CONTRACTOR_EMPLOYERS в jobtech.ts) слиты
+    // внутри через общий Set до return. Фильтр исключений ниже применяется
+    // к этому объединённому результату целиком, значит действует на обе
+    // оси одинаково: вакансия от исключённого работодателя не может
+    // "проскочить" через employer-проход в обход exclusion-листа — к
+    // моменту фильтрации уже нет разницы, откуда именно она пришла.
     const vacancies = await fetchJobTechVacancies();
     const supabase = createServiceClient();
 

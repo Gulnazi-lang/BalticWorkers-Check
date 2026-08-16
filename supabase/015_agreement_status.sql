@@ -17,6 +17,24 @@
 --                       основание показывать конкретную цифру.
 --   'unknown'         — по умолчанию, включая все уже импортированные
 --                        вакансии до этой миграции.
+--
+-- Порядок ниже уже безопасен сам по себе: колонка с DEFAULT добавляется
+-- ДО двух CHECK, а Postgres 11+ заполняет константный DEFAULT для всех
+-- существующих строк как метаданные, без переписывания таблицы — отдельный
+-- backfill не нужен. Дополнительно проверено перед применением 16.08.2026
+-- напрямую в БД: 0 строк на тот момент имели collective_agreement или
+-- collective_agreement_id не null, так что CHECK ниже не мог упасть на
+-- существующих данных даже теоретически.
+--
+-- BEGIN/COMMIT — не потому что этому конкретному файлу они были нужны
+-- (см. выше), а как стандарт для любой будущей миграции: Studio отправляет
+-- вставленный текст одним query string, и без explicit BEGIN весь файл и
+-- так выполняется как одна неявная транзакция (простой query protocol
+-- Postgres) — но полагаться на неявное поведение хуже, чем сказать явно,
+-- и explizit-обёртка не зависит от того, как именно вставленный текст
+-- будет исполнен в будущем (например, если кто-то скопирует один блок
+-- statement'ов из середины файла в отдельный запрос).
+begin;
 
 alter table public.vacancies
   add column agreement_status text not null default 'unknown';
@@ -36,3 +54,5 @@ alter table public.vacancies
 alter table public.vacancies
   add constraint vacancies_agreement_rate_ck
     check (collective_agreement_id is null or agreement_status = 'named');
+
+commit;

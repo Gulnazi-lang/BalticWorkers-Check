@@ -80,6 +80,33 @@
 Таблица `public.vacancies`. Найти строку по `title` / `employer_name` /
 `external_id` (номер объявления, виден в конце `source_url`).
 
+**Заполняйте одним запросом в SQL Editor, не по клетке в Table Editor.**
+Пример:
+
+```sql
+update public.vacancies
+set agreement_status = 'named',
+    collective_agreement = 'Byggnads',
+    housing_status = 'included',
+    hours_per_week = 40
+where external_id = '31356468';
+```
+
+Причина не в удобстве, а в CHECK-констрейнте `vacancies_agreement_name_ck`:
+он требует, чтобы `agreement_status = 'named'` был установлен **в той же
+строке изменений**, что и `collective_agreement` — если это два раздельных
+UPDATE в неверном порядке, второй упадёт с ошибкой `23514`. Проверено
+вживую 16.08.2026: `agreement_status` → потом `collective_agreement` двумя
+отдельными запросами проходит; обратный порядок — падает. Один комбинированный
+запрос снимает вопрос порядка полностью.
+
+Если всё же редактируете через Table Editor (клетка за клеткой): `agreement_
+status` физически идёт **позже** `collective_agreement` в списке столбцов
+(добавлен более поздней миграцией) — при естественном просмотре слева
+направо легко отредактировать сперва `collective_agreement` и получить
+ошибку constraint. Меняйте `agreement_status` первым, даже если он правее
+в таблице.
+
 | Колонка | Формат | Важно |
 |---|---|---|
 | `wage_amount` | число, `numeric` | без пробелов и разделителей тысяч |
