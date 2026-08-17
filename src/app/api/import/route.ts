@@ -6,14 +6,13 @@ import { collectiveAgreementIdFor, resolveAgreementIds } from "@/lib/importers/r
 import { createServiceClient } from "@/lib/supabase/service";
 
 // Проверка на снятие (findRemovedJobTechIds) добавляет по одному запросу
-// к JobTech на каждую уже опубликованную вакансию источника — раньше роут
-// делал только поисковые запросы (по числу терминов/работодателей),
-// теперь ещё и это. На сегодняшнем масштабе (десятки строк) укладывается
-// с запасом, но растёт линейно с количеством published-вакансий. Если
-// когда-нибудь станет тесно в лимите — резать не логику, а способ (пачками
-// по дням, не все строки за один прогон). На Hobby-плане Vercel лимит
-// выполнения функции может быть жёстко зашит ниже, чем maxDuration ниже
-// заявляет — это надо увидеть на реальном прогоне, не предполагать.
+// к JobTech на каждого КАНДИДАТА (published-строка, не найденная в свежем
+// поисковом проходе — см. комментарий ниже), не на каждую published-строку
+// вообще: в установившемся режиме это единицы, не сотни. Сразу после
+// сужения OCCUPATIONS кандидатов будет много (вся отвалившаяся care-пачка)
+// — разовый всплеск, не постоянный режим. На Hobby-плане Vercel реальный
+// лимит выполнения функции может быть жёстче заявленного здесь maxDuration
+// — увидеть на живом прогоне, не предполагать.
 export const maxDuration = 60;
 
 // GET, а не POST: чтобы без лишней настройки триггерился Vercel Cron
@@ -95,10 +94,27 @@ export async function GET(request: NextRequest) {
     // Снятие вакансий, пропавших у источника (не по просьбе работодателя —
     // это purgeExcluded выше — а сами по себе: employer снял объявление,
     // JobTech больше его не отдаёт). У JobTech нет событийного фида статусов
-    // как у NAV, поэтому проверяем напрямую: берём все текущие published
-    // строки этого источника и спрашиваем JobTech по каждому id, жив ли он
-    // ещё (см. findRemovedJobTechIds в jobtech.ts — 404 или removed:true).
+    // как у NAV, поэтому единственный надёжный сигнал — прямой запрос по
+    // каждому id (findRemovedJobTechIds в jobtech.ts — 404 или removed:true).
     // Без этого шага снятая вакансия висела бы на сайте бессрочно.
+    //
+    // Проверяем НЕ все published-строки источника, а только кандидатов —
+    // те, что не встретились в СВЕЖЕМ поисковом проходе этого прогона
+    // (vacancies выше, ДО фильтра исключений: важно само наличие в выдаче
+    // JobTech, а не то, прошла ли вакансия наш фильтр). В установившемся
+    // режиме это единицы (термины/работодатели стабильны, топ-N по
+    // релевантности почти не меняется), не сотни на каждый прогон.
+    //
+    // ВАЖНО: "не встретилось в этом прогоне" НЕ значит "снята" — это только
+    // сокращение пула кандидатов для реальной проверки. Именно сейчас, сразу
+    // после сужения OCCUPATIONS (убраны care-термины), вся вернувшаяся из
+    // 67 старых вакансий пачка попадёт в кандидаты, будучи полностью живой
+    // — она просто больше не матчится нашими терминами. Подтверждение по
+    // каждому конкретному id через findRemovedJobTechIds остаётся
+    // обязательным и ничего не меняет: эти 67 пройдут проверку как живые
+    // (removed: false) и НЕ будут удалены автоматически — снять их может
+    // только явный ручной DELETE, не эта логика.
+    const foundIds = new Set(vacancies.map((v) => v.external_id));
     const { data: publishedRows, error: publishedError } = await supabase
       .from("vacancies")
       .select("external_id")
@@ -109,7 +125,10 @@ export async function GET(request: NextRequest) {
     if (publishedError) {
       console.error(`[import:jobtech] published lookup failed: ${publishedError.message}`);
     } else if (publishedRows && publishedRows.length > 0) {
-      const removedIds = await findRemovedJobTechIds(publishedRows.map((r) => r.external_id));
+      const candidateIds = publishedRows
+        .map((r) => r.external_id)
+        .filter((id) => !foundIds.has(id));
+      const removedIds = candidateIds.length > 0 ? await findRemovedJobTechIds(candidateIds) : [];
       if (removedIds.length > 0) {
         const { data: deactivatedData, error: deactivateError } = await supabase
           .from("vacancies")
