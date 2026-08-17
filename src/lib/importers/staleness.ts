@@ -24,8 +24,10 @@ interface StaleVacancyRow {
 export interface StaleVacancyReport {
   days: number;
   deactivated: number;
-  // Не просто число: если правило когда-либо снимет вручную обогащённую
-  // карточку, это сразу видно в ответе cron/ручного запуска.
+  // Обогащённые строки, которые ПРОСРОЧЕНЫ по updated_at, но НЕ сняты с
+  // публикации — правило их сознательно не трогает (см. ниже). Список
+  // остаётся в ответе как сигнал "эту вакансию стоит перепроверить вручную",
+  // не как запись о том, что уже произошло что-то необратимое.
   enriched: Array<Pick<StaleVacancyRow, "id" | "title" | "employer_name" | "source_name" | "external_id">>;
 }
 
@@ -51,6 +53,16 @@ function hasTermsBeyondSkeleton(row: StaleVacancyRow): boolean {
  * дней. Новый upsert сам вернёт published=true, если вакансия снова попадёт в
  * текущую выдачу. Ошибка намеренно пробрасывается: тихо оставлять устаревшие
  * вакансии противоречит обещанию платформы об актуальности.
+ *
+ * ИСКЛЮЧЕНИЕ, обязательное: вакансии с ручным обогащением (hasTermsBeyondSkeleton)
+ * НЕ снимаются автоматически, даже если формально просрочены. Обнаружено
+ * 17.08.2026 (Шакро): первая версия правила помечала такие строки в отчёте
+ * ("enriched"), но всё равно снимала их вместе с остальными — а никто не
+ * читает JSON-ответ успешного cron-прогона, значит эта "видимость" не была
+ * защитой на практике. Ручное обогащение — самая дорогая работа в системе:
+ * снимать её нельзя ни автоматически, ни молча. Если вакансию действительно
+ * пора снять (работодатель попросил — excluded_vacancies; редакция решила
+ * вручную — published=false в Studio), это отдельное, осознанное действие.
  */
 export async function unpublishStaleVacancies(
   supabase: SupabaseClient,
@@ -69,6 +81,7 @@ export async function unpublishStaleVacancies(
   if (error) throw new Error(`stale vacancies lookup failed: ${error.message}`);
 
   const stale = (data ?? []) as StaleVacancyRow[];
+  const toUnpublish = stale.filter((row) => !hasTermsBeyondSkeleton(row));
   const enriched = stale
     .filter(hasTermsBeyondSkeleton)
     .map(({ id, title, employer_name, source_name, external_id }) => ({
@@ -79,16 +92,16 @@ export async function unpublishStaleVacancies(
       external_id,
     }));
 
-  if (stale.length > 0) {
+  if (toUnpublish.length > 0) {
     const { error: updateError } = await supabase
       .from("vacancies")
       .update({ published: false })
       .in(
         "id",
-        stale.map((row) => row.id)
+        toUnpublish.map((row) => row.id)
       );
     if (updateError) throw new Error(`stale vacancies unpublish failed: ${updateError.message}`);
   }
 
-  return { days, deactivated: stale.length, enriched };
+  return { days, deactivated: toUnpublish.length, enriched };
 }
