@@ -1,4 +1,4 @@
-import type { ConditionStatus, Vacancy } from "@/types/vacancy";
+import type { ConditionStatus, HousingStatus, Vacancy } from "@/types/vacancy";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { DATE_LOCALE_TAG, interpolate } from "@/i18n/format";
@@ -76,11 +76,12 @@ export function wageLabel(v: Vacancy, dict: Dictionary): { value: string; note: 
 export function conditionLine(
   dict: Dictionary,
   field: "housing" | "travel",
-  status: ConditionStatus
+  status: HousingStatus | ConditionStatus
 ): string {
   if (field === "housing") {
     if (status === "included") return dict.vacancy.housingIncluded;
     if (status === "deducted") return dict.vacancy.housingDeducted;
+    if (status === "available") return dict.vacancy.housingAvailable;
     return dict.vacancy.housingUnknown;
   }
   if (status === "included") return dict.vacancy.travelIncluded;

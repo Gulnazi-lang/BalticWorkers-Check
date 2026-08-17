@@ -127,6 +127,7 @@
     "employerUnknown": "Работодатель уточняется",
     "housingIncluded": "Жильё оплачивается",
     "housingDeducted": "Жильё вычитается из зарплаты",
+    "housingAvailable": "Жильё доступно; стоимость не указана",
     "housingUnknown": "Жильё: требует уточнения",
     "travelIncluded": "Дорога оплачивается",
     "travelDeducted": "Дорога вычитается из зарплаты",

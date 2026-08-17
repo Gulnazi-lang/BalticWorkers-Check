@@ -7,6 +7,9 @@ export type VerificationLevel =
 export type PublicationType = "ORGANIC" | "SPONSORED" | "PARTNER";
 
 export type ConditionStatus = "included" | "deducted" | "unknown";
+// Для жилья можно честно сообщить, что оно доступно, не выдавая это за
+// оплаченное жильё или удержание из зарплаты.
+export type HousingStatus = ConditionStatus | "available";
 
 export type EmployerAgreementStatus = "bound" | "not_bound" | "unknown";
 
@@ -45,7 +48,7 @@ export interface Vacancy {
   wageAmount: number | null;
   wageCurrency: string | null;
   wageType: "net_hour" | "gross_hour" | "gross_month" | null;
-  housingStatus: ConditionStatus;
+  housingStatus: HousingStatus;
   travelStatus: ConditionStatus;
   hoursPerWeek: number | null;
   collectiveAgreement: string | null;

@@ -3,6 +3,8 @@ import type { NextRequest } from "next/server";
 import { fetchNavVacancies, NAV_SOURCE_NAME } from "@/lib/importers/nav";
 import { isExcluded, loadExclusions, purgeExcluded } from "@/lib/importers/exclusions";
 import { collectiveAgreementIdFor, resolveAgreementIds } from "@/lib/importers/resolveAgreements";
+import { unpublishStaleVacancies } from "@/lib/importers/staleness";
+import { notifyImportFailure } from "@/lib/importers/failureAlert";
 import { createServiceClient } from "@/lib/supabase/service";
 
 const CURSOR_SOURCE = "nav";
@@ -103,12 +105,15 @@ export async function GET(request: NextRequest) {
       .from("import_cursors")
       .upsert({ source: CURSOR_SOURCE, cursor_time: nextCursor }, { onConflict: "source" });
 
-    return NextResponse.json({ imported, deactivated, purged, source: "nav", cursor: nextCursor });
+    const stale = await unpublishStaleVacancies(supabase);
+
+    return NextResponse.json({ imported, deactivated, purged, stale, source: "nav", cursor: nextCursor });
   } catch (err) {
     // См. пояснение к тому же блоку в /api/import: без console.error тело
     // 502-ответа не попадёт в Vercel Runtime Logs, только код и время.
     const message = err instanceof Error ? err.message : "unknown error";
     console.error(`[import:nav] ${message}`);
+    await notifyImportFailure("NAV", message);
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }

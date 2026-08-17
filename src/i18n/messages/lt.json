@@ -127,6 +127,7 @@
     "employerUnknown": "Darbdavys tikslinamas",
     "housingIncluded": "Būstas apmokamas",
     "housingDeducted": "Būstas išskaičiuojamas iš atlyginimo",
+    "housingAvailable": "Būstas prieinamas; kaina nenurodyta",
     "housingUnknown": "Būstas: reikia patikslinti",
     "travelIncluded": "Kelionė apmokama",
     "travelDeducted": "Kelionė išskaičiuojama iš atlyginimo",

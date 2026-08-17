@@ -127,6 +127,7 @@
     "employerUnknown": "Employer to be confirmed",
     "housingIncluded": "Housing is paid for",
     "housingDeducted": "Housing is deducted from pay",
+    "housingAvailable": "Housing is available; cost not specified",
     "housingUnknown": "Housing: needs clarification",
     "travelIncluded": "Travel is paid for",
     "travelDeducted": "Travel is deducted from pay",

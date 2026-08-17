@@ -127,6 +127,7 @@
     "employerUnknown": "Tööandja täpsustamisel",
     "housingIncluded": "Majutus on tasutud",
     "housingDeducted": "Majutus arvatakse palgast maha",
+    "housingAvailable": "Majutus on saadaval; hind pole märgitud",
     "housingUnknown": "Majutus: vajab täpsustamist",
     "travelIncluded": "Sõidukulud on tasutud",
     "travelDeducted": "Sõidukulud arvatakse palgast maha",

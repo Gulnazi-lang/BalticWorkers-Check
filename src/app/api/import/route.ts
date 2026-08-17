@@ -3,6 +3,8 @@ import type { NextRequest } from "next/server";
 import { fetchJobTechVacancies, findRemovedJobTechIds, JOBTECH_SOURCE_NAME } from "@/lib/importers/jobtech";
 import { isExcluded, loadExclusions, purgeExcluded } from "@/lib/importers/exclusions";
 import { collectiveAgreementIdFor, resolveAgreementIds } from "@/lib/importers/resolveAgreements";
+import { unpublishStaleVacancies } from "@/lib/importers/staleness";
+import { notifyImportFailure } from "@/lib/importers/failureAlert";
 import { createServiceClient } from "@/lib/supabase/service";
 
 // Проверка на снятие (findRemovedJobTechIds) добавляет по одному запросу
@@ -144,7 +146,12 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({ imported, purged, deactivated, source: "jobtech" });
+    // Не ждём, пока источник удалит объявление: строка, которая неделю не
+    // попадала в наши текущие фильтры, больше не должна оставаться на сайте.
+    // Отчёт enriched нужен, чтобы ручное обогащение не исчезало незаметно.
+    const stale = await unpublishStaleVacancies(supabase);
+
+    return NextResponse.json({ imported, purged, deactivated, stale, source: "jobtech" });
   } catch (err) {
     // Vercel Runtime Logs пишут код ответа и время выполнения по умолчанию,
     // но НЕ тело JSON — без явного console.error 502 был бы виден в логах
@@ -153,6 +160,7 @@ export async function GET(request: NextRequest) {
     // сбоя самого фида JobTech (префикс "JobTech (term): ...").
     const message = err instanceof Error ? err.message : "unknown error";
     console.error(`[import:jobtech] ${message}`);
+    await notifyImportFailure("JobTech", message);
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }

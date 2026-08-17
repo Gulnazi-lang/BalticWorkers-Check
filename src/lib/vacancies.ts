@@ -4,6 +4,7 @@ import type {
   CollectiveAgreementRate,
   ConditionStatus,
   EmployerAgreementStatus,
+  HousingStatus,
   Vacancy,
   VacancyRow,
 } from "@/types/vacancy";
@@ -103,9 +104,14 @@ export const DEMO_VACANCIES: Vacancy[] = [
 ];
 
 const CONDITIONS: ConditionStatus[] = ["included", "deducted", "unknown"];
+const HOUSING_STATUSES: HousingStatus[] = ["included", "deducted", "available", "unknown"];
 
 function toCondition(value: string | null): ConditionStatus {
   return CONDITIONS.find((c) => c === value) ?? "unknown";
+}
+
+function toHousingStatus(value: string | null): HousingStatus {
+  return HOUSING_STATUSES.find((status) => status === value) ?? "unknown";
 }
 
 const AGREEMENT_STATUSES: AgreementStatus[] = ["named", "exists_unnamed", "unknown"];
@@ -230,7 +236,7 @@ function fromRow(
     wageAmount: row.wage_amount,
     wageCurrency: row.wage_currency,
     wageType: row.wage_type as Vacancy["wageType"],
-    housingStatus: toCondition(row.housing_status),
+    housingStatus: toHousingStatus(row.housing_status),
     travelStatus: toCondition(row.travel_status),
     hoursPerWeek: row.hours_per_week,
     collectiveAgreement: row.collective_agreement,

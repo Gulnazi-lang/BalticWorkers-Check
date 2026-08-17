@@ -127,6 +127,7 @@
     "employerUnknown": "Darba devējs tiek precizēts",
     "housingIncluded": "Mājoklis tiek apmaksāts",
     "housingDeducted": "Mājoklis tiek ieturēts no algas",
+    "housingAvailable": "Mājoklis ir pieejams; cena nav norādīta",
     "housingUnknown": "Mājoklis: nepieciešams precizējums",
     "travelIncluded": "Ceļš tiek apmaksāts",
     "travelDeducted": "Ceļš tiek ieturēts no algas",
