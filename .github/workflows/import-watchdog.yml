@@ -1,42 +1,22 @@
 name: Import watchdog
 
-# Независимая от Vercel проверка ежедневного импорта — вариант А из
-# CLAUDE.md, "Уведомления о падении cron без платного Vercel" (17.08.2026).
-#
-# Зачем отдельно от failureAlert.ts (src/lib/importers/failureAlert.ts):
-# тот шлёт письмо ИЗНУТРИ роута, только если код успел дойти до catch.
-# Не ловит более широкий класс сбоев — Vercel Cron вообще не запустился,
-# деплой сломан, функция упала до старта. Этот workflow не зависит от
-# состояния Vercel: сам делает запрос и сам решает, упасть ли джобу.
-#
-# На публичный ли репозиторий это рассчитано: URL — тот же домен сайта,
-# что и так открыт всем; секрет только из GitHub Secrets, никогда не
-# появляется в логе (curl -f не печатает тело ответа при ошибке).
-#
-# Секрет IMPORT_SECRET нужно добавить в GitHub: Settings → Secrets and
-# variables → Actions → New repository secret. Значение — то же самое,
-# что уже стоит в Vercel Environment Variables под тем же именем.
+# Независимый dead man's switch: проверяет отметку УЖЕ завершённого импорта,
+# но никогда не вызывает /api/import сам. Поэтому сбой Vercel Cron не
+# маскируется вторым импортом. Endpoint публичный и отдаёт только факт
+# свежести, секрет GitHub Actions не требуется.
 
 on:
   schedule:
-    # 05:30 UTC — на 15 минут позже прогона Vercel Cron (05:15 UTC),
-    # чтобы дать ему время завершиться до проверки.
-    - cron: "30 5 * * *"
+    # После часового окна выполнения Vercel Cron (05:15 UTC).
+    - cron: "30 6 * * *"
   workflow_dispatch: {}
 
 jobs:
   check-import:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger and verify daily import
-        env:
-          IMPORT_SECRET: ${{ secrets.IMPORT_SECRET }}
+      - name: Verify the last successful import
         run: |
-          if [ -z "$IMPORT_SECRET" ]; then
-            echo "IMPORT_SECRET secret is not configured in this repository." >&2
-            exit 1
-          fi
           curl --fail --silent --show-error \
-            --max-time 55 \
-            -H "Authorization: Bearer $IMPORT_SECRET" \
-            "https://balticworkers.eu/api/import"
+            --max-time 20 \
+            "https://balticworkers.eu/api/import-health"

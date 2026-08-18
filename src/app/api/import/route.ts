@@ -5,6 +5,7 @@ import { isExcluded, loadExclusions, purgeExcluded } from "@/lib/importers/exclu
 import { collectiveAgreementIdFor, resolveAgreementIds } from "@/lib/importers/resolveAgreements";
 import { unpublishStaleVacancies } from "@/lib/importers/staleness";
 import { notifyImportFailure } from "@/lib/importers/failureAlert";
+import { recordSuccessfulImport } from "@/lib/importers/importHealth";
 import { createServiceClient } from "@/lib/supabase/service";
 
 // Проверка на снятие (findRemovedJobTechIds) добавляет по одному запросу
@@ -150,6 +151,7 @@ export async function GET(request: NextRequest) {
     // попадала в наши текущие фильтры, больше не должна оставаться на сайте.
     // Отчёт enriched нужен, чтобы ручное обогащение не исчезало незаметно.
     const stale = await unpublishStaleVacancies(supabase);
+    await recordSuccessfulImport(supabase, "jobtech");
 
     return NextResponse.json({ imported, purged, deactivated, stale, source: "jobtech" });
   } catch (err) {
