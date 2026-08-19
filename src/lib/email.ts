@@ -1,15 +1,19 @@
-// Отправка писем через Resend. Пока нет верифицированного домена под
-// BalticWorkers Check, письма идут с общего тестового адреса Resend
-// (onboarding@resend.dev) — доставляемость ограничена, для реального запуска
-// нужен свой домен (balticworkers.com — см. CLAUDE.md) и верификация в Resend.
+// Отправка писем через Resend с верифицированного balticworkers.eu.
 const RESEND_API_URL = "https://api.resend.com/emails";
 const FROM_ADDRESS = process.env.ALERTS_FROM_EMAIL || "BalticWorkers Check <onboarding@resend.dev>";
+
+interface SendEmailOptions {
+  from?: string;
+  replyTo?: string;
+  headers?: Record<string, string>;
+}
 
 export async function sendEmail(
   to: string,
   subject: string,
   html: string,
-  text: string
+  text: string,
+  options: SendEmailOptions = {}
 ): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -22,7 +26,15 @@ export async function sendEmail(
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ from: FROM_ADDRESS, to, subject, html, text }),
+    body: JSON.stringify({
+      from: options.from ?? FROM_ADDRESS,
+      to,
+      subject,
+      html,
+      text,
+      reply_to: options.replyTo ?? process.env.REPLY_TO_EMAIL,
+      headers: options.headers,
+    }),
   });
 
   if (!res.ok) {

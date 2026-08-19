@@ -106,7 +106,13 @@ export async function GET(request: NextRequest) {
           `Новые вакансии на BalticWorkers Check (${list.length})`,
           `<p>Новые вакансии по вашему запросу:</p><ul>${itemsHtml}</ul>` +
             `<p style="color:#888;font-size:12px"><a href="${unsubscribeUrl}">Отписаться</a></p>`,
-          `Новые вакансии:\n${itemsText}\n\nОтписаться: ${unsubscribeUrl}`
+          `Новые вакансии:\n${itemsText}\n\nОтписаться: ${unsubscribeUrl}`,
+          {
+            headers: {
+              "List-Unsubscribe": `<${unsubscribeUrl}>`,
+              "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+            },
+          }
         );
         sent++;
       } catch (err) {

@@ -28,7 +28,9 @@ export async function notifyImportFailure(source: string, message: string): Prom
   const subject = `BalticWorkers Check: импорт ${source} не выполнен`;
   const text = `Импорт ${source} завершился ошибкой:\n${message}\n\nПроверьте Vercel Runtime Logs.`;
   try {
-    await sendEmail(recipient, subject, `<p>${escapeHtml(text).replace(/\n/g, "<br>")}</p>`, text);
+    await sendEmail(recipient, subject, `<p>${escapeHtml(text).replace(/\n/g, "<br>")}</p>`, text, {
+      from: process.env.IMPORT_FAILURE_FROM_EMAIL,
+    });
   } catch (error) {
     // Основной HTTP 5xx всё равно должен уйти Vercel. Не маскируем исходную
     // ошибку вторичной ошибкой почтового провайдера.
