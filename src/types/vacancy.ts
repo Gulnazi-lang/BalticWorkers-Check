@@ -35,6 +35,15 @@ export interface CollectiveAgreementRate {
   wageType: "gross_hour" | "gross_month";
 }
 
+export type LegalMinimumStatus = "unknown" | "possible" | "confirmed";
+export interface LegalMinimumRate {
+  minAmount: number;
+  currency: string;
+  wageType: "gross_hour" | "gross_month";
+  validFrom: string;
+  sourceUrl: string;
+}
+
 export interface Vacancy {
   id: string;
   title: string;
@@ -54,6 +63,9 @@ export interface Vacancy {
   collectiveAgreement: string | null;
   agreementStatus: AgreementStatus;
   collectiveAgreementRate: CollectiveAgreementRate | null;
+  legalMinimumStatus: LegalMinimumStatus;
+  legalMinimumSector: string | null;
+  legalMinimumRate: LegalMinimumRate | null;
   employerAgreementStatus: EmployerAgreementStatus | null;
   verificationLevel: VerificationLevel;
   publicationType: PublicationType;
@@ -81,6 +93,9 @@ export interface VacancyRow {
   collective_agreement: string | null;
   agreement_status: string | null;
   collective_agreement_id: string | null;
+  legal_minimum_rate_id: string | null;
+  legal_minimum_status: string | null;
+  legal_minimum_sector: string | null;
   employer_agreement_status: string | null;
   verification_level: VerificationLevel;
   publication_type: PublicationType;

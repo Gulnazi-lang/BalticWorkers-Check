@@ -148,7 +148,13 @@
     "tariffSourceLink": "Agreement source ↗",
     "tariffAmbiguousSE": "In this industry in Sweden several collective agreements apply with different rates, and an employer with no agreement at all has no statutory minimum to follow. Which agreement applies depends on the specific employer — please check before applying.",
     "eurApprox": "≈ €{amount} (ECB rate as of {date})",
-    "agreementExistsUnnamed": "A collective agreement exists, name not stated"
+    "agreementExistsUnnamed": "A collective agreement exists, name not stated",
+    "legalMinimumTitle": "Mandatory minimum pay in Norway",
+    "legalMinimumPossible": "A mandatory legal minimum may apply in this industry. Confirm the scope and worker category before signing.",
+    "legalMinimumExact": "Confirmed minimum: {amount} {currency} gross per hour, effective from {date}.",
+    "legalMinimumSource": "Check at Arbeidstilsynet ↗",
+    "assignmentRightsTitle": "Your rights on assignment",
+    "assignmentRightsBody": "If construction work requires an overnight stay away from home, the employer covers necessary travel at the start and end of the assignment; food and lodging must be agreed in advance and are normally provided or reimbursed. These expenses are separate from minimum pay and cannot replace part of the wage."
   },
   "applyHelp": {
     "open": "How to apply →",

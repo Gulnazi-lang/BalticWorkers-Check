@@ -2,6 +2,7 @@ import type {
   AgreementLegalForce,
   AgreementStatus,
   CollectiveAgreementRate,
+  LegalMinimumRate,
   ConditionStatus,
   EmployerAgreementStatus,
   HousingStatus,
@@ -40,6 +41,9 @@ export const DEMO_VACANCIES: Vacancy[] = [
     collectiveAgreement: null,
     agreementStatus: "unknown",
     collectiveAgreementRate: null,
+    legalMinimumStatus: "unknown",
+    legalMinimumSector: null,
+    legalMinimumRate: null,
     employerAgreementStatus: null,
     verificationLevel: "EMPLOYER_CONFIRMED",
     publicationType: "ORGANIC",
@@ -65,6 +69,9 @@ export const DEMO_VACANCIES: Vacancy[] = [
     collectiveAgreement: null,
     agreementStatus: "unknown",
     collectiveAgreementRate: null,
+    legalMinimumStatus: "unknown",
+    legalMinimumSector: null,
+    legalMinimumRate: null,
     employerAgreementStatus: null,
     verificationLevel: "SOURCE_CONFIRMED",
     publicationType: "ORGANIC",
@@ -93,6 +100,9 @@ export const DEMO_VACANCIES: Vacancy[] = [
     collectiveAgreement: null,
     agreementStatus: "unknown",
     collectiveAgreementRate: null,
+    legalMinimumStatus: "possible",
+    legalMinimumSector: "construction",
+    legalMinimumRate: null,
     employerAgreementStatus: null,
     verificationLevel: "NEEDS_REVIEW",
     publicationType: "ORGANIC",
@@ -140,6 +150,21 @@ interface VacancyRowWithAgreement extends VacancyRow {
       wage_type: string;
     }[];
   } | null;
+  legal_minimum_rate: {
+    min_amount: number;
+    currency: string;
+    wage_type: string;
+    valid_from: string;
+    source_url: string;
+  } | null;
+}
+
+function toLegalMinimumRate(row: VacancyRowWithAgreement): LegalMinimumRate | null {
+  if (row.legal_minimum_status !== "confirmed") return null;
+  const rate = row.legal_minimum_rate;
+  if (!rate || (rate.wage_type !== "gross_hour" && rate.wage_type !== "gross_month")) return null;
+  return { minAmount: rate.min_amount, currency: rate.currency, wageType: rate.wage_type,
+    validFrom: rate.valid_from, sourceUrl: rate.source_url };
 }
 
 function toAgreementRate(row: VacancyRowWithAgreement): CollectiveAgreementRate | null {
@@ -242,6 +267,9 @@ function fromRow(
     collectiveAgreement: row.collective_agreement,
     agreementStatus: toAgreementStatus(row.agreement_status),
     collectiveAgreementRate: resolveAgreementRate(row, fallbackMap),
+    legalMinimumStatus: row.legal_minimum_status === "confirmed" || row.legal_minimum_status === "possible" ? row.legal_minimum_status : "unknown",
+    legalMinimumSector: row.legal_minimum_sector,
+    legalMinimumRate: toLegalMinimumRate(row),
     employerAgreementStatus: toEmployerAgreementStatus(row.employer_agreement_status),
     verificationLevel: row.verification_level,
     publicationType: row.publication_type,
@@ -302,7 +330,7 @@ export async function getHeroVacancy(locale: Locale): Promise<Vacancy | null> {
     const query = supabase
       .from("vacancies")
       .select(
-        `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) )`
+        `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) ), legal_minimum_rate:collective_agreement_rates!vacancies_legal_minimum_rate_id_fkey ( min_amount, currency, wage_type, valid_from, source_url )`
       )
       .eq("published", true)
       .eq("is_demo", false)
@@ -354,7 +382,7 @@ export async function getVacancies(
   let query = supabase
     .from("vacancies")
     .select(
-      `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) )`
+      `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) ), legal_minimum_rate:collective_agreement_rates!vacancies_legal_minimum_rate_id_fkey ( min_amount, currency, wage_type, valid_from, source_url )`
     )
     .eq("published", true);
   if (filters.occupationIsco) query = query.eq("occupation_isco", filters.occupationIsco);

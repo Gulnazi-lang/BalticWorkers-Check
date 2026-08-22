@@ -148,7 +148,13 @@
     "tariffSourceLink": "Kokkuleppe allikas ↗",
     "tariffAmbiguousSE": "Selles valdkonnas Rootsis kehtib mitu kollektiivlepingut erinevate määradega ning tööandjal, kellel lepingut pole, ei ole seadusest tulenevat miinimumi üldse. Milline leping kehtib, sõltub konkreetsest tööandjast — täpsustage enne kandideerimist.",
     "eurApprox": "≈ {amount} € (EKP kurss seisuga {date})",
-    "agreementExistsUnnamed": "Kollektiivleping on olemas, nimetust pole märgitud"
+    "agreementExistsUnnamed": "Kollektiivleping on olemas, nimetust pole märgitud",
+    "legalMinimumTitle": "Kohustuslik miinimumtasu Norras",
+    "legalMinimumPossible": "Selles valdkonnas võib kehtida kohustuslik seaduslik miinimum. Enne lepingu allkirjastamist täpsustage kohaldamisala ja töötaja kategooria.",
+    "legalMinimumExact": "Kinnitatud miinimum: {amount} {currency} bruto tunnis, kehtib alates {date}.",
+    "legalMinimumSource": "Kontrolli Arbeidstilsynetist ↗",
+    "assignmentRightsTitle": "Teie õigused lähetuses",
+    "assignmentRightsBody": "Kui ehitustöö nõuab ööbimist kodust eemal, tasub tööandja vajaliku sõidu lähetuse alguses ja lõpus; toitlustus ja majutus lepitakse ette kokku ning tavaliselt tagatakse või hüvitatakse. Need kulud ei kuulu miinimumtasu sisse ega või asendada osa palgast."
   },
   "applyHelp": {
     "open": "Kuidas kandideerida →",

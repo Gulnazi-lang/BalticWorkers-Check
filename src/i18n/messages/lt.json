@@ -148,7 +148,13 @@
     "tariffSourceLink": "Susitarimo šaltinis ↗",
     "tariffAmbiguousSE": "Šioje srityje Švedijoje galioja keli kolektyviniai susitarimai su skirtingais įkainiais, o darbdaviui be susitarimo įstatyminio minimumo apskritai nėra. Koks susitarimas taikomas, priklauso nuo konkretaus darbdavio — patikslinkite prieš teikdami paraišką.",
     "eurApprox": "≈ {amount} € (ECB kursas {date})",
-    "agreementExistsUnnamed": "Kolektyvinė sutartis yra, pavadinimas nenurodytas"
+    "agreementExistsUnnamed": "Kolektyvinė sutartis yra, pavadinimas nenurodytas",
+    "legalMinimumTitle": "Privalomas minimalus atlygis Norvegijoje",
+    "legalMinimumPossible": "Šioje srityje gali būti taikomas privalomas teisinis minimumas. Prieš pasirašydami sutartį patikslinkite taikymo sritį ir darbuotojo kategoriją.",
+    "legalMinimumExact": "Patvirtintas minimumas: {amount} {currency} bruto per valandą, galioja nuo {date}.",
+    "legalMinimumSource": "Patikrinti Arbeidstilsynet ↗",
+    "assignmentRightsTitle": "Jūsų teisės komandiruotėje",
+    "assignmentRightsBody": "Jei statybos darbams reikia nakvoti ne namuose, darbdavys apmoka būtiną kelionę komandiruotės pradžioje ir pabaigoje; maitinimas ir apgyvendinimas suderinami iš anksto ir paprastai suteikiami arba kompensuojami. Šios išlaidos neįeina į minimalų atlyginimą ir negali pakeisti jo dalies."
   },
   "applyHelp": {
     "open": "Kaip kandidatuoti →",

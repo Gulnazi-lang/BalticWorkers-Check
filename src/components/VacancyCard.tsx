@@ -198,6 +198,34 @@ export function VacancyCard({
         </div>
       )}
 
+      {v.legalMinimumStatus !== "unknown" && (
+        <div className="mb-3 rounded-lg bg-tone-amber-bg px-3 py-2 text-[11px] leading-relaxed text-tone-amber-ink">
+          <p className="font-semibold">{dict.vacancy.legalMinimumTitle}</p>
+          <p className="mt-1">
+            {v.legalMinimumRate
+              ? interpolate(dict.vacancy.legalMinimumExact, {
+                  amount: v.legalMinimumRate.minAmount,
+                  currency: v.legalMinimumRate.currency,
+                  date: new Date(v.legalMinimumRate.validFrom).toLocaleDateString(DATE_LOCALE_TAG[locale]),
+                })
+              : dict.vacancy.legalMinimumPossible}
+          </p>
+          <a href={v.legalMinimumRate?.sourceUrl ?? "https://www.arbeidstilsynet.no/en/working-conditions/pay-and-minimum-rates-of-pay/minimum-wage/"} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block font-medium text-accent">
+            {dict.vacancy.legalMinimumSource}
+          </a>
+        </div>
+      )}
+
+      {v.country === "NO" && v.legalMinimumSector === "construction" && (
+        <div className="mb-3 rounded-lg bg-bg px-3 py-2 text-[11px] leading-relaxed text-ink">
+          <p className="font-semibold">{dict.vacancy.assignmentRightsTitle}</p>
+          <p className="mt-1">{dict.vacancy.assignmentRightsBody}</p>
+          <a href="https://www.arbeidstilsynet.no/en/working-conditions/pay-and-minimum-rates-of-pay/minimum-wage/" target="_blank" rel="noopener noreferrer" className="mt-1 inline-block font-medium text-accent">
+            {dict.vacancy.legalMinimumSource}
+          </a>
+        </div>
+      )}
+
       {/* exists_unnamed — намеренно НЕ в общей строке с housing/travel/hours:
           та строка про подтверждённые факты, эта — про факт, который есть,
           но не назван, ставку по нему показывать нельзя (см. CLAUDE.md,

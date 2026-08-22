@@ -10,6 +10,7 @@ export function LanguageSwitcher({ locale }: { locale: Locale }) {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [pendingLocale, setPendingLocale] = useState<Locale | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,12 +21,17 @@ export function LanguageSwitcher({ locale }: { locale: Locale }) {
     return () => document.removeEventListener("click", onClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!pendingLocale || pendingLocale === locale) return;
+    document.cookie = `NEXT_LOCALE=${pendingLocale}; path=/; max-age=${COOKIE_MAX_AGE}`;
+    const rest = pathname.split("/").slice(2).join("/");
+    router.push(`/${pendingLocale}${rest ? `/${rest}` : ""}`);
+  }, [locale, pathname, pendingLocale, router]);
+
   function switchTo(next: Locale) {
     setOpen(false);
     if (next === locale) return;
-    document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=${COOKIE_MAX_AGE}`;
-    const rest = pathname.split("/").slice(2).join("/");
-    router.push(`/${next}${rest ? `/${rest}` : ""}`);
+    setPendingLocale(next);
   }
 
   return (

@@ -148,7 +148,13 @@
     "tariffSourceLink": "Līguma avots ↗",
     "tariffAmbiguousSE": "Šajā nozarē Zviedrijā darbojas vairāki koplīgumi ar atšķirīgām likmēm, un darba devējam bez līguma likumā noteikta minimuma vispār nav. Kurš līgums piemērojams, ir atkarīgs no konkrētā darba devēja — precizējiet pirms pieteikšanās.",
     "eurApprox": "≈ {amount} € (ECB kurss uz {date})",
-    "agreementExistsUnnamed": "Koplīgums ir, nosaukums nav norādīts"
+    "agreementExistsUnnamed": "Koplīgums ir, nosaukums nav norādīts",
+    "legalMinimumTitle": "Obligātā minimālā samaksa Norvēģijā",
+    "legalMinimumPossible": "Šajā nozarē var būt spēkā obligāts likumiskais minimums. Pirms līguma parakstīšanas precizējiet piemērojamību un darbinieka kategoriju.",
+    "legalMinimumExact": "Apstiprinātais minimums: {amount} {currency} bruto stundā, spēkā no {date}.",
+    "legalMinimumSource": "Pārbaudīt Arbeidstilsynet ↗",
+    "assignmentRightsTitle": "Jūsu tiesības komandējumā",
+    "assignmentRightsBody": "Ja būvdarbi prasa nakšņošanu ārpus mājām, darba devējs sedz nepieciešamo ceļu komandējuma sākumā un beigās; ēdināšana un naktsmītne jāsaskaņo iepriekš un parasti tiek nodrošināta vai atlīdzināta. Šie izdevumi nav minimālās algas daļa un nevar aizstāt algas daļu."
   },
   "applyHelp": {
     "open": "Kā pieteikties →",
