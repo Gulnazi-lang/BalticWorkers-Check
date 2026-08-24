@@ -1,4 +1,9 @@
-import { NAV_ISCO_PREFIX, NAV_MUNICIPALITIES, NAV_STYRK08 } from "@/lib/navConfig";
+import {
+  NAV_CATCHUP_WINDOW_DAYS,
+  NAV_ISCO_PREFIX,
+  NAV_MUNICIPALITIES,
+  NAV_STYRK08,
+} from "@/lib/navConfig";
 
 export const NAV_SOURCE_NAME = "NAV";
 const FEED = "https://pam-stilling-feed.nav.no/api/v1/feed";
@@ -6,7 +11,7 @@ const DETAIL = "https://pam-stilling-feed.nav.no/api/v1/feedentry";
 const MAX_RECORDS = 400;
 const MAX_RUNTIME_MS = 45_000;
 
-interface FeedItem { _feed_entry: { uuid: string; status: string; municipal?: string | null } }
+interface FeedItem { date_modified?: string; _feed_entry: { uuid: string; status: string; municipal?: string | null } }
 interface FeedPage { id?: string; feed_url?: string; next_url?: string; items?: FeedItem[] }
 interface Category { categoryType?: string; code?: string }
 interface AdContent {
@@ -69,6 +74,7 @@ async function detail(uuid: string, token: string): Promise<AdContent | null> {
 /** The route writes each page and only then persists its exact checkpoint. */
 export async function walkNavFeed(token: string, cursor: NavCursor | null, onPage: (batch: NavPageBatch) => Promise<void>) {
   const started = Date.now();
+  const windowStart = started - NAV_CATCHUP_WINDOW_DAYS * 24 * 60 * 60 * 1000;
   let url = cursor?.cursor_url ?? `${FEED}?last=true`;
   let validators = cursor ?? undefined;
   let records = 0;
@@ -83,6 +89,9 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
     const toDeactivate: string[] = [];
     for (const item of items) {
       const entry = item._feed_entry;
+      // Слишком старая запись — пропускаем, не тратя запрос деталей. Главная
+      // статья расхода при проходе истории: см. NAV_CATCHUP_WINDOW_DAYS.
+      if (item.date_modified && Date.parse(item.date_modified) < windowStart) continue;
       if (entry.status !== "ACTIVE") { toDeactivate.push(entry.uuid); continue; }
       if (!NAV_MUNICIPALITIES.has(municipality(entry.municipal))) continue;
       const ad = await detail(entry.uuid, token);

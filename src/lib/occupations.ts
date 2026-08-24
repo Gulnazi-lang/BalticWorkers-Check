@@ -483,6 +483,46 @@ export const OCCUPATIONS: Occupation[] = [
     },
   },
 
+  // --- 24.08.2026: уборка и кухня. Отрасли охвачены норвежским
+  // allmenngjøring (уборка 236,54 NOK/час, общепит 204,79 NOK/час), то есть
+  // карточка показывает проверяемую ставку даже когда работодатель молчит об
+  // условиях — а он молчит: ни одно из 210 проверенных объявлений не
+  // упоминает allmenngjøring. Для Швеции эти профессии остаются убранными
+  // (решение 16.08.2026): там законного минимума нет вообще, и ставка живёт
+  // только в договоре конкретного работодателя.
+  {
+    term: "städare",
+    norwayOnly: true,
+    labels: {
+      lv: "Apkopējs / apkopēja",
+      ru: "Уборщик / уборщица",
+      en: "Cleaner",
+      lt: "Valytojas",
+      et: "Koristaja",
+    },
+  },
+  {
+    term: "kock",
+    norwayOnly: true,
+    labels: {
+      lv: "Pavārs",
+      ru: "Повар",
+      en: "Cook",
+      lt: "Virėjas",
+      et: "Kokk",
+    },
+  },
+  {
+    term: "köksbiträde",
+    norwayOnly: true,
+    labels: {
+      lv: "Virtuves palīgs",
+      ru: "Помощник повара",
+      en: "Kitchen assistant",
+      lt: "Virtuvės pagalbininkas",
+      et: "Köögiabiline",
+    },
+  },
 ];
 
 const BY_TERM = new Map(OCCUPATIONS.map((o) => [o.term, o.labels]));
