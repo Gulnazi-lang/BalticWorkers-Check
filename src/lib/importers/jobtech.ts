@@ -177,6 +177,9 @@ export async function fetchJobTechVacancies(limitPerOccupation = 5): Promise<Imp
   const results: ImportedVacancy[] = [];
 
   for (const occ of OCCUPATIONS) {
+    // Термины, заведённые ради норвежского фида, в шведском поиске не
+    // участвуют — см. Occupation.norwayOnly.
+    if (occ.norwayOnly) continue;
     const regions = occ.regionRestricted ? PRIORITY_REGIONS : undefined;
     const hits = await fetchOccupation(occ.term, limitPerOccupation, regions);
     for (const hit of hits) {

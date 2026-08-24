@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { NAV_SOURCE_NAME } from "@/lib/importers/nav";
 
 // Строка, которая не попала ни в один успешный импорт 7 дней, больше не
 // считается актуально отслеживаемой. Это отдельная защита от проверки
@@ -76,7 +77,16 @@ export async function unpublishStaleVacancies(
     )
     .eq("published", true)
     .eq("is_demo", false)
-    .lt("updated_at", cutoff);
+    .lt("updated_at", cutoff)
+    // NAV живёт по своему правилу — src/lib/importers/navExpiry.ts. Здесь
+    // критерий «строка не обновлялась N дней» означает «выпала из выдачи
+    // источника», и это верно только для источников, которые выдачу
+    // перезаливают целиком (JobTech). У журнала событий строка месяцами
+    // лежит нетронутой, оставаясь живой: медианный срок жизни норвежского
+    // объявления — 34 дня, то есть семидневное правило снимало бы актуальные
+    // вакансии (замер 22.08.2026). Строки без source_name (ручные, демо)
+    // правило по-прежнему покрывает.
+    .or(`source_name.is.null,source_name.neq.${NAV_SOURCE_NAME}`);
 
   if (error) throw new Error(`stale vacancies lookup failed: ${error.message}`);
 

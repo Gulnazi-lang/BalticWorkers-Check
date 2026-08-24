@@ -69,6 +69,12 @@ export interface Occupation {
   // lagerarbetare — местная развозка и склады со шведским по умолчанию,
   // не помощь целевой аудитории.
   regionRestricted?: boolean;
+  // Профессия существует в списке только ради норвежского фида: карточке
+  // нужен перевод названия, а фильтру на главной — подпись. Импортёр JobTech
+  // такие термины НЕ ищет (добавлено 22.08.2026 вместе с отбором NAV по
+  // STYRK08: коды NAV покрывают профессии, которых в шведском списке не было,
+  // и молча расширять шведский импорт из-за этого нельзя).
+  norwayOnly?: boolean;
 }
 
 // 17.08.2026: эти шесть терминов ("общие", изначально без региона) переведены
@@ -280,6 +286,203 @@ export const OCCUPATIONS: Occupation[] = [
     },
     noKeywords: ["elektrotekniker"],
   },
+
+  // --- 22.08.2026: профессии, пришедшие с норвежской стороны. Отбор NAV идёт
+  // по кодам STYRK08 (src/lib/navConfig.ts), и коды покрывают профессии,
+  // которых в шведском списке не было: плотник, каменщик, сантехник,
+  // кровельщик, жестянщик и далее. Здесь они нужны для двух вещей — перевод
+  // названия на карточке вакансии и подпись в фильтре профессий. Поиск
+  // JobTech их не использует (norwayOnly), шведский импорт не меняется.
+  // Переводы lv/ru — мои, вычитываются Шакро; lt/et не показываются, пока
+  // локали за ENABLED_LOCALES.
+  {
+    term: "snickare",
+    norwayOnly: true,
+    labels: {
+      lv: "Namdaris",
+      ru: "Плотник",
+      en: "Carpenter",
+      lt: "Dailidė",
+      et: "Puusepp",
+    },
+  },
+  {
+    term: "murare",
+    norwayOnly: true,
+    labels: {
+      lv: "Mūrnieks",
+      ru: "Каменщик",
+      en: "Bricklayer",
+      lt: "Mūrininkas",
+      et: "Müürsepp",
+    },
+  },
+  {
+    term: "takläggare",
+    norwayOnly: true,
+    labels: {
+      lv: "Jumiķis",
+      ru: "Кровельщик",
+      en: "Roofer",
+      lt: "Stogdengys",
+      et: "Katusekatja",
+    },
+  },
+  {
+    term: "golvläggare",
+    norwayOnly: true,
+    labels: {
+      lv: "Grīdas un flīžu licējs",
+      ru: "Укладчик полов и плитки",
+      en: "Floor and tile layer",
+      lt: "Grindų ir plytelių klojėjas",
+      et: "Põranda- ja plaadipaigaldaja",
+    },
+  },
+  {
+    term: "isolerare",
+    norwayOnly: true,
+    labels: {
+      lv: "Izolētājs",
+      ru: "Изолировщик",
+      en: "Insulation installer",
+      lt: "Izoliuotojas",
+      et: "Isolatsioonipaigaldaja",
+    },
+  },
+  {
+    term: "glasmästare",
+    norwayOnly: true,
+    labels: {
+      lv: "Stiklinieks",
+      ru: "Стекольщик",
+      en: "Glazier",
+      lt: "Stiklius",
+      et: "Klaassepp",
+    },
+  },
+  {
+    term: "rörläggare",
+    norwayOnly: true,
+    labels: {
+      lv: "Santehniķis",
+      ru: "Сантехник",
+      en: "Plumber",
+      lt: "Santechnikas",
+      et: "Torulukksepp",
+    },
+  },
+  {
+    term: "kylmontör",
+    norwayOnly: true,
+    labels: {
+      lv: "Aukstumiekārtu montieris",
+      ru: "Монтажник холодильного оборудования",
+      en: "Refrigeration technician",
+      lt: "Šaldymo įrangos montuotojas",
+      et: "Külmaseadmete paigaldaja",
+    },
+  },
+  {
+    term: "fasadarbetare",
+    norwayOnly: true,
+    labels: {
+      lv: "Fasādes strādnieks",
+      ru: "Фасадчик",
+      en: "Facade worker",
+      lt: "Fasado darbininkas",
+      et: "Fassaaditööline",
+    },
+  },
+  {
+    term: "plåtslagare",
+    norwayOnly: true,
+    labels: {
+      lv: "Skārdnieks",
+      ru: "Жестянщик",
+      en: "Sheet metal worker",
+      lt: "Skardininkas",
+      et: "Plekksepp",
+    },
+  },
+  {
+    term: "riggare",
+    norwayOnly: true,
+    labels: {
+      lv: "Takelētājs",
+      ru: "Такелажник",
+      en: "Rigger",
+      lt: "Takelažininkas",
+      et: "Taageldaja",
+    },
+  },
+  {
+    term: "verktygsmakare",
+    norwayOnly: true,
+    labels: {
+      lv: "Instrumentu atslēdznieks",
+      ru: "Слесарь-инструментальщик",
+      en: "Toolmaker",
+      lt: "Įrankininkas",
+      et: "Tööriistalukksepp",
+    },
+  },
+  {
+    term: "fordonsmekaniker",
+    norwayOnly: true,
+    labels: {
+      lv: "Automehāniķis",
+      ru: "Автомеханик",
+      en: "Vehicle mechanic",
+      lt: "Automechanikas",
+      et: "Automehaanik",
+    },
+  },
+  {
+    term: "automationstekniker",
+    norwayOnly: true,
+    labels: {
+      lv: "Automātikas tehniķis",
+      ru: "Техник по автоматике",
+      en: "Automation technician",
+      lt: "Automatikos technikas",
+      et: "Automaatikatehnik",
+    },
+  },
+  {
+    term: "truckförare",
+    norwayOnly: true,
+    labels: {
+      lv: "Autoiekrāvēja vadītājs",
+      ru: "Водитель погрузчика",
+      en: "Forklift driver",
+      lt: "Krautuvo vairuotojas",
+      et: "Tõstukijuht",
+    },
+  },
+  {
+    term: "hjälparbetare",
+    norwayOnly: true,
+    labels: {
+      lv: "Palīgstrādnieks",
+      ru: "Разнорабочий",
+      en: "General labourer",
+      lt: "Pagalbinis darbininkas",
+      et: "Abitööline",
+    },
+  },
+  {
+    term: "industrioperatör",
+    norwayOnly: true,
+    labels: {
+      lv: "Ražošanas operators",
+      ru: "Оператор производства",
+      en: "Production operator",
+      lt: "Gamybos operatorius",
+      et: "Tootmisoperaator",
+    },
+  },
+
 ];
 
 const BY_TERM = new Map(OCCUPATIONS.map((o) => [o.term, o.labels]));

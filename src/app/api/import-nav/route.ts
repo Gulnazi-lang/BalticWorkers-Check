@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { walkNavFeed, NAV_SOURCE_NAME, type NavCursor } from "@/lib/importers/nav";
 import { isExcluded, loadExclusions, purgeExcluded } from "@/lib/importers/exclusions";
 import { unpublishStaleVacancies } from "@/lib/importers/staleness";
+import { expireNavVacancies } from "@/lib/importers/navExpiry";
 import { notifyImportFailure } from "@/lib/importers/failureAlert";
 import { createServiceClient } from "@/lib/supabase/service";
 
@@ -35,8 +36,14 @@ export async function GET(request: NextRequest) {
       const { error } = await supabase.from("import_cursors").upsert({ source: "nav", ...batch.checkpoint, initialized_at: cursorRow ? undefined : new Date().toISOString() }, { onConflict: "source" });
       if (error) throw new Error(`NAV cursor save failed: ${error.message}`);
     });
+    // Сначала снимаем истёкшее и перепроверяем самое давнее у источника —
+    // условия NAV требуют убирать неактивное, а событий об истечении срока
+    // фид не присылает. Затем общее правило (оно норвежские строки не
+    // трогает, см. staleness.ts) — чтобы ответ прогона по-прежнему содержал
+    // отчёт по остальным источникам.
+    const expiry = await expireNavVacancies(supabase, token);
     const stale = await unpublishStaleVacancies(supabase);
-    return NextResponse.json({ imported, deactivated, purged, stale, source: "nav", ...walk });
+    return NextResponse.json({ imported, deactivated, purged, expiry, stale, source: "nav", ...walk });
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
     console.error(`[import:nav] ${message}`);

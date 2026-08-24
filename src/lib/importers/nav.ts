@@ -1,4 +1,4 @@
-import { NAV_MUNICIPALITIES, NAV_STYRK08 } from "@/lib/navConfig";
+import { NAV_ISCO_PREFIX, NAV_MUNICIPALITIES, NAV_STYRK08 } from "@/lib/navConfig";
 
 export const NAV_SOURCE_NAME = "NAV";
 const FEED = "https://pam-stilling-feed.nav.no/api/v1/feed";
@@ -7,10 +7,10 @@ const MAX_RECORDS = 400;
 const MAX_RUNTIME_MS = 45_000;
 
 interface FeedItem { _feed_entry: { uuid: string; status: string; municipal?: string | null } }
-interface FeedPage { id?: string; next_url?: string; items?: FeedItem[] }
+interface FeedPage { id?: string; feed_url?: string; next_url?: string; items?: FeedItem[] }
 interface Category { categoryType?: string; code?: string }
 interface AdContent {
-  expires?: string; jobtitle?: string; employer?: { name?: string | null } | null;
+  expires?: string; published?: string; jobtitle?: string; employer?: { name?: string | null } | null;
   workLocations?: { municipal?: string | null }[]; categoryList?: Category[];
   occupationCategories?: Category[]; link?: string; applicationUrl?: string;
 }
@@ -22,6 +22,10 @@ export interface ImportedNavVacancy {
   source_url: string; source_name: typeof NAV_SOURCE_NAME; external_id: string;
   is_demo: false; published: true; legal_minimum_status: "possible" | "unknown";
   legal_minimum_sector: string | null;
+  // Срок и дата публикации самого объявления, не нашей строки. Нужны, чтобы
+  // снимать истёкшее: у событийного источника «свежесть updated_at» ничего не
+  // значит — запись месяцами лежит нетронутой, будучи живой (см. navExpiry.ts).
+  source_expires_at: string | null; source_published_at: string | null;
 }
 export interface NavPageBatch { toUpsert: ImportedNavVacancy[]; toDeactivate: string[]; checkpoint: NavCursor }
 
@@ -43,6 +47,19 @@ async function navFetch(url: string, token: string, validators?: NavCursor): Pro
   }
   throw new Error("NAV request failed");
 }
+/**
+ * Детали объявления. У деактивированного объявления NAV отдаёт 200 с ПУСТЫМ
+ * ad_content (проверено 22.08.2026 на записях 2023 года: title, expires и
+ * contactList — null). Пустой ответ поэтому надёжный признак «объявления
+ * больше нет», и на нём же построена перепроверка в navExpiry.ts.
+ */
+export async function fetchNavAdContent(uuid: string, token: string): Promise<AdContent | null> {
+  const res = await navFetch(`${DETAIL}/${uuid}`, token);
+  if (!res.ok) throw new Error(`NAV feedentry ${uuid}: ${res.status}`);
+  const ad = ((await res.json()) as { ad_content?: AdContent }).ad_content ?? null;
+  return ad && Object.values(ad).some((v) => v !== null && v !== undefined) ? ad : null;
+}
+
 async function detail(uuid: string, token: string): Promise<AdContent | null> {
   const res = await navFetch(`${DETAIL}/${uuid}`, token);
   if (!res.ok) throw new Error(`NAV feedentry ${uuid}: ${res.status}`);
@@ -77,14 +94,29 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
       if (!NAV_MUNICIPALITIES.has(municipality(location))) continue;
       toUpsert.push({
         title: ad.jobtitle ?? "Untitled vacancy", employer_name: ad.employer?.name ?? null,
-        country: "NO", location, occupation_isco: code, occupation_term: match.term,
+        country: "NO", location,
+        // Префикс обязателен: шведские SSYK и норвежские STYRK08 пересекаются
+        // по номерам с разным смыслом — см. NAV_ISCO_PREFIX.
+        occupation_isco: `${NAV_ISCO_PREFIX}${code}`, occupation_term: match.term,
         hours_per_week: null, verification_level: "SOURCE_CONFIRMED", publication_type: "ORGANIC",
         source_url: ad.applicationUrl || ad.link!, source_name: NAV_SOURCE_NAME, external_id: entry.uuid,
         is_demo: false, published: true, legal_minimum_status: match.legalMinimumSector ? "possible" : "unknown",
         legal_minimum_sector: match.legalMinimumSector,
+        source_expires_at: ad.expires ?? null, source_published_at: ad.published ?? null,
       });
     }
-    const next = page.next_url ? absolute(page.next_url) : url;
+    // Checkpoint должен указывать на КОНКРЕТНУЮ страницу, а не на «?last=true».
+    // Проверено 22.08.2026 на проде: сохранённый ?last=true заставляет
+    // следующий прогон снова взять последнюю страницу на тот момент, а всё,
+    // что лента накопила между прогонами, пройдёт мимо — при суточном cron
+    // это ~1000 записей в день. У открытой хвостовой страницы next_url ещё
+    // нет, поэтому возвращаемся к ней по её собственному feed_url: когда она
+    // закроется, next_url появится и цепочка пойдёт дальше.
+    const next = page.next_url
+      ? absolute(page.next_url)
+      : page.feed_url
+        ? absolute(page.feed_url)
+        : url;
     await onPage({ toUpsert, toDeactivate, checkpoint: {
       cursor_url: next, page_id: page.id ?? null,
       etag: page.next_url ? null : res.headers.get("etag"),
