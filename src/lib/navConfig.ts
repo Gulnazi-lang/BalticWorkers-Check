@@ -73,7 +73,11 @@ export const NAV_STYRK08: Record<string, NavOccupationMatch> = {
   "7215": { term: "riggare", legalMinimumSector: "construction" },
   "7222": { term: "verktygsmakare", legalMinimumSector: null },
   "7223": { term: "verktygsmakare", legalMinimumSector: null },
-  "7231": { term: "fordonsmekaniker", legalMinimumSector: null },
+  // Автосервис тоже охвачен allmenngjøring — forskrift для bilbransjen,
+  // 223,50 NOK/час для свежего фагбрева и 237,00 при опыте от года, в силе с
+  // 15.06.2026. Пропустить это значило бы промолчать о законной ставке там,
+  // где она есть.
+  "7231": { term: "fordonsmekaniker", legalMinimumSector: "motor_vehicle_repair" },
   "7233": { term: "mekaniker", legalMinimumSector: null },
 
   // --- Электро (74xx)
@@ -88,7 +92,16 @@ export const NAV_STYRK08: Record<string, NavOccupationMatch> = {
   // --- Транспорт и спецтехника (83xx). Пассажирские перевозки (8331
   // Bussjåfører) сознательно не берём: нужен норвежский и местная
   // сертификация, целевой аудитории такая вакансия не подходит.
-  "8322": { term: "chaufför", legalMinimumSector: "road_freight" },
+  // 8322 «Bil-, drosje- og varebilførere» НЕ берём (проверено 24.08.2026 после
+  // того, как этот код завёл в базу двух таксистов). Треть записей — такси и
+  // drosje: нужен kjøreseddel, местный экзамен и норвежский для пассажиров.
+  // Остальное — pizzasjåfør, bilbud, budbil: местная развозка, то есть ровно
+  // тот локальный поток, ради ухода от которого введён regionRestricted.
+  // Отдельно про ставку: allmenngjøring грузоперевозок с 01.06.2025 покрывает
+  // машины свыше 2,5 т, включая фургоны, но такси не покрывает никогда.
+  // Код смешанный, значит любой legalMinimumSector на нём был бы обещанием
+  // законного минимума части людей, у которых его нет. Грузовики берём
+  // кодом 8332, он чистый.
   "8332": { term: "chaufför", legalMinimumSector: "road_freight" },
   "8342": { term: "anläggningsmaskinförare", legalMinimumSector: "construction" },
   "8343": { term: "kranförare", legalMinimumSector: "construction" },
