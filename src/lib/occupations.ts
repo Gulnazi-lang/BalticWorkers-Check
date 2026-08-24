@@ -493,9 +493,12 @@ export const OCCUPATIONS: Occupation[] = [
   {
     term: "städare",
     norwayOnly: true,
+    // Подписи ДОСЛОВНО как у шведского кода 9111 (миграция 012): список
+    // профессий на главной группируется по подписи, и «Apkopējs» против
+    // «Apkopējs / apkopēja» дал бы два пункта об одном и том же.
     labels: {
-      lv: "Apkopējs / apkopēja",
-      ru: "Уборщик / уборщица",
+      lv: "Apkopējs",
+      ru: "Уборщик",
       en: "Cleaner",
       lt: "Valytojas",
       et: "Koristaja",
