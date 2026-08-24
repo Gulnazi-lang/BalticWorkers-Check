@@ -75,7 +75,13 @@ export async function GET(request: NextRequest) {
     // причина, по которой список профессий стал выпадающим), но ломать
     // старые подписки молча не стоит — пусть работают как раньше.
     if (alert.occupation_isco) {
-      matchQuery = matchQuery.eq("occupation_isco", alert.occupation_isco);
+      // Подписка могла быть оформлена на группу кодов (одна профессия в двух
+      // классификаторах) — тогда в значении несколько кодов через запятую.
+      const codes = alert.occupation_isco.split(",").filter(Boolean);
+      matchQuery =
+        codes.length > 1
+          ? matchQuery.in("occupation_isco", codes)
+          : matchQuery.eq("occupation_isco", alert.occupation_isco);
     } else if (alert.query) {
       matchQuery = matchQuery.ilike("title", `%${alert.query}%`);
     }

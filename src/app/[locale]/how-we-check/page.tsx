@@ -34,7 +34,11 @@ export default async function HowWeCheckPage({
   const dict = await getDictionary(locale);
 
   const steps = [
-    { title: dict.howWeCheck.step1Title, text: dict.howWeCheck.step1Text },
+    // У первого шага есть приписка про Finn.no: объявления, размещённые
+    // только там, в базу NAV не попадают, и это треть норвежского сегмента
+    // (замер 22.08.2026). Молчать об этом нечестно — человек должен знать,
+    // где мы не видим ничего.
+    { title: dict.howWeCheck.step1Title, text: dict.howWeCheck.step1Text, note: dict.howWeCheck.step1Note },
     { title: dict.howWeCheck.step2Title, text: dict.howWeCheck.step2Text },
     { title: dict.howWeCheck.step3Title, text: dict.howWeCheck.step3Text },
     { title: dict.howWeCheck.step4Title, text: dict.howWeCheck.step4Text },
@@ -78,6 +82,11 @@ export default async function HowWeCheckPage({
                   </span>
                   <h3 className="mt-2 text-lg font-semibold">{step.title}</h3>
                   <p className="mt-2 leading-relaxed text-muted">{step.text}</p>
+                  {"note" in step && step.note && (
+                    <p className="mt-3 rounded-lg bg-bg px-3 py-2 text-[13px] leading-relaxed text-ink">
+                      {step.note}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>

@@ -385,7 +385,12 @@ export async function getVacancies(
       `*, collective_agreements ( code, legal_force, source_url, collective_agreement_rates ( min_amount, currency, wage_type ) ), legal_minimum_rate:collective_agreement_rates!vacancies_legal_minimum_rate_id_fkey ( min_amount, currency, wage_type, valid_from, source_url )`
     )
     .eq("published", true);
-  if (filters.occupationIsco) query = query.eq("occupation_isco", filters.occupationIsco);
+  if (filters.occupationIsco) {
+    // Значение из выпадающего списка может содержать несколько кодов через
+    // запятую — одна профессия, разные классификаторы SE/NO (occupationOptions.ts).
+    const codes = filters.occupationIsco.split(",").filter(Boolean);
+    query = codes.length > 1 ? query.in("occupation_isco", codes) : query.eq("occupation_isco", codes[0] ?? filters.occupationIsco);
+  }
   if (filters.country) query = query.eq("country", filters.country);
   query = query.order("updated_at", { ascending: false }).limit(limit);
 

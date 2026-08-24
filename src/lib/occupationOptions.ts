@@ -29,17 +29,28 @@ export async function getOccupationOptions(locale: Locale): Promise<OccupationOp
 
   const labelByCode = new Map((labels ?? []).map((l) => [l.isco_code as string, l.label as string]));
 
-  return (counts ?? [])
-    .map((c) => {
-      const code = c.occupation_isco as string;
-      return {
-        code,
-        // Код без подписи в справочнике — такое бывает, если в базу попал
-        // новый ISCO, для которого ещё не завели перевод: честнее показать
-        // код, чем молчать или подставлять случайный текст.
-        label: labelByCode.get(code) ?? code,
-        count: c.vacancy_count as number,
-      };
-    })
+  // Группируем по ПОДПИСИ, а не по коду. Причина появилась 24.08.2026 вместе
+  // с норвежскими вакансиями: шведский SSYK и норвежский STYRK08 — разные
+  // классификаторы, и одна профессия приходит разными кодами (уборка в
+  // Норвегии это 9112, 9111 и 5151 сразу). Без группировки в списке было бы
+  // три одинаковых пункта «Уборщик», и человек не понял бы, чем они
+  // отличаются. Значение опции — все коды группы через запятую; фильтр и
+  // подписки это понимают (см. vacancies.ts и api/notify).
+  const grouped = new Map<string, { codes: string[]; count: number }>();
+  for (const c of counts ?? []) {
+    const code = c.occupation_isco as string;
+    // Код без подписи в справочнике — такое бывает, если в базу попал новый
+    // код, для которого ещё не завели перевод: честнее показать код, чем
+    // молчать или подставлять случайный текст. Такие пункты не группируются
+    // между собой — у каждого своя «подпись».
+    const label = labelByCode.get(code) ?? code;
+    const entry = grouped.get(label) ?? { codes: [], count: 0 };
+    entry.codes.push(code);
+    entry.count += c.vacancy_count as number;
+    grouped.set(label, entry);
+  }
+
+  return [...grouped.entries()]
+    .map(([label, { codes, count }]) => ({ code: codes.sort().join(","), label, count }))
     .sort((a, b) => b.count - a.count);
 }

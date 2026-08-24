@@ -182,6 +182,7 @@
     "stepsTitle": "Ką darome žingsnis po žingsnio",
     "step1Title": "Randame skelbimą oficialiame šaltinyje",
     "step1Text": "Švedija — Platsbanken/JobTech Arbetsförmedlingen, Norvegija — NAV. Nuorodą į originalą rodome kortelėje, kandidatuojama taip pat ten.",
+    "step1Note": "Norvegijos darbo skelbimus imame iš oficialios NAV duomenų bazės — arbeidsplassen.nav.no. Skelbimai, paskelbti tik Finn.no, į šią bazę nepatenka: tai maždaug trečdalis Norvegijos statybų sektoriaus skelbimų. Jei ieškote darbo Norvegijoje, atskirai pasižiūrėkite Finn.no — iš ten negalime patikrinti nė vieno skelbimo.",
     "step2Title": "Identifikuojame darbdavį",
     "step2Text": "Sutikriname pavadinimą su įmonių registru (Bolagsverket, Brønnøysund). Jei už skelbimo stovi tarpininkas, o ne darbdavys, — taip ir parašome.",
     "step3Title": "Išnagrinėjame sąlygas po vieną",
