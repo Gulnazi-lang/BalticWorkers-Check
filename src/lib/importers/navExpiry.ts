@@ -40,6 +40,8 @@ interface NavRow {
 }
 
 export interface NavExpiryReport {
+  /** Удалены: без названия карточку нельзя честно показать пользователю. */
+  missingTitle: number;
   /** Удалены: срок объявления у источника прошёл. */
   expired: number;
   /** Удалены: expires не было, а с публикации прошло больше полугода. */
@@ -116,6 +118,7 @@ export async function expireNavVacancies(
   recheckBatch = NAV_RECHECK_BATCH
 ): Promise<NavExpiryReport> {
   const report: NavExpiryReport = {
+    missingTitle: 0,
     expired: 0,
     overdue: 0,
     rechecked: 0,
@@ -124,6 +127,15 @@ export async function expireNavVacancies(
     enrichedRemoved: [],
   };
   const now = new Date();
+
+  // Страховка для строк, импортированных до запрета пустых заголовков.
+  const { data: missingTitleRows, error: missingTitleError } = await supabase
+    .from("vacancies")
+    .select(SELECT)
+    .eq("source_name", NAV_SOURCE_NAME)
+    .eq("title", "");
+  if (missingTitleError) throw new Error(`NAV missing-title lookup failed: ${missingTitleError.message}`);
+  report.missingTitle = await removeRows(supabase, (missingTitleRows ?? []) as NavRow[], report);
 
   const { data: expiredRows, error: expiredError } = await supabase
     .from("vacancies")

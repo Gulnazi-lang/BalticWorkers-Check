@@ -113,6 +113,10 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
       const ad = await detail(entry.uuid, token);
       details++;
       if (!ad || (ad.expires && Date.parse(ad.expires) < Date.now())) { toDeactivate.push(entry.uuid); continue; }
+      // Без названия карточка бесполезна, а техническая английская заглушка
+      // выглядела бы поломкой во всех локалях. Если ранее опубликованная
+      // вакансия потеряла title при обновлении, удаляем её тем же событием.
+      if (!ad.jobtitle?.trim()) { toDeactivate.push(entry.uuid); continue; }
       const code = styrk08(ad);
       const match = code ? NAV_STYRK08[code] : undefined;
       if (!code || !match || (!ad.applicationUrl && !ad.link)) continue;
@@ -121,7 +125,7 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
       upsertCandidates.push({
         dateMs: item.date_modified ? Date.parse(item.date_modified) : 0,
         vacancy: {
-          title: ad.jobtitle ?? "Untitled vacancy", employer_name: ad.employer?.name ?? null,
+          title: ad.jobtitle.trim(), employer_name: ad.employer?.name ?? null,
           country: "NO", location,
           // Префикс обязателен: шведские SSYK и норвежские STYRK08 пересекаются
           // по номерам с разным смыслом — см. NAV_ISCO_PREFIX.

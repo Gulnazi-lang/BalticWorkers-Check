@@ -182,7 +182,7 @@
     "stepsTitle": "What we do, step by step",
     "step1Title": "We find the job in an official source",
     "step1Text": "Sweden — Platsbanken/JobTech Arbetsförmedlingen, Norway — NAV. We show the link to the original on the card, and applications go there too.",
-    "step1Note": "Norwegian vacancies come from NAV's official database — arbeidsplassen.nav.no. Ads posted only on Finn.no never reach that database: that is roughly a third of Norway's construction vacancies. If you are looking for work in Norway, check Finn.no separately — we cannot verify a single vacancy from there.",
+    "step1Note": "Norwegian vacancies come from NAV's official database — arbeidsplassen.nav.no. A one-off measurement of our target segment on 24 August 2026 found that 33.4% of listings were unavailable through the feed because they were posted only on Finn.no. With a 60-day import window, we cover 54.4% of the total target segment. When looking for work in Norway, check Finn.no separately.",
     "step2Title": "We identify the employer",
     "step2Text": "We cross-check the name against the company register (Bolagsverket, Brønnøysund). If an intermediary rather than the employer is behind the posting, we say so.",
     "step3Title": "We break the terms down one by one",
