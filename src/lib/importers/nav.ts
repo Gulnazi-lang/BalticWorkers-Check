@@ -97,7 +97,11 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
     if (!res.ok) throw new Error(`NAV feed (${url}): ${res.status} ${res.statusText}`);
     const page = (await res.json()) as FeedPage;
     const items = page.items ?? [];
-    const toUpsert: ImportedNavVacancy[] = [];
+    // dateMs идёт рядом с каждой кандидатной записью, а не восстанавливается
+    // из порядка массива при дедупликации ниже — порядок в пределах страницы
+    // нигде не документирован NAV, полагаться на него после сюрпризов с
+    // If-Modified-Since не стоит.
+    const upsertCandidates: { dateMs: number; vacancy: ImportedNavVacancy }[] = [];
     const toDeactivate: string[] = [];
     for (const item of items) {
       const entry = item._feed_entry;
@@ -114,17 +118,20 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
       if (!code || !match || (!ad.applicationUrl && !ad.link)) continue;
       const location = ad.workLocations?.[0]?.municipal ?? entry.municipal ?? null;
       if (!NAV_MUNICIPALITIES.has(municipality(location))) continue;
-      toUpsert.push({
-        title: ad.jobtitle ?? "Untitled vacancy", employer_name: ad.employer?.name ?? null,
-        country: "NO", location,
-        // Префикс обязателен: шведские SSYK и норвежские STYRK08 пересекаются
-        // по номерам с разным смыслом — см. NAV_ISCO_PREFIX.
-        occupation_isco: `${NAV_ISCO_PREFIX}${code}`, occupation_term: match.term,
-        hours_per_week: null, verification_level: "SOURCE_CONFIRMED", publication_type: "ORGANIC",
-        source_url: ad.applicationUrl || ad.link!, source_name: NAV_SOURCE_NAME, external_id: entry.uuid,
-        is_demo: false, published: true, legal_minimum_status: match.legalMinimumSector ? "possible" : "unknown",
-        legal_minimum_sector: match.legalMinimumSector,
-        source_expires_at: ad.expires ?? null, source_published_at: ad.published ?? null,
+      upsertCandidates.push({
+        dateMs: item.date_modified ? Date.parse(item.date_modified) : 0,
+        vacancy: {
+          title: ad.jobtitle ?? "Untitled vacancy", employer_name: ad.employer?.name ?? null,
+          country: "NO", location,
+          // Префикс обязателен: шведские SSYK и норвежские STYRK08 пересекаются
+          // по номерам с разным смыслом — см. NAV_ISCO_PREFIX.
+          occupation_isco: `${NAV_ISCO_PREFIX}${code}`, occupation_term: match.term,
+          hours_per_week: null, verification_level: "SOURCE_CONFIRMED", publication_type: "ORGANIC",
+          source_url: ad.applicationUrl || ad.link!, source_name: NAV_SOURCE_NAME, external_id: entry.uuid,
+          is_demo: false, published: true, legal_minimum_status: match.legalMinimumSector ? "possible" : "unknown",
+          legal_minimum_sector: match.legalMinimumSector,
+          source_expires_at: ad.expires ?? null, source_published_at: ad.published ?? null,
+        },
       });
     }
     // Checkpoint должен указывать на КОНКРЕТНУЮ страницу, а не на «?last=true».
@@ -134,12 +141,28 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
     // это ~1000 записей в день. У открытой хвостовой страницы next_url ещё
     // нет, поэтому возвращаемся к ней по её собственному feed_url: когда она
     // закроется, next_url появится и цепочка пойдёт дальше.
+    // Один uuid может попасть в кандидаты дважды: страница ленты — не
+    // моментальный снимок, а события за окно, и если объявление менялось
+    // несколько раз, пока страница ещё открыта, оно встретится в items
+    // повторно. Дубликат ключа (source_name, external_id) в одном upsert
+    // Postgres отклоняет целиком ("cannot affect row a second time") —
+    // проверено на проде 25.08.2026, 502 на ровном месте. Оставляем версию с
+    // бОльшим dateMs, а не последнюю по порядку в массиве — порядок внутри
+    // страницы NAV нигде не гарантирует.
+    const latestByExternalId = new Map<string, { dateMs: number; vacancy: ImportedNavVacancy }>();
+    for (const candidate of upsertCandidates) {
+      const current = latestByExternalId.get(candidate.vacancy.external_id);
+      if (!current || candidate.dateMs >= current.dateMs) {
+        latestByExternalId.set(candidate.vacancy.external_id, candidate);
+      }
+    }
+    const dedupedUpsert = [...latestByExternalId.values()].map((c) => c.vacancy);
     const next = page.next_url
       ? absolute(page.next_url)
       : page.feed_url
         ? absolute(page.feed_url)
         : url;
-    await onPage({ toUpsert, toDeactivate, checkpoint: {
+    await onPage({ toUpsert: dedupedUpsert, toDeactivate, checkpoint: {
       cursor_url: next, page_id: page.id ?? null,
       etag: page.next_url ? null : res.headers.get("etag"),
       last_modified: page.next_url ? null : res.headers.get("last-modified"),
