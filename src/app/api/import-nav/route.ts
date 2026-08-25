@@ -6,6 +6,10 @@ import { expireNavVacancies } from "@/lib/importers/navExpiry";
 import { notifyImportFailure } from "@/lib/importers/failureAlert";
 import { createServiceClient } from "@/lib/supabase/service";
 
+// Hobby с fluid compute даёт 300 с и по умолчанию, но полагаться на дефолт
+// проекта не стоит: прогон догона реально использует минуты, а не секунды.
+export const maxDuration = 300;
+
 export async function GET(request: NextRequest) {
   const secrets = [process.env.IMPORT_SECRET, process.env.CRON_SECRET].filter(Boolean);
   if (!secrets.length) return NextResponse.json({ error: "IMPORT_SECRET или CRON_SECRET не настроен" }, { status: 500 });

@@ -8,8 +8,16 @@ import {
 export const NAV_SOURCE_NAME = "NAV";
 const FEED = "https://pam-stilling-feed.nav.no/api/v1/feed";
 const DETAIL = "https://pam-stilling-feed.nav.no/api/v1/feedentry";
-const MAX_RECORDS = 400;
-const MAX_RUNTIME_MS = 45_000;
+// Ограничитель прогона — запросы ДЕТАЛЕЙ, а не прочитанные записи ленты.
+// Разница решающая при проходе истории: страница истории содержит до 1000
+// записей, и прежний лимит в 400 прочитанных записей обрывал прогон после
+// первой же страницы. Лента с 14.06.2023 — порядка 1100 страниц, то есть при
+// таком лимите догон занял бы 1100 прогонов (неделя с триггером раз в десять
+// минут) вместо нескольких часов. Листание дёшево, детали дороги — считаем их.
+const MAX_DETAIL_REQUESTS = 400;
+// Потолок функции на Hobby с fluid compute — 300 с (см. route.ts, maxDuration).
+// Оставляем минуту запаса на запись страницы и checkpoint.
+const MAX_RUNTIME_MS = 240_000;
 
 interface FeedItem { date_modified?: string; _feed_entry: { uuid: string; status: string; municipal?: string | null } }
 interface FeedPage { id?: string; feed_url?: string; next_url?: string; items?: FeedItem[] }
@@ -79,9 +87,13 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
   let validators = cursor ?? undefined;
   let records = 0;
   let pages = 0;
-  while (records < MAX_RECORDS && Date.now() - started < MAX_RUNTIME_MS) {
+  let details = 0;
+  // Лимиты проверяются МЕЖДУ страницами: начатую страницу дорабатываем до
+  // конца, иначе checkpoint уехал бы на следующую, а часть записей текущей
+  // осталась бы необработанной навсегда — лента назад не ходит.
+  while (details < MAX_DETAIL_REQUESTS && Date.now() - started < MAX_RUNTIME_MS) {
     const res = await navFetch(url, token, validators);
-    if (res.status === 304) return { records, pages, unchanged: true };
+    if (res.status === 304) return { records, pages, details, unchanged: true };
     if (!res.ok) throw new Error(`NAV feed (${url}): ${res.status} ${res.statusText}`);
     const page = (await res.json()) as FeedPage;
     const items = page.items ?? [];
@@ -95,6 +107,7 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
       if (entry.status !== "ACTIVE") { toDeactivate.push(entry.uuid); continue; }
       if (!NAV_MUNICIPALITIES.has(municipality(entry.municipal))) continue;
       const ad = await detail(entry.uuid, token);
+      details++;
       if (!ad || (ad.expires && Date.parse(ad.expires) < Date.now())) { toDeactivate.push(entry.uuid); continue; }
       const code = styrk08(ad);
       const match = code ? NAV_STYRK08[code] : undefined;
@@ -137,5 +150,5 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
     url = next;
     validators = undefined;
   }
-  return { records, pages, unchanged: false };
+  return { records, pages, details, unchanged: false };
 }
