@@ -66,8 +66,11 @@ export const NAV_STYRK08: Record<string, NavOccupationMatch> = {
   "7132": { term: "målare", legalMinimumSector: "construction" },
   "7133": { term: "fasadarbetare", legalMinimumSector: "construction" },
 
-  // --- Металл и механика (72xx)
-  "7212": { term: "svetsare", legalMinimumSector: "construction" },
+  // --- Металл и механика (72xx). 7212 «Sveiser» не задаёт отрасль:
+  // большинство проверенных объявлений — цеха, промышленность и верфи, а не
+  // строительные площадки. Поэтому сам код не доказывает allmenngjøring для
+  // стройки и бейдж по нему не показываем.
+  "7212": { term: "svetsare", legalMinimumSector: null },
   "7213": { term: "plåtslagare", legalMinimumSector: "construction" },
   "7214": { term: "plåtslagare", legalMinimumSector: "construction" },
   "7215": { term: "riggare", legalMinimumSector: "construction" },
@@ -112,14 +115,13 @@ export const NAV_STYRK08: Record<string, NavOccupationMatch> = {
   "4322": { term: "terminalarbetare", legalMinimumSector: null },
   "9333": { term: "terminalarbetare", legalMinimumSector: null },
 
-  // --- Разнорабочие. 9629 «Andre hjelpearbeidere» взят сознательно: на
-  // проверенной выборке (32 объявления) там оказалась сплошь стройка
-  // («Hjelpearbeider – takarbeid / Roofing Helper»), а неквалифицированный
-  // рабочий и есть целевая аудитория. Выборка смещена в сторону стройки —
-  // если после первого догона в код полезет уборка или кухня, отсекать
-  // придётся отдельно.
-  "9312": { term: "hjälparbetare", legalMinimumSector: "construction" },
-  "9313": { term: "hjälparbetare", legalMinimumSector: "construction" },
+  // --- Разнорабочие. Коды 9312/9313 описывают подсобную работу шире стройки:
+  // в живых объявлениях встречаются производство, монтаж/упаковка и
+  // vaktmester. Профессия сама по себе не доказывает строительную отрасль,
+  // поэтому вакансии сохраняем, но legal-minimum бейдж не назначаем.
+  // 9629 уже был без сектора; его здесь не меняем.
+  "9312": { term: "hjälparbetare", legalMinimumSector: null },
+  "9313": { term: "hjälparbetare", legalMinimumSector: null },
   "9329": { term: "hjälparbetare", legalMinimumSector: null },
   "9629": { term: "hjälparbetare", legalMinimumSector: null },
 
