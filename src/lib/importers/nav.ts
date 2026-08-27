@@ -26,6 +26,34 @@ interface AdContent {
   expires?: string; published?: string; jobtitle?: string; employer?: { name?: string | null } | null;
   workLocations?: { municipal?: string | null }[]; categoryList?: Category[];
   occupationCategories?: Category[]; link?: string; applicationUrl?: string;
+  description?: string;
+}
+
+/**
+ * Известные ловушки STYRK08: код в целом верно тегирует legalMinimumSector,
+ * но конкретное объявление может описывать работу, на которую норма не
+ * распространяется. Точечная проверка текстом — только там, где ловушка
+ * измерена на реальном объявлении, не общий механизм на все коды (см.
+ * memory/CLAUDE.md, разбор Dilevka Management 25.08.2026).
+ *
+ * 8332 "chaufför" оставлен в navConfig.ts как код именно грузовиков — но NAV
+ * сам иногда классифицирует лёгкую развозку (varebil, права категории B) тем
+ * же кодом. Allmenngjøring грузоперевозок действует для машин свыше 2,5 т —
+ * фургон под категорию B под это не подпадает.
+ */
+const NAV_TEXT_TRAPS: Record<string, { uncovered: string[]; covered: string[] }> = {
+  "8332": {
+    uncovered: ["varebil", "førerkort kategori b", "kategori b"],
+    covered: ["lastebil", "kategori c", "ce", "vogntog"],
+  },
+};
+
+function textTrapSector(code: string, sector: string | null, description?: string): string | null {
+  const trap = NAV_TEXT_TRAPS[code];
+  if (!trap || !sector || !description) return sector;
+  const text = description.toLowerCase();
+  if (trap.covered.some((k) => text.includes(k))) return sector;
+  return trap.uncovered.some((k) => text.includes(k)) ? null : sector;
 }
 export interface NavCursor { cursor_url: string | null; page_id: string | null; etag: string | null; last_modified: string | null }
 export interface ImportedNavVacancy {
@@ -122,6 +150,7 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
       if (!code || !match || (!ad.applicationUrl && !ad.link)) continue;
       const location = ad.workLocations?.[0]?.municipal ?? entry.municipal ?? null;
       if (!NAV_MUNICIPALITIES.has(municipality(location))) continue;
+      const legalMinimumSector = textTrapSector(code, match.legalMinimumSector, ad.description);
       upsertCandidates.push({
         dateMs: item.date_modified ? Date.parse(item.date_modified) : 0,
         vacancy: {
@@ -132,8 +161,8 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
           occupation_isco: `${NAV_ISCO_PREFIX}${code}`, occupation_term: match.term,
           hours_per_week: null, verification_level: "SOURCE_CONFIRMED", publication_type: "ORGANIC",
           source_url: ad.applicationUrl || ad.link!, source_name: NAV_SOURCE_NAME, external_id: entry.uuid,
-          is_demo: false, published: true, legal_minimum_status: match.legalMinimumSector ? "possible" : "unknown",
-          legal_minimum_sector: match.legalMinimumSector,
+          is_demo: false, published: true, legal_minimum_status: legalMinimumSector ? "possible" : "unknown",
+          legal_minimum_sector: legalMinimumSector,
           source_expires_at: ad.expires ?? null, source_published_at: ad.published ?? null,
         },
       });
