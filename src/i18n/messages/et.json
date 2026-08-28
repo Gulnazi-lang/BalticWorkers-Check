@@ -58,7 +58,9 @@
       "noResultsText": "Me ei ole veel leidnud kontrollitud pakkumist päringule {filter}.",
       "noResultsCta": "Vaata kõiki avatud tööpakkumisi",
       "filtered": "Vasted päringule {filter}",
-      "reset": "Lähtesta"
+      "reset": "Lähtesta",
+      "feedbackText": "Kas oluline teave on puudu või erinesid tegelikud tingimused meie kirjeldatust? Aidake meil veebilehte paremaks teha —",
+      "feedbackLink": "kirjutage meile"
     },
     "legend": {
       "eyebrow": "Staatuste selgitus",

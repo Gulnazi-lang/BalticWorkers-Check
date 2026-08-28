@@ -58,7 +58,9 @@
       "noResultsText": "Kol kas neradome patikrinto pasiūlymo pagal užklausą {filter}.",
       "noResultsCta": "Peržiūrėti visus atvirus skelbimus",
       "filtered": "Atitikmenys pagal {filter}",
-      "reset": "Atstatyti"
+      "reset": "Atstatyti",
+      "feedbackText": "Trūksta svarbios informacijos ar sąlygos vietoje skyrėsi nuo mūsų nurodytų? Padėkite mums patobulinti svetainę —",
+      "feedbackLink": "parašykite mums"
     },
     "legend": {
       "eyebrow": "Statusų paaiškinimas",

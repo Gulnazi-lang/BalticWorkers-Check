@@ -58,7 +58,9 @@
       "noResultsText": "We have not yet found a verified offer matching {filter}.",
       "noResultsCta": "See all open jobs",
       "filtered": "Matches for {filter}",
-      "reset": "Reset"
+      "reset": "Reset",
+      "feedbackText": "Is important information missing, or were the actual conditions different from what we stated? Help us improve the site —",
+      "feedbackLink": "write to us"
     },
     "legend": {
       "eyebrow": "Status legend",

@@ -58,7 +58,9 @@
       "noResultsText": "Pagaidām neatradām pārbaudītu piedāvājumu pēc pieprasījuma {filter}.",
       "noResultsCta": "Apskatīt visas atvērtās vakances",
       "filtered": "Sakritības pēc {filter}",
-      "reset": "Atiestatīt"
+      "reset": "Atiestatīt",
+      "feedbackText": "Trūkst svarīgas informācijas vai apstākļi uz vietas atšķīrās no mūsu norādītajiem? Palīdziet mums uzlabot vietni —",
+      "feedbackLink": "uzrakstiet mums"
     },
     "legend": {
       "eyebrow": "Statusu apzīmējumi",
