@@ -222,6 +222,8 @@ export default async function HomePage({
             >
               {dict.home.jobs.feedbackLink}
             </a>
+            :{" "}
+            <span className="break-all text-foreground">baltworkers@gmail.com</span>
             .
           </p>
 
