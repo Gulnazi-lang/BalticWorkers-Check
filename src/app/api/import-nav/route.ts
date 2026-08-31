@@ -9,6 +9,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 // Hobby с fluid compute даёт 300 с и по умолчанию, но полагаться на дефолт
 // проекта не стоит: прогон догона реально использует минуты, а не секунды.
 export const maxDuration = 300;
+const DEACTIVATE_BATCH_SIZE = 100;
 
 export async function GET(request: NextRequest) {
   const secrets = [process.env.IMPORT_SECRET, process.env.CRON_SECRET].filter(Boolean);
@@ -33,9 +34,13 @@ export async function GET(request: NextRequest) {
         imported += data?.length ?? 0;
       }
       if (batch.toDeactivate.length) {
-        const { data, error } = await supabase.from("vacancies").delete().eq("source_name", NAV_SOURCE_NAME).in("external_id", batch.toDeactivate).select("id");
-        if (error) throw new Error(`NAV deactivate failed: ${error.message}`);
-        deactivated += data?.length ?? 0;
+        const uniqueToDeactivate = [...new Set(batch.toDeactivate)];
+        for (let i = 0; i < uniqueToDeactivate.length; i += DEACTIVATE_BATCH_SIZE) {
+          const ids = uniqueToDeactivate.slice(i, i + DEACTIVATE_BATCH_SIZE);
+          const { data, error } = await supabase.from("vacancies").delete().eq("source_name", NAV_SOURCE_NAME).in("external_id", ids).select("id");
+          if (error) throw new Error(`NAV deactivate failed: ${error.message}`);
+          deactivated += data?.length ?? 0;
+        }
       }
       const { error } = await supabase.from("import_cursors").upsert({ source: "nav", ...batch.checkpoint, initialized_at: cursorRow ? undefined : new Date().toISOString() }, { onConflict: "source" });
       if (error) throw new Error(`NAV cursor save failed: ${error.message}`);

@@ -61,7 +61,6 @@ export interface ImportedVacancy {
   occupation_term: string | null;
   hours_per_week: number | null;
   verification_level: "SOURCE_CONFIRMED";
-  publication_type: "ORGANIC";
   source_url: string;
   source_name: typeof JOBTECH_SOURCE_NAME;
   external_id: string;
@@ -120,7 +119,6 @@ function toImportedVacancy(hit: JobTechHit, occupationTerm: string | null): Impo
     occupation_term: occupationTerm,
     hours_per_week: hoursFromScopeOfWork(hit.scope_of_work),
     verification_level: "SOURCE_CONFIRMED",
-    publication_type: "ORGANIC",
     source_url: hit.webpage_url,
     source_name: JOBTECH_SOURCE_NAME,
     external_id: hit.id,

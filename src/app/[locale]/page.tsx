@@ -217,7 +217,7 @@ export default async function HomePage({
           <p className="mt-6 text-sm leading-relaxed text-muted">
             {dict.home.jobs.feedbackText}{" "}
             <a
-              href="mailto:baltworkers@gmail.com"
+              href="mailto:baltworkers@gmail.com?subject=BalticWorkers"
               className="font-semibold text-accent underline underline-offset-2"
             >
               {dict.home.jobs.feedbackLink}

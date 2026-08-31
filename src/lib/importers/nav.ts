@@ -59,7 +59,7 @@ export interface NavCursor { cursor_url: string | null; page_id: string | null; 
 export interface ImportedNavVacancy {
   title: string; employer_name: string | null; country: "NO"; location: string | null;
   occupation_isco: string; occupation_term: string; hours_per_week: null;
-  verification_level: "SOURCE_CONFIRMED"; publication_type: "ORGANIC";
+  verification_level: "SOURCE_CONFIRMED";
   source_url: string; source_name: typeof NAV_SOURCE_NAME; external_id: string;
   is_demo: false; published: true; legal_minimum_status: "possible" | "unknown";
   legal_minimum_sector: string | null;
@@ -159,7 +159,7 @@ export async function walkNavFeed(token: string, cursor: NavCursor | null, onPag
           // Префикс обязателен: шведские SSYK и норвежские STYRK08 пересекаются
           // по номерам с разным смыслом — см. NAV_ISCO_PREFIX.
           occupation_isco: `${NAV_ISCO_PREFIX}${code}`, occupation_term: match.term,
-          hours_per_week: null, verification_level: "SOURCE_CONFIRMED", publication_type: "ORGANIC",
+          hours_per_week: null, verification_level: "SOURCE_CONFIRMED",
           source_url: ad.applicationUrl || ad.link!, source_name: NAV_SOURCE_NAME, external_id: entry.uuid,
           is_demo: false, published: true, legal_minimum_status: legalMinimumSector ? "possible" : "unknown",
           legal_minimum_sector: legalMinimumSector,

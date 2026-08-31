@@ -1,5 +1,84 @@
 # Ручное обогащение вакансии через Supabase Studio
 
+## Платная ручная публикация вакансии вне фильтров импорта
+
+Если действующее объявление Arbetsförmedlingen не проходит текущие фильтры
+импорта, но работодатель оплатил перевод и публикацию, его можно добавить через
+SQL Editor. Источник нельзя заменять на `Manual`: настоящий `source_name` нужен,
+чтобы обычная проверка снятых объявлений и `excluded_vacancies` продолжали
+работать и для платной вакансии.
+
+До вставки записать в `журнал-работодателей.csv` дату оплаты и `paid_until`
+(последний оплаченный день). В базе отдельного срока платной публикации пока нет;
+журнал является операционным источником этого срока.
+
+Пример для шведской вакансии (значения заменить данными исходного объявления):
+
+```sql
+insert into public.vacancies (
+  title,
+  employer_name,
+  country,
+  location,
+  occupation_isco,
+  verification_level,
+  publication_type,
+  source_url,
+  source_name,
+  external_id,
+  is_demo,
+  published
+) values (
+  'Точный заголовок объявления',
+  'Точное название работодателя',
+  'SE',
+  'Kommun',
+  null, -- или точный код из Arbetsförmedlingen в одинарных кавычках
+  'SOURCE_CONFIRMED',
+  'SPONSORED',
+  'https://arbetsformedlingen.se/platsbanken/annonser/ID',
+  'Arbetsförmedlingen',
+  'ID',
+  false,
+  true
+)
+on conflict (source_name, external_id) do update set
+  title = excluded.title,
+  employer_name = excluded.employer_name,
+  location = excluded.location,
+  occupation_isco = excluded.occupation_isco,
+  source_url = excluded.source_url,
+  publication_type = 'SPONSORED',
+  published = true;
+```
+
+Оплата меняет только `publication_type`. Не повышать `verification_level` и не
+заполнять зарплату, жильё, дорогу или договор, если эти факты не подтверждены.
+Импортёры не записывают `publication_type`: для новых органических строк работает
+значение БД по умолчанию `ORGANIC`, а существующий `SPONSORED` не затирается при
+повторном импорте. Семидневное снятие `SPONSORED` не затрагивает; снятие
+закрытого объявления у источника и `purgeExcluded` продолжают работать по
+настоящим `source_name` и `external_id`.
+
+### Когда оплаченный период закончился
+
+Раз в месяц отфильтровать в `журнал-работодателей.csv` строки с истёкшим
+`paid_until`, сверить их с опубликованными платными вакансиями и снять каждую
+истёкшую публикацию:
+
+```sql
+update public.vacancies
+set published = false
+where source_name = 'Arbetsförmedlingen'
+  and external_id = 'ID'
+  and publication_type = 'SPONSORED';
+```
+
+`publication_type = 'SPONSORED'` оставить как историю оплаты. При продлении
+обновить `paid_until` в журнале и вернуть `published = true`, предварительно
+проверив, что исходное объявление всё ещё действует и работодатель не внесён в
+`excluded_vacancies`.
+
 Инструкция для того, кто вручную заполняет поля вакансии в Studio после того,
 как работодатель ответил на письмо (`/employers/sv`, `/employers/nb`) или
 когда факты честно переносятся из текста исходного объявления. Написана

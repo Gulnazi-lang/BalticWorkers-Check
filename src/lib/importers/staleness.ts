@@ -77,6 +77,10 @@ export async function unpublishStaleVacancies(
     )
     .eq("published", true)
     .eq("is_demo", false)
+    // Оплаченная ручная публикация живёт до даты paid_until из журнала
+    // работодателей и снимается редакцией осознанно. Семидневное правило
+    // относится только к органической выдаче источника.
+    .neq("publication_type", "SPONSORED")
     .lt("updated_at", cutoff)
     // NAV живёт по своему правилу — src/lib/importers/navExpiry.ts. Здесь
     // критерий «строка не обновлялась N дней» означает «выпала из выдачи
