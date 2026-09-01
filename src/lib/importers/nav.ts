@@ -94,19 +94,29 @@ async function navFetch(url: string, token: string, validators?: NavCursor): Pro
  * contactList — null). Пустой ответ поэтому надёжный признак «объявления
  * больше нет», и на нём же построена перепроверка в navExpiry.ts.
  */
+/**
+ * 404/410 означают, что запись уже удалена у NAV. Это не сбой импорта:
+ * callers трактуют null как «снять вакансию с витрины». Все прочие статусы
+ * остаются ошибкой, чтобы не замаскировать проблемы авторизации или фида.
+ */
+function unavailableEntry(res: Response): boolean {
+  return res.status === 404 || res.status === 410;
+}
+
 export async function fetchNavAdContent(uuid: string, token: string): Promise<AdContent | null> {
-  const res = await navFetch(`${DETAIL}/${uuid}`, token);
-  if (!res.ok) throw new Error(`NAV feedentry ${uuid}: ${res.status}`);
+  const res = await navFetch(DETAIL + "/" + uuid, token);
+  if (unavailableEntry(res)) return null;
+  if (!res.ok) throw new Error("NAV feedentry " + uuid + ": " + res.status);
   const ad = ((await res.json()) as { ad_content?: AdContent }).ad_content ?? null;
   return ad && Object.values(ad).some((v) => v !== null && v !== undefined) ? ad : null;
 }
 
 async function detail(uuid: string, token: string): Promise<AdContent | null> {
-  const res = await navFetch(`${DETAIL}/${uuid}`, token);
-  if (!res.ok) throw new Error(`NAV feedentry ${uuid}: ${res.status}`);
+  const res = await navFetch(DETAIL + "/" + uuid, token);
+  if (unavailableEntry(res)) return null;
+  if (!res.ok) throw new Error("NAV feedentry " + uuid + ": " + res.status);
   return ((await res.json()) as { ad_content?: AdContent }).ad_content ?? null;
 }
-
 /** The route writes each page and only then persists its exact checkpoint. */
 export async function walkNavFeed(token: string, cursor: NavCursor | null, onPage: (batch: NavPageBatch) => Promise<void>) {
   const started = Date.now();
