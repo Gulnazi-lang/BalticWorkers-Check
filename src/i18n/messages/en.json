@@ -4,12 +4,14 @@
     "jobs": "Jobs",
     "howWeCheck": "How we check",
     "services": "Help",
-    "forEmployers": "For employers"
+    "forEmployers": "For employers",
+    "yourRights": "Your rights"
   },
   "footer": {
     "copyright": "© 2026 BalticWorkers Check",
     "tagline": "An information platform, not a recruitment agency",
-    "howWeCheck": "How we check"
+    "howWeCheck": "How we check",
+    "about": "About us"
   },
   "common": {
     "country": {
@@ -34,6 +36,14 @@
     "forEmployers": {
       "title": "For employers — BalticWorkers Check",
       "description": "Job translation, verification of terms under a single procedure, and exposure to target candidates in the Baltics. Payment affects reach, not verification status."
+    },
+    "about": {
+      "title": "About us — BalticWorkers Check",
+      "description": "SIA GELVUA, Riga. Not a recruitment agency — verification and translation of public job listings for Baltic job seekers."
+    },
+    "yourRights": {
+      "title": "Your rights — BalticWorkers Check",
+      "description": "The statutory minimum wage in Norway, the ban on charging job seekers, and how to join a union in Scandinavia."
     }
   },
   "home": {
@@ -248,5 +258,61 @@
     "whereText": "By email to the address below. We reply on working days.",
     "whereCta": "Write to us",
     "mailSubject": "Job posting for BalticWorkers Check"
+  },
+  "about": {
+    "eyebrow": "ABOUT",
+    "title": "Who is behind BalticWorkers Check",
+    "subtitle": "A Latvian company, not an anonymous website. Real people who translate and verify Scandinavian job listings for Baltic workers.",
+    "whoTitle": "Who we are",
+    "whoText": "BalticWorkers Check is a project by SIA GELVUA, registered in Riga, Latvia. Managing director: Šakro Toliašvili.",
+    "whoText2": "We are not a recruitment agency and not an intermediary. We display vacancies already published on official government databases — Arbeidsplassen (NAV, Norway) and Platsbanken (Arbetsförmedlingen, Sweden) — and translate their conditions into languages understood by workers from Latvia, Lithuania and Estonia.",
+    "whyTitle": "Why",
+    "whyText": "A person from the Baltics moving to work in Scandinavia usually doesn't know three things: what they are legally entitled to be paid, who covers housing and travel, and who their employer actually is. An ad in Swedish or Norwegian rarely answers these questions — it is written for locals who don't need to relocate.",
+    "whyText2": "We collect what is known and honestly flag what isn't.",
+    "dontTitle": "What we don't do",
+    "dontItem1": "We do not charge job seekers — not for access to listings, not for anything else. This is both our principle and a requirement of Latvian law governing employment services.",
+    "dontItem2": "We do not submit applications on your behalf — you apply yourself, on the source's official site.",
+    "dontItem3": "We do not sell listing placements to job seekers and do not promise employment.",
+    "dontItem4": "We do not collect or store your personal data beyond what you provide yourself when subscribing to alerts.",
+    "contactsTitle": "Contacts",
+    "companyName": "SIA GELVUA",
+    "regNumber": "Reg. No. 40203394821",
+    "address": "Zemes iela 1-16, Riga, LV-1082, Latvia",
+    "founderLine": "Managing director: Šakro Toliašvili",
+    "emailLabel": "Email:"
+  },
+  "yourRights": {
+    "eyebrow": "YOUR RIGHTS",
+    "title": "What's worth knowing before you go",
+    "subtitle": "Not legal advice — signposts to official sources. Every claim links to a primary source.",
+    "feesTitle": "No one has the right to charge you before work starts",
+    "feesText1": "No honest employer in the EU asks a worker for money upfront — not a deposit \"to guarantee arrival,\" not a processing fee, not an advance for housing. If asked, it's fraud.",
+    "feesText2": "Latvian intermediaries are directly prohibited by law from charging job seekers for employment services (the Law on Support for the Unemployed and Job Seekers, Article 17, para. 9). Licensed companies are listed on the NVA website — if a company promises work abroad, check it there.",
+    "feesLinkNva": "NVA's list of licensed employment agencies ↗",
+    "feesLinkLaw": "Law on Support for the Unemployed and Job Seekers, Art. 17 ↗",
+    "minimumTitle": "Norway has a statutory minimum wage",
+    "minimumText1": "In a number of industries, the allmenngjøring mechanism applies: the terms of the collective agreement become mandatory for every employer in the industry, including foreign companies. Paying less is not allowed even if the employer isn't party to any agreement.",
+    "minimumText2": "This covers, among others, construction, cleaning, and the hotel and restaurant industry. Current rates are on the Arbeidstilsynet website.",
+    "minimumLink": "Arbeidstilsynet: current minimum rates ↗",
+    "minimumText3": "Reimbursement of travel, meals, and housing while on assignment is not part of the minimum rate: an employer may not pay below the minimum on the grounds that it covered your travel or housing.",
+    "unionsTitle": "You can join a union in the country where you work",
+    "unionsText": "This is the main thing Baltic workers almost never do — and it delivers the most.",
+    "unionsText2": "Scandinavian unions accept foreign workers. Membership provides legal help in a dispute with an employer, monitoring that the agreed rate is followed, and usually insurance. Dues are typically around one and a half percent of wages.",
+    "unionsText3": "You are not required to tell your employer that you're a union member.",
+    "norwayHeading": "Norway",
+    "swedenHeading": "Sweden",
+    "joinLabel": "Join ↗",
+    "sectorConstruction": "Construction and industry",
+    "sectorCleaning": "Cleaning",
+    "sectorHospitality": "Hotels and restaurants",
+    "sectorElectricians": "Electricians",
+    "sectorIndustry": "Industry",
+    "sectorTransport": "Transport",
+    "ifNotPaidTitle": "If you haven't been paid",
+    "ifNotPaidNorway": "Norway — Arbeidstilsynet.",
+    "ifNotPaidSweden": "Sweden — Arbetsmiljöverket, but for unpaid wages start with your industry union.",
+    "ifNotPaidUnionNote": "If you're a union member, start there: the union has lawyers and experience with exactly this kind of case.",
+    "ifDifferentTitle": "If conditions on the ground turned out different",
+    "ifDifferentText": "Write to us: baltworkers@gmail.com. We can't settle a dispute for you, but we'll correct the listing on the site so the next person knows the truth."
   }
 }

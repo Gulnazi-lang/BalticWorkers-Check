@@ -4,12 +4,14 @@
     "jobs": "Vakances",
     "howWeCheck": "Kā pārbaudām",
     "services": "Palīdzība",
-    "forEmployers": "Darba devējiem"
+    "forEmployers": "Darba devējiem",
+    "yourRights": "Jūsu tiesības"
   },
   "footer": {
     "copyright": "© 2026 BalticWorkers Check",
     "tagline": "Informatīva platforma, nevis personāla atlases aģentūra",
-    "howWeCheck": "Kā pārbaudām"
+    "howWeCheck": "Kā pārbaudām",
+    "about": "Par mums"
   },
   "common": {
     "country": {
@@ -34,6 +36,14 @@
     "forEmployers": {
       "title": "Darba devējiem — BalticWorkers Check",
       "description": "Vakances tulkojums, nosacījumu pārbaude pēc vienotas procedūras un rādīšana mērķa kandidātiem Baltijā. Samaksa ietekmē sasniedzamību, nevis pārbaudes statusu."
+    },
+    "about": {
+      "title": "Par mums — BalticWorkers Check",
+      "description": "SIA GELVUA, Rīga. Nevis kadru aģentūra — publisko vakanču pārbaude un tulkošana Baltijas darba meklētājiem."
+    },
+    "yourRights": {
+      "title": "Jūsu tiesības — BalticWorkers Check",
+      "description": "Likumiskais minimums Norvēģijā, aizliegums pieprasīt samaksu no darba meklētāja, un kā pievienoties arodbiedrībai Skandināvijā."
     }
   },
   "home": {
@@ -248,5 +258,61 @@
     "whereText": "Vēstule uz zemāk norādīto adresi. Atbildam darba dienās.",
     "whereCta": "Rakstiet mums",
     "mailSubject": "Vakance BalticWorkers Check"
+  },
+  "about": {
+    "eyebrow": "PAR PROJEKTU",
+    "title": "Kas stāv aiz BalticWorkers Check",
+    "subtitle": "Latvijas uzņēmums, nevis anonīma vietne. Reāli cilvēki, kas tulko un pārbauda skandināvu darba sludinājumus baltiešiem.",
+    "whoTitle": "Kas mēs esam",
+    "whoText": "BalticWorkers Check ir SIA GELVUA projekts, reģistrēts Rīgā, Latvijā. Vadītājs — Šakro Toliašvili.",
+    "whoText2": "Mēs neesam personāla atlases aģentūra un neesam starpnieks. Mēs rādām vakances, kas jau publicētas oficiālajās datubāzēs — Arbeidsplassen (NAV, Norvēģija) un Platsbanken (Arbetsförmedlingen, Zviedrija) —, un tulkojam to nosacījumus valodās, kas saprotamas darbiniekiem no Latvijas, Lietuvas un Igaunijas.",
+    "whyTitle": "Kāpēc",
+    "whyText": "Cilvēks no Baltijas, kas dodas strādāt uz Skandināviju, parasti nezina trīs lietas: cik viņam pēc likuma pienākas maksāt, kura puse sedz mājokli un ceļu, un kas patiesībā ir viņa darba devējs. Sludinājums zviedru vai norvēģu valodā šos jautājumus visbiežāk neskaidro — tas rakstīts vietējiem, kuriem nav jāpārceļas.",
+    "whyText2": "Mēs apkopojam to, kas ir zināms, un godīgi atzīmējam to, kas nav.",
+    "dontTitle": "Ko mēs nedarām",
+    "dontItem1": "Neņemam maksu no darba meklētājiem — ne par piekļuvi vakancēm, ne par ko citu. Tas ir gan mūsu princips, gan Latvijas likuma prasība nodarbinātības pakalpojumiem.",
+    "dontItem2": "Neiesniedzam pieteikumus jūsu vietā — piesakāties paši, oriģinālā avota vietnē.",
+    "dontItem3": "Nepārdodam sludinājumu vietas darba meklētājiem un nesolām darbu.",
+    "dontItem4": "Neapkopojam un neuzglabājam jūsu personas datus vairāk, nekā jūs paši norādījāt, piesakoties uz paziņojumiem.",
+    "contactsTitle": "Kontakti",
+    "companyName": "SIA GELVUA",
+    "regNumber": "Reģ. Nr. 40203394821",
+    "address": "Zemes iela 1-16, Rīga, LV-1082, Latvija",
+    "founderLine": "Vadītājs — Šakro Toliašvili",
+    "emailLabel": "E-pasts:"
+  },
+  "yourRights": {
+    "eyebrow": "JŪSU TIESĪBAS",
+    "title": "Ko der zināt pirms brauciena",
+    "subtitle": "Ne juridiska konsultācija, bet orientieri ar saitēm uz oficiāliem avotiem. Katrs apgalvojums ved uz pirmavotu.",
+    "feesTitle": "Neviens nedrīkst no jums prasīt naudu pirms darba sākuma",
+    "feesText1": "Neviens godīgs darba devējs ES nepieprasa no darbinieka naudu iepriekš — ne depozītu \"brauciena garantijai\", ne maksu par noformēšanu, ne avansu par mājokli. Ja prasa — tā ir krāpšana.",
+    "feesText2": "Latvijas starpniekiem likums tieši aizliedz ņemt maksu no darba meklētāja par nodarbinātības pakalpojumiem (Bezdarbnieku un darba meklētāju atbalsta likums, 17. pants, 9. daļa). Licencētie uzņēmumi ir uzskaitīti NVA mājaslapā — ja firma sola darbu ārzemēs, pārbaudiet to tur.",
+    "feesLinkNva": "NVA licencēto darbiekārtošanas pakalpojumu sniedzēju saraksts ↗",
+    "feesLinkLaw": "Bezdarbnieku un darba meklētāju atbalsta likums, 17. pants ↗",
+    "minimumTitle": "Norvēģijā ir likumiskais algas minimums",
+    "minimumText1": "Vairākās nozarēs darbojas allmenngjøring mehānisms: koplīguma nosacījumi kļūst obligāti visiem nozares darba devējiem, arī ārvalstu uzņēmumiem. Maksāt mazāk nedrīkst, pat ja darba devējs nav pievienojies nevienam koplīgumam.",
+    "minimumText2": "Tas attiecas, konkrēti, uz būvniecību, tīrīšanu un viesnīcu-restorānu nozari. Aktuālās likmes — Arbeidstilsynet mājaslapā.",
+    "minimumLink": "Arbeidstilsynet: aktuālās minimālās likmes ↗",
+    "minimumText3": "Ceļa, ēdināšanas un mājokļa kompensācija komandējumā neietilpst minimālajā likmē: darba devējam nav tiesību maksāt mazāk par minimumu, pamatojoties uz to, ka apmaksāja jums ceļu vai mājokli.",
+    "unionsTitle": "Jūs varat iestāties arodbiedrībā valstī, kur strādājat",
+    "unionsText": "Tas ir galvenais, ko gandrīz nedara darbinieki no Baltijas — un kas dod visvairāk.",
+    "unionsText2": "Skandināvijas arodbiedrības uzņem ārvalstu darbiniekus. Dalība dod juridisku palīdzību strīdā ar darba devēju, tarifa ievērošanas kontroli un parasti apdrošināšanu. Biedra nauda parasti ir ap pusotru procentu no algas.",
+    "unionsText3": "Jums nav pienākuma ziņot darba devējam par dalību arodbiedrībā.",
+    "norwayHeading": "Norvēģija",
+    "swedenHeading": "Zviedrija",
+    "joinLabel": "Pievienoties ↗",
+    "sectorConstruction": "Būvniecība un rūpniecība",
+    "sectorCleaning": "Tīrīšana",
+    "sectorHospitality": "Viesnīcas un restorāni",
+    "sectorElectricians": "Elektriķi",
+    "sectorIndustry": "Rūpniecība",
+    "sectorTransport": "Transports",
+    "ifNotPaidTitle": "Ja jums nav samaksāts",
+    "ifNotPaidNorway": "Norvēģija — Arbeidstilsynet.",
+    "ifNotPaidSweden": "Zviedrija — Arbetsmiljöverket, bet par algas neizmaksu vispirms vērsieties nozares arodbiedrībā.",
+    "ifNotPaidUnionNote": "Ja esat arodbiedrības biedrs, sāciet ar to: arodbiedrībai ir juristi un pieredze tieši šādās lietās.",
+    "ifDifferentTitle": "Ja nosacījumi uz vietas izrādījās citādi",
+    "ifDifferentText": "Rakstiet mums: baltworkers@gmail.com. Mēs nevaram atrisināt strīdu jūsu vietā, bet izlabosim kartīti mājaslapā, lai nākamais cilvēks zinātu patiesību."
   }
 }

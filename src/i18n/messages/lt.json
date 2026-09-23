@@ -4,12 +4,14 @@
     "jobs": "Darbo skelbimai",
     "howWeCheck": "Kaip tikriname",
     "services": "Pagalba",
-    "forEmployers": "Darbdaviams"
+    "forEmployers": "Darbdaviams",
+    "yourRights": "Jūsų teisės"
   },
   "footer": {
     "copyright": "© 2026 BalticWorkers Check",
     "tagline": "Informacinė platforma, ne įdarbinimo agentūra",
-    "howWeCheck": "Kaip tikriname"
+    "howWeCheck": "Kaip tikriname",
+    "about": "Apie mus"
   },
   "common": {
     "country": {
@@ -34,6 +36,14 @@
     "forEmployers": {
       "title": "Darbdaviams — BalticWorkers Check",
       "description": "Skelbimo vertimas, sąlygų patikrinimas pagal vieningą procedūrą ir rodymas tiksliniams kandidatams Baltijos šalyse. Mokestis veikia pasiekiamumą, o ne tikrinimo statusą."
+    },
+    "about": {
+      "title": "Apie mus — BalticWorkers Check",
+      "description": "SIA GELVUA, Ryga. Ne įdarbinimo agentūra — viešų skelbimų sąlygų patikra ir vertimas Baltijos šalių darbo ieškotojams."
+    },
+    "yourRights": {
+      "title": "Jūsų teisės — BalticWorkers Check",
+      "description": "Teisinis minimumas Norvegijoje, draudimas imti mokestį iš darbo ieškotojo ir kaip įstoti į profesinę sąjungą Skandinavijoje."
     }
   },
   "home": {
@@ -248,5 +258,61 @@
     "whereText": "Laišką žemiau nurodytu adresu. Atsakome darbo dienomis.",
     "whereCta": "Parašykite mums",
     "mailSubject": "Skelbimas BalticWorkers Check"
+  },
+  "about": {
+    "eyebrow": "APIE PROJEKTĄ",
+    "title": "Kas slypi už BalticWorkers Check",
+    "subtitle": "Latvijos įmonė, o ne anoniminė svetainė. Tikri žmonės, kurie verčia ir tikrina Skandinavijos darbo skelbimus Baltijos šalių gyventojams.",
+    "whoTitle": "Kas mes esame",
+    "whoText": "BalticWorkers Check yra SIA GELVUA projektas, registruotas Rygoje, Latvijoje. Vadovas — Šakro Toliašvili.",
+    "whoText2": "Mes nesame įdarbinimo agentūra ir nesame tarpininkas. Mes rodome laisvas darbo vietas, kurios jau paskelbtos oficialiose duomenų bazėse — Arbeidsplassen (NAV, Norvegija) ir Platsbanken (Arbetsförmedlingen, Švedija), — ir išverčiame jų sąlygas kalbomis, suprantamomis darbuotojams iš Latvijos, Lietuvos ir Estijos.",
+    "whyTitle": "Kodėl",
+    "whyText": "Žmogus iš Baltijos šalių, vykstantis dirbti į Skandinaviją, dažniausiai nežino trijų dalykų: kiek jam pagal įstatymą privalo mokėti, kieno sąskaita apgyvendinimas ir kelionė, ir kas iš tikrųjų yra jo darbdavys. Skelbimas švedų ar norvegų kalba šiuos klausimus dažniausiai paaiškina prastai — jis parašytas vietiniams, kuriems nereikia keltis.",
+    "whyText2": "Mes surenkame tai, kas žinoma, ir sąžiningai pažymime tai, kas nežinoma.",
+    "dontTitle": "Ko mes nedarome",
+    "dontItem1": "Neimame mokesčio iš darbo ieškotojų — nei už prieigą prie skelbimų, nei už ką kita. Tai ir mūsų principas, ir Latvijos įstatymo reikalavimas įdarbinimo paslaugoms.",
+    "dontItem2": "Nepateikiame paraiškų už jus — kreipiatės patys, oficialioje šaltinio svetainėje.",
+    "dontItem3": "Neparduodame skelbimų vietų darbo ieškotojams ir nežadame įdarbinimo.",
+    "dontItem4": "Nerenkame ir nesaugome jūsų asmens duomenų daugiau, nei jūs patys nurodėte užsiprenumeruodami pranešimus.",
+    "contactsTitle": "Kontaktai",
+    "companyName": "SIA GELVUA",
+    "regNumber": "Reg. Nr. 40203394821",
+    "address": "Zemes iela 1-16, Ryga, LV-1082, Latvija",
+    "founderLine": "Vadovas — Šakro Toliašvili",
+    "emailLabel": "El. paštas:"
+  },
+  "yourRights": {
+    "eyebrow": "JŪSŲ TEISĖS",
+    "title": "Ką verta žinoti prieš išvykstant",
+    "subtitle": "Ne teisinė konsultacija, o orientyrai su nuorodomis į oficialius šaltinius. Kiekvienas teiginys veda į pirminį šaltinį.",
+    "feesTitle": "Niekas neturi teisės imti iš jūsų pinigų prieš pradedant darbą",
+    "feesText1": "Nė vienas sąžiningas darbdavys ES neprašo iš darbuotojo pinigų iš anksto — nei depozito \"kelionės garantijai\", nei mokesčio už įforminimą, nei avanso už būstą. Jei prašo — tai sukčiavimas.",
+    "feesText2": "Latvijos tarpininkams įstatymas tiesiogiai draudžia imti mokestį iš darbo ieškotojo už įdarbinimo paslaugas (Bedarbių ir darbo ieškotojų paramos įstatymas, 17 straipsnis, 9 dalis). Licencijuotos įmonės išvardytos NVA svetainėje — jei firma žada darbą užsienyje, patikrinkite ją ten.",
+    "feesLinkNva": "NVA licencijuotų įdarbinimo paslaugų teikėjų sąrašas ↗",
+    "feesLinkLaw": "Bedarbių ir darbo ieškotojų paramos įstatymas, 17 str. ↗",
+    "minimumTitle": "Norvegijoje galioja teisinis atlyginimo minimumas",
+    "minimumText1": "Daugelyje sektorių veikia allmenngjøring mechanizmas: kolektyvinės sutarties sąlygos tampa privalomos visiems sektoriaus darbdaviams, įskaitant užsienio įmones. Mokėti mažiau negalima, net jei darbdavys nėra prisijungęs prie jokios sutarties.",
+    "minimumText2": "Tai galioja, be kita ko, statyboms, valymui ir viešbučių-restoranų sektoriui. Aktualūs tarifai — Arbeidstilsynet svetainėje.",
+    "minimumLink": "Arbeidstilsynet: aktualūs minimalūs tarifai ↗",
+    "minimumText3": "Kelionės, maitinimo ir būsto kompensacija komandiruotės metu neįeina į minimalų tarifą: darbdavys neturi teisės mokėti mažiau nei minimumas remdamasis tuo, kad apmokėjo jūsų kelionę ar būstą.",
+    "unionsTitle": "Galite įstoti į profesinę sąjungą šalyje, kur dirbate",
+    "unionsText": "Tai svarbiausias dalykas, kurio Baltijos šalių darbuotojai beveik niekada nedaro — ir kuris duoda daugiausiai naudos.",
+    "unionsText2": "Skandinavijos profesinės sąjungos priima užsienio darbuotojus. Narystė suteikia teisinę pagalbą ginče su darbdaviu, tarifo laikymosi kontrolę ir dažniausiai draudimą. Nario mokestis paprastai sudaro apie pusantro procento atlyginimo.",
+    "unionsText3": "Jūs neprivalote pranešti darbdaviui apie narystę profesinėje sąjungoje.",
+    "norwayHeading": "Norvegija",
+    "swedenHeading": "Švedija",
+    "joinLabel": "Įstoti ↗",
+    "sectorConstruction": "Statyba ir pramonė",
+    "sectorCleaning": "Valymas",
+    "sectorHospitality": "Viešbučiai ir restoranai",
+    "sectorElectricians": "Elektrikai",
+    "sectorIndustry": "Pramonė",
+    "sectorTransport": "Transportas",
+    "ifNotPaidTitle": "Jei jums nesumokėjo",
+    "ifNotPaidNorway": "Norvegija — Arbeidstilsynet.",
+    "ifNotPaidSweden": "Švedija — Arbetsmiljöverket, o dėl nesumokėto atlyginimo pirmiausia kreipkitės į sektoriaus profesinę sąjungą.",
+    "ifNotPaidUnionNote": "Jei esate profesinės sąjungos narys, pradėkite nuo jos: profesinė sąjunga turi teisininkus ir patirties būtent tokiose bylose.",
+    "ifDifferentTitle": "Jei sąlygos vietoje pasirodė kitokios",
+    "ifDifferentText": "Rašykite mums: baltworkers@gmail.com. Mes negalime išspręsti ginčo už jus, bet ištaisysime skelbimą svetainėje, kad kitas žmogus žinotų tiesą."
   }
 }

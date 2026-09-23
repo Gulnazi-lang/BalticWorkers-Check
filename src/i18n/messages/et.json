@@ -4,12 +4,14 @@
     "jobs": "Tööpakkumised",
     "howWeCheck": "Kuidas kontrollime",
     "services": "Abi",
-    "forEmployers": "Tööandjatele"
+    "forEmployers": "Tööandjatele",
+    "yourRights": "Sinu õigused"
   },
   "footer": {
     "copyright": "© 2026 BalticWorkers Check",
     "tagline": "Infoplatvorm, mitte värbamisagentuur",
-    "howWeCheck": "Kuidas kontrollime"
+    "howWeCheck": "Kuidas kontrollime",
+    "about": "Meist"
   },
   "common": {
     "country": {
@@ -34,6 +36,14 @@
     "forEmployers": {
       "title": "Tööandjatele — BalticWorkers Check",
       "description": "Tööpakkumise tõlkimine, tingimuste kontroll ühtse korra alusel ja näitamine sihtkandidaatidele Balti riikides. Tasu mõjutab levikut, mitte kontrollistaatust."
+    },
+    "about": {
+      "title": "Meist — BalticWorkers Check",
+      "description": "SIA GELVUA, Riia. Mitte värbamisagentuur — avalike töökuulutuste tingimuste kontroll ja tõlge Balti tööotsijatele."
+    },
+    "yourRights": {
+      "title": "Sinu õigused — BalticWorkers Check",
+      "description": "Norra seaduslik miinimumpalk, tööotsijalt tasu võtmise keeld ja kuidas liituda ametiühinguga Skandinaavias."
     }
   },
   "home": {
@@ -248,5 +258,61 @@
     "whereText": "Kiri allpool olevale aadressile. Vastame tööpäevadel.",
     "whereCta": "Kirjutage meile",
     "mailSubject": "Tööpakkumine BalticWorkers Checki jaoks"
+  },
+  "about": {
+    "eyebrow": "MEIST",
+    "title": "Kes seisab BalticWorkers Checki taga",
+    "subtitle": "Läti ettevõte, mitte anonüümne veebileht. Päris inimesed, kes tõlgivad ja kontrollivad Skandinaavia töökuulutusi Balti töötajatele.",
+    "whoTitle": "Kes me oleme",
+    "whoText": "BalticWorkers Check on SIA GELVUA projekt, registreeritud Riias, Lätis. Juht — Šakro Toliašvili.",
+    "whoText2": "Me ei ole värbamisagentuur ega vahendaja. Näitame vabu töökohti, mis on juba avaldatud ametlikes andmebaasides — Arbeidsplassen (NAV, Norra) ja Platsbanken (Arbetsförmedlingen, Rootsi) —, ning tõlgime nende tingimused keeltesse, mida mõistavad töötajad Lätist, Leedust ja Eestist.",
+    "whyTitle": "Miks",
+    "whyText": "Balti riikidest pärit inimene, kes läheb tööle Skandinaaviasse, ei tea tavaliselt kolme asja: kui palju talle seaduse järgi maksma peab, kelle kulul on majutus ja sõit, ning kes on tegelikult tema tööandja. Rootsi- või norrakeelne kuulutus neid küsimusi enamasti ei selgita — see on kirjutatud kohalikele, kes ei pea kolima.",
+    "whyText2": "Kogume kokku selle, mis on teada, ja märgime ausalt selle, mis pole.",
+    "dontTitle": "Mida me ei tee",
+    "dontItem1": "Me ei võta tööotsijatelt tasu — ei juurdepääsu eest kuulutustele ega millegi muu eest. See on nii meie põhimõte kui ka Läti seaduse nõue tööhõiveteenustele.",
+    "dontItem2": "Me ei esita avaldusi teie eest — kandideerite ise, allika enda ametlikul veebilehel.",
+    "dontItem3": "Me ei müü kuulutuste kohti tööotsijatele ega luba tööd.",
+    "dontItem4": "Me ei kogu ega säilita teie isikuandmeid rohkem, kui olete ise märkinud teavituste tellimisel.",
+    "contactsTitle": "Kontaktid",
+    "companyName": "SIA GELVUA",
+    "regNumber": "Reg. nr 40203394821",
+    "address": "Zemes iela 1-16, Riia, LV-1082, Läti",
+    "founderLine": "Juht — Šakro Toliašvili",
+    "emailLabel": "E-post:"
+  },
+  "yourRights": {
+    "eyebrow": "SINU ÕIGUSED",
+    "title": "Mida on kasulik teada enne reisi",
+    "subtitle": "Mitte õigusnõustamine, vaid suunised koos viidetega ametlikele allikatele. Iga väide viib esmaallikani.",
+    "feesTitle": "Keegi ei tohi teilt raha küsida enne töö algust",
+    "feesText1": "Ükski aus tööandja ELis ei nõua töötajalt raha ette — ei tagatisraha \"saabumise garantiiks\", ei tasu vormistamise eest ega ettemaksu majutuse eest. Kui küsitakse — see on pettus.",
+    "feesText2": "Läti vahendajatel on seadusega otseselt keelatud võtta tööotsijalt tasu tööhõiveteenuste eest (Töötute ja tööotsijate toetamise seadus, artikkel 17, lõige 9). Litsentseeritud ettevõtted on loetletud NVA veebilehel — kui firma lubab tööd välismaal, kontrollige seda sealt.",
+    "feesLinkNva": "NVA litsentseeritud tööhõiveteenuse pakkujate nimekiri ↗",
+    "feesLinkLaw": "Töötute ja tööotsijate toetamise seadus, art 17 ↗",
+    "minimumTitle": "Norras kehtib seaduslik palgamiinimum",
+    "minimumText1": "Mitmes valdkonnas kehtib allmenngjøring mehhanism: kollektiivlepingu tingimused muutuvad kohustuslikuks kõigile valdkonna tööandjatele, sealhulgas välismaistele ettevõtetele. Vähem maksta ei tohi, isegi kui tööandja ei ole ühegi lepinguga liitunud.",
+    "minimumText2": "See kehtib muu hulgas ehituse, koristuse ning hotelli- ja restoranivaldkonna kohta. Kehtivad määrad leiate Arbeidstilsyneti veebilehelt.",
+    "minimumLink": "Arbeidstilsynet: kehtivad miinimummäärad ↗",
+    "minimumText3": "Sõidu-, toitlustus- ja majutuskulude hüvitamine lähetuse ajal ei ole osa miinimummäärast: tööandjal ei ole õigust maksta vähem kui miinimum põhjendusega, et ta tasus teie sõidu või majutuse eest.",
+    "unionsTitle": "Võite liituda ametiühinguga riigis, kus töötate",
+    "unionsText": "See on peamine asi, mida Balti riikide töötajad peaaegu kunagi ei tee — ja mis annab kõige rohkem.",
+    "unionsText2": "Skandinaavia ametiühingud võtavad vastu välismaiseid töötajaid. Liikmelisus annab õigusabi vaidluses tööandjaga, tariifi järgimise kontrolli ja tavaliselt kindlustuse. Liikmemaks on tavaliselt umbes poolteist protsenti palgast.",
+    "unionsText3": "Te ei ole kohustatud tööandjale ametiühingu liikmelisusest rääkima.",
+    "norwayHeading": "Norra",
+    "swedenHeading": "Rootsi",
+    "joinLabel": "Liitu ↗",
+    "sectorConstruction": "Ehitus ja tööstus",
+    "sectorCleaning": "Koristus",
+    "sectorHospitality": "Hotellid ja restoranid",
+    "sectorElectricians": "Elektrikud",
+    "sectorIndustry": "Tööstus",
+    "sectorTransport": "Transport",
+    "ifNotPaidTitle": "Kui teile ei ole makstud",
+    "ifNotPaidNorway": "Norra — Arbeidstilsynet.",
+    "ifNotPaidSweden": "Rootsi — Arbetsmiljöverket, kuid palga maksmata jätmise korral pöörduge kõigepealt valdkonna ametiühingu poole.",
+    "ifNotPaidUnionNote": "Kui olete ametiühingu liige, alustage sealt: ametiühingul on juristid ja kogemus just selliste juhtumitega.",
+    "ifDifferentTitle": "Kui tingimused kohapeal osutusid teistsugusteks",
+    "ifDifferentText": "Kirjutage meile: baltworkers@gmail.com. Me ei saa vaidlust teie eest lahendada, kuid parandame kuulutuse veebilehel, et järgmine inimene teaks tõde."
   }
 }

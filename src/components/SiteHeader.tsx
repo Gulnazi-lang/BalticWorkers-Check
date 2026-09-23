@@ -8,6 +8,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
   const nav = [
     { href: "/#jobs", label: dict.nav.jobs },
     { href: "/how-we-check", label: dict.nav.howWeCheck },
+    { href: "/your-rights", label: dict.nav.yourRights },
     { href: "/services", label: dict.nav.services },
     { href: "/for-employers", label: dict.nav.forEmployers },
   ];

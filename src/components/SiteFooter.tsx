@@ -9,12 +9,20 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
       <div className="mx-auto flex w-[min(1120px,calc(100%-40px))] flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <span>{dict.footer.copyright}</span>
         <span>{dict.footer.tagline}</span>
-        <Link
-          href={localeHref(locale, "/how-we-check")}
-          className="text-white/90 underline-offset-4 hover:underline"
-        >
-          {dict.footer.howWeCheck}
-        </Link>
+        <span className="flex gap-4">
+          <Link
+            href={localeHref(locale, "/about")}
+            className="text-white/90 underline-offset-4 hover:underline"
+          >
+            {dict.footer.about}
+          </Link>
+          <Link
+            href={localeHref(locale, "/how-we-check")}
+            className="text-white/90 underline-offset-4 hover:underline"
+          >
+            {dict.footer.howWeCheck}
+          </Link>
+        </span>
       </div>
     </footer>
   );
