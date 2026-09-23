@@ -75,6 +75,19 @@ export interface Occupation {
   // STYRK08: коды NAV покрывают профессии, которых в шведском списке не было,
   // и молча расширять шведский импорт из-за этого нельзя).
   norwayOnly?: boolean;
+  // Синонимы реального заголовка, НЕ используемые как поисковый запрос —
+  // только для occupationTermFromTitle/occupationLabelFromTitle (23.09.2026).
+  // Нужны, потому что вакансии могут попасть в базу и без совпадения по
+  // term: по оси работодателя (fetchByEmployer в jobtech.ts) заголовок ищется
+  // не по нашим терминам, а сам работодатель находится по имени; term тогда
+  // берётся из occupationTermFromTitle(заголовок), и это единственное место,
+  // где подстрочное совпадение вообще может подвести. Обнаружено на живой
+  // вакансии ISS: "Lokalvårdare" — обычное разговорное название для städare,
+  // не входящее в term как поисковый запрос (в поиск по Швеции städare и не
+  // должен идти — см. norwayOnly и решение от 23.09.2026 не включать шведскую
+  // уборку). Alias влияет только на то, как УЖЕ импортированная вакансия
+  // отображается, а не на то, что мы ищем.
+  aliases?: string[];
 }
 
 // 17.08.2026: эти шесть терминов ("общие", изначально без региона) переведены
@@ -463,6 +476,11 @@ export const OCCUPATIONS: Occupation[] = [
   {
     term: "hjälparbetare",
     norwayOnly: true,
+    // "Helpers" — так подрядчики мегапроектов под Лулео/Буденом сами
+    // называют эту позицию по-английски прямо в шведских объявлениях (живой
+    // пример: "Helpers sökes till Luleå"). Alias, не term — ось по
+    // работодателю уже находит эти вакансии сама, без нового поиска.
+    aliases: ["helpers", "helper"],
     labels: {
       lv: "Palīgstrādnieks",
       ru: "Разнорабочий",
@@ -493,6 +511,12 @@ export const OCCUPATIONS: Occupation[] = [
   {
     term: "städare",
     norwayOnly: true,
+    // "Lokalvårdare" — обиходное название той же профессии, встречается в
+    // реальных шведских объявлениях (ISS и другие клининговые подрядчики)
+    // чаще, чем формальное "städare". Alias только для отображения — ось по
+    // работодателю уже приносит такие вакансии сама, поиск по Швеции на
+    // städare/lokalvårdare не открываем (решение 23.09.2026).
+    aliases: ["lokalvårdare"],
     // Подписи ДОСЛОВНО как у шведского кода 9111 (миграция 012): список
     // профессий на главной группируется по подписи, и «Apkopējs» против
     // «Apkopējs / apkopēja» дал бы два пункта об одном и том же.
@@ -586,7 +610,13 @@ export function occupationLabel(term: string | null, locale: Locale): string | n
  */
 export function occupationTermFromTitle(title: string): string | null {
   const lower = title.toLowerCase();
-  return OCCUPATIONS.find((o) => lower.includes(o.term.toLowerCase()))?.term ?? null;
+  return (
+    OCCUPATIONS.find(
+      (o) =>
+        lower.includes(o.term.toLowerCase()) ||
+        o.aliases?.some((alias) => lower.includes(alias.toLowerCase()))
+    )?.term ?? null
+  );
 }
 
 export function occupationLabelFromTitle(title: string, locale: Locale): string | null {

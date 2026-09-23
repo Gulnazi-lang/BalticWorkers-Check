@@ -4,6 +4,7 @@ import { isExcluded, loadExclusions, purgeExcluded } from "@/lib/importers/exclu
 import { unpublishStaleVacancies } from "@/lib/importers/staleness";
 import { expireNavVacancies } from "@/lib/importers/navExpiry";
 import { notifyImportFailure } from "@/lib/importers/failureAlert";
+import { checkNavLabelCoverage } from "@/lib/importers/labelCoverage";
 import { createServiceClient } from "@/lib/supabase/service";
 
 // Hobby с fluid compute даёт 300 с и по умолчанию, но полагаться на дефолт
@@ -52,7 +53,24 @@ export async function GET(request: NextRequest) {
     // отчёт по остальным источникам.
     const expiry = await expireNavVacancies(supabase, token);
     const stale = await unpublishStaleVacancies(supabase);
-    return NextResponse.json({ imported, deactivated, purged, expiry, stale, source: "nav", ...walk });
+    // Не роняет прогон при сбое подсчёта: это информационная метрика, а не
+    // критерий успеха импорта. Ловит именно ту ошибку, что уже случалась
+    // трижды за проект — код добавлен в navConfig.ts, а миграция с подписью
+    // в occupation_labels забыта.
+    const labelCoverage = await checkNavLabelCoverage(supabase).catch((e) => {
+      console.error(`[import:nav] label coverage check failed: ${e instanceof Error ? e.message : e}`);
+      return null;
+    });
+    return NextResponse.json({
+      imported,
+      deactivated,
+      purged,
+      expiry,
+      stale,
+      labelCoverage,
+      source: "nav",
+      ...walk,
+    });
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
     console.error(`[import:nav] ${message}`);

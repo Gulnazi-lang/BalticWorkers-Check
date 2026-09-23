@@ -6,6 +6,7 @@ import { collectiveAgreementIdFor, resolveAgreementIds } from "@/lib/importers/r
 import { unpublishStaleVacancies } from "@/lib/importers/staleness";
 import { notifyImportFailure } from "@/lib/importers/failureAlert";
 import { recordSuccessfulImport } from "@/lib/importers/importHealth";
+import { checkJobTechLabelCoverage } from "@/lib/importers/labelCoverage";
 import { createServiceClient } from "@/lib/supabase/service";
 
 // Проверка на снятие (findRemovedJobTechIds) добавляет по одному запросу
@@ -152,8 +153,14 @@ export async function GET(request: NextRequest) {
     // Отчёт enriched нужен, чтобы ручное обогащение не исчезало незаметно.
     const stale = await unpublishStaleVacancies(supabase);
     await recordSuccessfulImport(supabase, "jobtech");
+    // Не роняет прогон при сбое подсчёта: это информационная метрика, а не
+    // критерий успеха импорта.
+    const labelCoverage = await checkJobTechLabelCoverage(supabase).catch((e) => {
+      console.error(`[import:jobtech] label coverage check failed: ${e instanceof Error ? e.message : e}`);
+      return null;
+    });
 
-    return NextResponse.json({ imported, purged, deactivated, stale, source: "jobtech" });
+    return NextResponse.json({ imported, purged, deactivated, stale, labelCoverage, source: "jobtech" });
   } catch (err) {
     // Vercel Runtime Logs пишут код ответа и время выполнения по умолчанию,
     // но НЕ тело JSON — без явного console.error 502 был бы виден в логах
