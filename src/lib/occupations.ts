@@ -526,6 +526,17 @@ export const OCCUPATIONS: Occupation[] = [
       et: "Köögiabiline",
     },
   },
+  {
+    term: "servitör",
+    norwayOnly: true,
+    labels: {
+      lv: "Viesmīlis / viesmīle",
+      ru: "Официант",
+      en: "Waiter/waitress",
+      lt: "Padavėjas",
+      et: "Kelner",
+    },
+  },
 ];
 
 const BY_TERM = new Map(OCCUPATIONS.map((o) => [o.term, o.labels]));
